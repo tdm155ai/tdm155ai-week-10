@@ -131,7 +131,7 @@ function MidiPanel() {
       <p className="diag-big">{last ? (last.type.startsWith("note") ? `${last.type === "noteon" ? "note on" : "note off"} ${last.number} · ${noteName(last.number)}` : `${last.type} ${last.number}`) : "hit a pad, turn a knob"}</p>
       <div className="diag-row"><span>channel <b>{last?.channel ?? "—"}</b></span><span>value <b>{last?.value ?? "—"}</b></span><span className="mic-meter" style={{ flex: 1 }}><span style={{ width: `${last ? (last.value / max) * 100 : 0}%` }} /></span></div>
       <ul className="ctl-log">{log.map((l, i) => <li key={i}>{l}</li>)}</ul>
-      <p className="ctl-note">Pads and keys are notes (MPK mini pads 36–43), knobs are CC (70–77), velocity and knob values 0–127. Map them on <a href="/launch/midi">/launch/midi</a>.</p>
+      <p className="ctl-note">Pads and keys are notes (MPK mini pads 36–43), knobs are CC (70–77), velocity and knob values 0–127. Map them on <a href="/launch/midi">/launch/midi</a>. A ROLI Seaboard BLOCK or another MPE keyboard puts each held note on its own channel (2–16) with bend, slide (CC74) and pressure: play and see it on <a href="/launch/mpe">/launch/mpe</a>.</p>
     </div>
   );
 }
@@ -237,6 +237,7 @@ export default function InputDiagnostics() {
       <div className="ctl-panel">
         <h2>More inputs, each with its own check</h2>
         <ul className="ctl-log" style={{ maxHeight: "none" }}>
+          <li><b>MPE (Seaboard)</b>: <a href="/launch/mpe">/launch/mpe</a> draws bend, slide and pressure for every finger</li>
           <li><b>Words</b>: <a href="/voice/words">/voice/words</a> shows what Chrome hears and which word matched</li>
           <li><b>Meaning</b>: <a href="/voice/semantic">/voice/semantic</a> shows the topic the model chose and how sure it is</li>
           <li><b>Hands, face, body</b>: <a href="/track">/track</a> draws what MediaPipe sees</li>

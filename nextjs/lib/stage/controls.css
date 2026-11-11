@@ -173,3 +173,16 @@
 .vsplash-word { position: absolute; left: 0; right: 0; top: 8%; margin: 0; color: #fff; font-size: clamp(28px, 6vw, 90px); font-weight: 900; letter-spacing: -.03em; text-align: center; pointer-events: none; animation: vsplash-fade 1.6s ease-out forwards; }
 .vsplash-hint { position: absolute; left: 16px; bottom: 12px; margin: 0; color: rgba(236,236,230,.55); font-size: 13px; pointer-events: none; }
 @keyframes vsplash-fade { 0% { opacity: 0; transform: scale(.9); } 12% { opacity: .9; transform: scale(1); } 100% { opacity: 0; } }
+
+.mpe-stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 74vh; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: #04050a; }
+.mpe-stage:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border: 0; border-radius: 0; }
+.mpe-canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+.mpe-num { width: 64px; }
+.mpe-meters { width: 100%; border-collapse: collapse; font-size: 14px; }
+.mpe-meters th { padding: 4px 8px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-align: left; text-transform: uppercase; }
+.mpe-meters td { padding: 5px 8px; border-top: 1px solid var(--line); font-family: ui-monospace, monospace; white-space: nowrap; }
+.mpe-meters tr.idle td { opacity: .45; }
+.mpe-bar { position: relative; display: inline-block; width: min(18vw, 180px); height: 10px; margin-right: 8px; vertical-align: middle; border-radius: 5px; background: color-mix(in srgb, var(--ink) 10%, transparent); overflow: hidden; }
+.mpe-bar i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--accent); }
+.mpe-bar.center::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--muted); }
+.mpe-num-out { display: inline-block; min-width: 70px; color: var(--muted); font-size: 12px; }
