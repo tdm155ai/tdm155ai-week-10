@@ -87,3 +87,9 @@
 .script-text .here { background: #12331c; outline: 1px solid #1f7a3a; }
 .cue-mark { margin: 0 2px 0 1px; padding: 0 5px; border-radius: 3px; background: var(--accent); color: var(--accent-ink); font-size: 10px; font-weight: 700; }
 .cue-mark.fired { background: var(--line); color: var(--muted); }
+.compare-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 18px 0; }
+.compare-cols .ctl-panel + .ctl-panel { margin-top: 0; }
+@media (max-width: 860px) { .compare-cols { grid-template-columns: 1fr; } }
+.level { display: inline-block; width: 80px; height: 8px; margin-left: 6px; border: 1px solid var(--line); border-radius: 4px; vertical-align: middle; overflow: hidden; }
+.level span { display: block; height: 100%; background: var(--ok); transition: width .05s; }
+.midi-table thead td { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
