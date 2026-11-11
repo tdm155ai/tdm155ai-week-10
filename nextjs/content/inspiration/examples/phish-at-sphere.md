@@ -11,6 +11,10 @@ description: Moment Factory's live, game-engine visuals on the Las Vegas Sphere'
 
 ## Watch
 
+*Checked Nov 11, 2026 from YouTube's metadata (title, channel, length) and transcripts; the videos were not watched frame by frame (no visual review).*
+
+![youtube: Phish, Live at Sphere | Exclusive Behind-the-Scenes (Moment Factory, 5:46)](https://www.youtube.com/watch?v=aP-y5CDJBUs)
+
 - [Phish, Live at Sphere | Exclusive Behind-the-Scenes](https://www.youtube.com/watch?v=aP-y5CDJBUs) (Moment Factory, 5:46).
 - [Moment Factory redefines live concerts with real-time visuals for Phish at Sphere](https://www.youtube.com/watch?v=YRFyQZYIQ5M) (Unreal Engine, 5:05).
 

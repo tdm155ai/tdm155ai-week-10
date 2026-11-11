@@ -13,6 +13,10 @@ description: The Montreal multimedia studio behind concert visuals for Billie Ei
 
 ## Watch
 
+*Checked Nov 11, 2026 from YouTube's metadata (title, channel, length) and transcripts; the videos were not watched frame by frame (no visual review).*
+
+![youtube: Shows & Concerts (Moment Factory, 1:14)](https://www.youtube.com/watch?v=WD8zBDsf1Kg)
+
 - [Shows & Concerts](https://www.youtube.com/watch?v=WD8zBDsf1Kg) (Moment Factory, 1:14): the reel.
 - [Nine Inch Nails, Festival Tour 2013 | Interactivity & Live Show Content](https://www.youtube.com/watch?v=nORTQidJ0_g) (1:04): visuals driven by tracking the band: our `/track`, at festival scale.
 - [Infinite Content Tour ∞ Arcade Fire](https://www.youtube.com/watch?v=_QDoNZKVGkk) (2:04): 360° arena design.

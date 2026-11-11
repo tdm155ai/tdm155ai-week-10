@@ -11,6 +11,10 @@ description: Moment Factory's projection-mapped light show inside Montreal's Not
 
 ## Watch
 
+*Checked Nov 11, 2026 from YouTube's metadata (title, channel, length) and transcripts; the videos were not watched frame by frame (no visual review).*
+
+![youtube: AURA | Making of (Moment Factory, 5:18)](https://www.youtube.com/watch?v=_KOmIisPtbQ)
+
 - [AURA | A luminous experience in the heart of Montreal's Notre-Dame Basilica](https://www.youtube.com/watch?v=FV3XdOda3zM) (Moment Factory, 1:12).
 - [AURA | Making of](https://www.youtube.com/watch?v=_KOmIisPtbQ) (Moment Factory, 5:18).
 
