@@ -7,23 +7,23 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useCamera } from "../../lib/cv/useCamera.js";
-import { boxColor, findBox, freeMats, loadOpenCV, makeStabilizer, nearestCard, orderCorners, quadTransform } from "../../lib/cv/opencv.js";
+import { boxColor, findBoxes, freeMats, loadOpenCV, nearestCard, orderCorners, quadTransform } from "../../lib/cv/opencv.js";
+import { makeBoxTracker } from "../../lib/cv/boxes.js";
 import { boxFromMarkers, findMarkers } from "../../lib/cv/aruco.js";
 import { speechSupported, startListening, triggerWatcher } from "../../lib/voice/speech.js";
 import { CameraBar, Readout, Status } from "../../lib/cv/ui.jsx";
 import { cards, clearWord, clips } from "./clips.js";
 
-const isGif = (clip) => /\.gif($|\?)/i.test(clip?.src || "");
-
 const WORK_WIDTH = 640; // OpenCV looks at a 640-pixel-wide copy of each frame: fast enough, sharp enough.
 const MARKER_WIDTH = 1280; // printed markers are small from up high, so they get a sharper copy.
+const MAX_BOXES = 6; // the most boxes the page will play at once (each one is a GIF or video on screen)
+const COLORS = ["#7fc787", "#ff6b57", "#7fb3ff", "#f2c14e", "#c88bff", "#4fd1c5"];
 
 export default function DrawABox() {
   const camera = useCamera({ storageKey: "cv-camera-box" });
   const boxRef = useRef(null);
   const overlayRef = useRef(null);
-  const clipRef = useRef(null);
-  const gifRef = useRef(null);
+  const slotsRef = useRef([]); // per box on screen: { video, img, src }
   const workRef = useRef(null);
   const debugRef = useRef(null);
   const settingsRef = useRef({});
@@ -38,12 +38,13 @@ export default function DrawABox() {
   const [offset, setOffset] = useState(12);
   const [minArea, setMinArea] = useState(3);
   const [clip, setClip] = useState(clips[0]);
+  const [maxBoxes, setMaxBoxes] = useState(4);
   const [rows, setRows] = useState([]);
   const [listening, setListening] = useState(false);
   const [heard, setHeard] = useState("");
   const [voiceState, setVoiceState] = useState({ tone: "muted", text: "" });
   const [fullscreen, setFullscreen] = useState(false);
-  settingsRef.current = { pickBy, gif: isGif(clip), source, mirror, outline, locked, showDebug, offset, minArea };
+  settingsRef.current = { pickBy, clip, maxBoxes, source, mirror, outline, locked, showDebug, offset, minArea };
 
   // Load OpenCV, then look at frames ~20 times a second.
   useEffect(() => {
@@ -52,13 +53,21 @@ export default function DrawABox() {
     let lastRun = 0;
     let lastRows = 0;
     const mats = {};
-    const stabilize = makeStabilizer();
-    let quad = null;
-    let found = false;
+    const track = makeBoxTracker({ max: MAX_BOXES });
+    let boxes = [];
+    let foundCount = 0;
     let markerNote = "";
-    let colorNote = "";
-    const vote = { card: null, count: 0, shown: null }; // a card color must hold for a few looks before it switches
     let cvRef = null;
+
+    // Put a clip (GIF in the <img>, anything else in the <video>) into a box's slot, if it isn't there already.
+    const load = (slot, src) => {
+      if (slot.src === src) return;
+      slot.src = src;
+      if (!src || /\.gif($|\?)/i.test(src)) { slot.video.removeAttribute("src"); slot.video.load(); }
+      if (src && /\.gif($|\?)/i.test(src)) { slot.img.src = src; return; }
+      slot.img.removeAttribute("src");
+      if (src) { slot.video.src = src; slot.video.play().catch(() => {}); }
+    };
 
     const tick = (now) => {
       if (stopped) return;
@@ -77,82 +86,101 @@ export default function DrawABox() {
         lastRun = now;
         const work = workRef.current ??= document.createElement("canvas");
         if (work.width !== pw || work.height !== ph) { work.width = pw; work.height = ph; }
-        work.getContext("2d", { willReadFrequently: true }).drawImage(video, 0, 0, pw, ph);
+        const workCtx = work.getContext("2d", { willReadFrequently: true });
+        workCtx.drawImage(video, 0, 0, pw, ph);
         try {
-          let result;
+          let quads;
           if (s.source === "markers") {
             const markers = findMarkers(cvRef, work, mats);
-            result = boxFromMarkers(markers);
+            const result = boxFromMarkers(markers);
             const ids = markers.map((m) => m.id).sort((a, b) => a - b);
             markerNote = `${ids.length ? ids.join(", ") : "none"}${result?.guessed ? ` (guessing ${result.guessed})` : ""}`;
+            quads = result ? [result.quad] : [];
           } else {
-            result = findBox(cvRef, work, mats, { offset: s.offset, minArea: s.minArea / 100 });
+            quads = findBoxes(cvRef, work, mats, { offset: s.offset, minArea: s.minArea / 100, max: s.maxBoxes, colorful: s.pickBy === "color" }).map((b) => b.quad);
           }
-          found = !!result;
-          if (s.pickBy === "color" && result) {
-            const color = boxColor(work.getContext("2d").getImageData(0, 0, pw, ph), result.quad);
-            const card = nearestCard(color, cards);
-            colorNote = color ? `${card ? card.color : "no color"} (hue ${Math.round(color.hue)}, sat ${color.saturation.toFixed(2)})` : "";
-            if (card === vote.card) vote.count += 1; else { vote.card = card; vote.count = 1; }
-            if (vote.count >= 4 && card && card !== vote.shown) { vote.shown = card; setClip(card); }
+          foundCount = quads.length;
+          boxes = track(quads, pw, now).slice(0, s.maxBoxes);
+          if (s.pickBy === "color") {
+            const pixels = workCtx.getImageData(0, 0, pw, ph);
+            for (const b of boxes) {
+              const color = boxColor(pixels, b.raw);
+              const card = nearestCard(color, cards);
+              b.colorNote = color ? `${card ? card.color : "no color"} (hue ${Math.round(color.hue)}, sat ${color.saturation.toFixed(2)})` : "";
+              // A card's color must hold for a few looks before its GIF changes.
+              if (card === b.vote.card) b.vote.count += 1; else { b.vote.card = card; b.vote.count = 1; }
+              if (b.vote.count >= 4 && card !== b.vote.shown) b.vote.shown = card;
+            }
           }
-          quad = stabilize(result?.quad || null, pw);
           if (s.showDebug && debugRef.current) cvRef.imshow(debugRef.current, s.source === "markers" ? mats.markerGray : mats.bin);
         } catch (error) {
           setCvState({ tone: "error", text: `OpenCV error: ${error.message || error}` });
         }
       }
 
-      // Map the box from the 640-wide work frame to the screen (the camera is shown "contain" in the box element).
+      // What plays in each box. Card color: each card's own color. Otherwise, left to right: the chosen clip, then the
+      // next ones in clips.js.
+      const order = [...boxes].sort((a, b) => (s.mirror ? b.middle.x - a.middle.x : a.middle.x - b.middle.x));
+      const first = clips.indexOf(s.clip);
+      for (const b of boxes) {
+        if (s.pickBy === "color") b.content = b.vote.shown || null;
+        else b.content = first < 0 ? null : clips[(first + order.indexOf(b)) % clips.length];
+      }
+
+      // Map each box from the work frame to the screen (the camera is shown "contain" in the box element).
       const cw = box.clientWidth;
       const ch = box.clientHeight;
       const scale = Math.min(cw / vw, ch / vh);
       const ox = (cw - vw * scale) / 2;
       const oy = (ch - vh * scale) / 2;
       const toScreen = (p) => ({ x: ox + (s.mirror ? pw - p.x : p.x) * (scale / k), y: oy + p.y * (scale / k) });
-      const screenQuad = quad ? orderCorners(quad.map(toScreen)) : null;
+      const onScreen = boxes.map((b) => ({ b, quad: orderCorners(b.quad.map(toScreen)) }));
 
-      const clipEl = s.gif ? gifRef.current : clipRef.current;
-      const otherEl = s.gif ? clipRef.current : gifRef.current;
-      if (otherEl) otherEl.style.opacity = "0";
-      if (clipEl) {
-        if (screenQuad) {
-          const w = clipEl.videoWidth || clipEl.naturalWidth || 640;
-          const h = clipEl.videoHeight || clipEl.naturalHeight || 360;
-          clipEl.style.width = `${w}px`;
-          clipEl.style.height = `${h}px`;
-          clipEl.style.transform = quadTransform(w, h, screenQuad);
-          clipEl.style.opacity = "1";
+      slotsRef.current.forEach((slot, i) => {
+        if (!slot?.video || !slot?.img) return;
+        const here = onScreen.find((o) => o.b.slot === i);
+        load(slot, here?.b.content?.src || null);
+        const gif = !!slot.src && /\.gif($|\?)/i.test(slot.src);
+        const el = gif ? slot.img : slot.video;
+        (gif ? slot.video : slot.img).style.opacity = "0";
+        if (here && slot.src) {
+          const w = el.videoWidth || el.naturalWidth || 640;
+          const h = el.videoHeight || el.naturalHeight || 360;
+          el.style.width = `${w}px`;
+          el.style.height = `${h}px`;
+          el.style.transform = quadTransform(w, h, here.quad);
+          el.style.opacity = "1";
         } else {
-          clipEl.style.opacity = "0";
+          el.style.opacity = "0";
         }
-      }
+      });
 
       const overlay = overlayRef.current;
       if (overlay) {
         if (overlay.width !== cw || overlay.height !== ch) { overlay.width = cw; overlay.height = ch; }
         const ctx = overlay.getContext("2d");
         ctx.clearRect(0, 0, cw, ch);
-        if (screenQuad && s.outline) {
-          ctx.strokeStyle = s.locked ? "#7fb3ff" : "#7fc787";
+        if (s.outline) onScreen.forEach(({ b, quad }) => {
+          ctx.strokeStyle = s.locked ? "#7fb3ff" : COLORS[b.slot % COLORS.length];
           ctx.lineWidth = 3;
           ctx.beginPath();
-          screenQuad.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+          quad.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
           ctx.closePath();
           ctx.stroke();
           ctx.fillStyle = ctx.strokeStyle;
-          screenQuad.forEach((p) => { ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI * 2); ctx.fill(); });
-        }
+          quad.forEach((p) => { ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI * 2); ctx.fill(); });
+          ctx.font = "700 18px Inter, system-ui, sans-serif";
+          ctx.fillText(`box ${b.slot + 1}`, quad[0].x + 8, quad[0].y - 10);
+        });
       }
 
       if (now - lastRows > 200) {
         lastRows = now;
         setRows([
-          ["box found this frame", found ? "yes" : "no", found],
+          ["boxes found this frame", String(foundCount), foundCount > 0],
           ...(s.source === "markers" ? [["markers seen (need 3 of 0–3)", markerNote || "none"]] : []),
-          ...(s.pickBy === "color" ? [["card color", colorNote || "–", !!vote.shown && colorNote.startsWith(vote.shown.color)]] : []),
-          ["box on screen", quad ? (s.locked ? "locked" : "yes") : "no", !!quad],
-          ...(quad ? quad.map((p, i) => [["top-left", "top-right", "bottom-right", "bottom-left"][i], `${Math.round(p.x)}, ${Math.round(p.y)}`]) : []),
+          ["boxes on screen", `${boxes.length}${s.locked ? " (locked)" : ""} of up to ${s.source === "markers" ? 1 : s.maxBoxes}`, boxes.length > 0],
+          ...[...boxes].sort((a, b) => a.slot - b.slot).map((b) => [`box ${b.slot + 1}`, `${b.content?.label || "–"}${s.pickBy === "color" && b.colorNote ? ` · ${b.colorNote}` : ""}`, !!b.content]),
           ["work frame", `${pw}×${ph}`],
         ]);
       }
@@ -167,19 +195,6 @@ export default function DrawABox() {
 
     return () => { stopped = true; cancelAnimationFrame(raf); freeMats(mats); };
   }, [camera.videoRef]);
-
-  // Play the chosen clip: a GIF in the <img>, anything else in the <video>.
-  useEffect(() => {
-    const el = clipRef.current;
-    const gif = gifRef.current;
-    if (!el || !gif) return;
-    if (!clip || isGif(clip)) { el.removeAttribute("src"); el.load(); }
-    if (clip && isGif(clip)) { gif.src = clip.src; return; }
-    gif.removeAttribute("src");
-    if (!clip) return;
-    el.src = clip.src;
-    el.play().catch(() => {});
-  }, [clip]);
 
   // The spoken word picks the clip (TR's lib/voice/speech.js: Chrome's Web Speech API).
   const stopRef = useRef(null);
@@ -246,6 +261,11 @@ export default function DrawABox() {
             <option value="color">card color</option>
           </select>
         </label>
+        {source === "drawn" && <label><span>Boxes</span>
+          <select value={maxBoxes} onChange={(e) => setMaxBoxes(Number(e.target.value))}>
+            {Array.from({ length: MAX_BOXES }, (_, i) => <option key={i} value={i + 1}>up to {i + 1}</option>)}
+          </select>
+        </label>}
         <label><span>Box from</span>
           <select value={source} onChange={(e) => setSource(e.target.value)}>
             <option value="drawn">lines drawn in marker</option>
@@ -260,9 +280,13 @@ export default function DrawABox() {
       <div className="cv-grid">
         <div ref={boxRef} className={`cv-stagebox box-stage ${mirror ? "is-mirrored" : ""} ${cameraHidden ? "is-camera-hidden" : ""} ${fullscreen ? "is-fullscreen" : ""}`}>
           <video ref={camera.attach} autoPlay playsInline muted />
-          <video ref={clipRef} className="box-clip" autoPlay loop muted playsInline />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img ref={gifRef} className="box-clip" alt="" />
+          {Array.from({ length: MAX_BOXES }, (_, i) => (
+            <span key={i} className="box-slot">
+              <video ref={(el) => { slotsRef.current[i] = { ...slotsRef.current[i], video: el }; }} className="box-clip" autoPlay loop muted playsInline />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img ref={(el) => { slotsRef.current[i] = { ...slotsRef.current[i], img: el }; }} className="box-clip" alt="" />
+            </span>
+          ))}
           <canvas ref={overlayRef} className="box-overlay" />
         </div>
         <aside className="cv-side">

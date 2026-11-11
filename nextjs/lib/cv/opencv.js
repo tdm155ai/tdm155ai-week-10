@@ -61,27 +61,47 @@ export function orderCorners(points) {
   return [bySum[0], byDiff[0], bySum[3], byDiff[3]];
 }
 
-// Find the biggest four-sided shape in a frame (a box drawn in marker on paper).
-// `source` is a canvas holding the frame. Returns { quad: [tl, tr, br, bl] in that canvas's pixels, area } or null.
+// Find the four-sided shapes in a frame (boxes drawn in marker on paper, or index cards), biggest first, up to `max`.
+// A box inside another box doesn't count (a thick marker line has an inside and an outside edge: that's one box).
+// `source` is a canvas holding the frame. Returns [{ quad: [tl, tr, br, bl] in that canvas's pixels, area }].
 // `mats` holds reusable OpenCV images so we don't allocate every frame; call freeMats(mats) when done.
-export function findBox(cv, source, mats, { minArea = 0.02, maxArea = 0.9, blockSize = 25, offset = 12 } = {}) {
+// `colorful: true` finds colored index cards instead of drawn lines: it looks for patches of strong color (saturation),
+// so a yellow card on white paper stands out even though both look light in black and white.
+export function findBoxes(cv, source, mats, { minArea = 0.02, maxArea = 0.9, blockSize = 25, offset = 12, max = 1, colorful = false } = {}) {
   const { width: W, height: H } = source;
   mats.src ??= new cv.Mat();
   mats.gray ??= new cv.Mat();
   mats.bin ??= new cv.Mat();
   mats.kernel ??= cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(5, 5));
   const src = cv.imread(source);
-  cv.cvtColor(src, mats.gray, cv.COLOR_RGBA2GRAY);
-  src.delete();
-  cv.GaussianBlur(mats.gray, mats.gray, new cv.Size(5, 5), 0);
-  // Dark marker on light paper → white lines on black. Adaptive, so uneven studio light is OK.
-  cv.adaptiveThreshold(mats.gray, mats.bin, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY_INV, blockSize, offset);
+  if (colorful) {
+    mats.rgb ??= new cv.Mat();
+    mats.hsv ??= new cv.Mat();
+    cv.cvtColor(src, mats.rgb, cv.COLOR_RGBA2RGB);
+    cv.cvtColor(mats.rgb, mats.hsv, cv.COLOR_RGB2HSV);
+    const channels = new cv.MatVector();
+    cv.split(mats.hsv, channels);
+    const saturation = channels.get(1);
+    saturation.copyTo(mats.gray);
+    saturation.delete();
+    channels.delete();
+    src.delete();
+    cv.GaussianBlur(mats.gray, mats.gray, new cv.Size(5, 5), 0);
+    // Strong color → white, paper and table (grey, white, black) → black. `offset` sets how colorful counts (×5).
+    cv.threshold(mats.gray, mats.bin, Math.min(250, offset * 5), 255, cv.THRESH_BINARY);
+  } else {
+    cv.cvtColor(src, mats.gray, cv.COLOR_RGBA2GRAY);
+    src.delete();
+    cv.GaussianBlur(mats.gray, mats.gray, new cv.Size(5, 5), 0);
+    // Dark marker on light paper → white lines on black. Adaptive, so uneven studio light is OK.
+    cv.adaptiveThreshold(mats.gray, mats.bin, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY_INV, blockSize, offset);
+  }
   cv.morphologyEx(mats.bin, mats.bin, cv.MORPH_CLOSE, mats.kernel); // join small gaps in the drawn line
 
   const contours = new cv.MatVector();
   const hierarchy = new cv.Mat();
   cv.findContours(mats.bin, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE);
-  let best = null;
+  const shapes = [];
   const frame = W * H;
   for (let i = 0; i < contours.size(); i++) {
     const c = contours.get(i);
@@ -89,16 +109,44 @@ export function findBox(cv, source, mats, { minArea = 0.02, maxArea = 0.9, block
     if (area < minArea * frame || area > maxArea * frame) { c.delete(); continue; }
     const approx = new cv.Mat();
     cv.approxPolyDP(c, approx, 0.03 * cv.arcLength(c, true), true);
-    if (approx.rows === 4 && cv.isContourConvex(approx) && (!best || area > best.area)) {
+    if (approx.rows === 4 && cv.isContourConvex(approx)) {
       const d = approx.data32S;
-      best = { area, quad: orderCorners([0, 1, 2, 3].map((k) => ({ x: d[k * 2], y: d[k * 2 + 1] }))) };
+      shapes.push({ area, quad: orderCorners([0, 1, 2, 3].map((k) => ({ x: d[k * 2], y: d[k * 2 + 1] }))) });
     }
     approx.delete();
     c.delete();
   }
   contours.delete();
   hierarchy.delete();
-  return best;
+  shapes.sort((a, b) => b.area - a.area);
+  const boxes = [];
+  for (const shape of shapes) {
+    if (boxes.length >= max) break;
+    const middle = centre(shape.quad);
+    if (boxes.some((box) => inside(middle, box.quad) || inside(centre(box.quad), shape.quad))) continue;
+    boxes.push(shape);
+  }
+  return boxes;
+}
+
+// The biggest box only (the one-box version).
+export function findBox(cv, source, mats, options = {}) {
+  return findBoxes(cv, source, mats, { ...options, max: 1 })[0] || null;
+}
+
+export function centre(quad) {
+  return { x: quad.reduce((s, p) => s + p.x, 0) / quad.length, y: quad.reduce((s, p) => s + p.y, 0) / quad.length };
+}
+
+// Is a point inside a convex four-cornered shape [tl, tr, br, bl]?
+export function inside(point, quad) {
+  let sign = 0;
+  for (let i = 0; i < 4; i++) {
+    const a = quad[i], b = quad[(i + 1) % 4];
+    const cross = (b.x - a.x) * (point.y - a.y) - (b.y - a.y) * (point.x - a.x);
+    if (cross !== 0) { if (sign && Math.sign(cross) !== sign) return false; sign = Math.sign(cross); }
+  }
+  return true;
 }
 
 export function freeMats(mats) {
