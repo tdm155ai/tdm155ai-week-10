@@ -72,3 +72,8 @@
   .marker-sheet { margin: 0; break-after: page; height: 9.8in; justify-content: center; }
   .marker-sheet img { width: 7in; border: none; }
 }
+
+/* /track/hello: the one-file version */
+.hello-title { margin: 10px 0 0; font-size: clamp(26px, 3.4vw, 44px); font-weight: 800; letter-spacing: -.04em; line-height: 1.1; }
+.cv-stagebox.is-mirrored.hello-box canvas { transform: scaleX(-1); }
+.hello-box { margin-top: 20px; }
