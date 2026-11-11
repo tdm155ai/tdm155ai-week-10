@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Air Band</title>
+<style>
+  :root {
+    --bg: #14110d;
+    --panel: #1f1a14;
+    --line: #3a3127;
+    --text: #f3ebde;
+    --muted: #a99c88;
+    --brass: #e8b04a;
+    --brass-hi: #ffd77a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  header { padding: 18px 24px 6px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 22px; letter-spacing: .3px; }
+  h1 span { color: var(--brass); }
+  header p { margin: 0; color: var(--muted); }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; padding: 12px 24px 24px; }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; padding: 12px 16px; } }
+
+  .stage {
+    position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000;
+    border-radius: 14px; overflow: hidden; border: 1px solid var(--line);
+  }
+  video, canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; transform: scaleX(-1);
+  }
+  #zones { position: absolute; inset: 0; display: flex; pointer-events: none; }
+  .zone { flex: 1; position: relative; border-left: 2px dashed rgba(232,176,74,.5); transition: box-shadow .08s; }
+  .zone:first-child { border-left: 0; }
+  .zone.on { box-shadow: inset 0 0 0 3px var(--brass), inset 0 0 40px rgba(232,176,74,.35); }
+  .badge {
+    position: absolute; left: 12px; top: 12px; max-width: calc(100% - 24px); padding: 6px 12px; border-radius: 999px;
+    background: rgba(0,0,0,.6); backdrop-filter: blur(6px); font-weight: 600; font-size: 15px;
+    display: flex; align-items: center; gap: 8px; white-space: nowrap; overflow: hidden;
+  }
+  .badge .note { color: var(--brass-hi); font-size: 20px; }
+  .who { background: var(--brass); color: #1a1208; border-radius: 999px; padding: 0 8px; font-size: 13px; font-weight: 700; }
+  body:not(.multi) .badge .who { display: none; }
+  .multi .badge { left: 6px; top: 6px; max-width: calc(100% - 12px); padding: 4px 9px; gap: 6px; font-size: 13px; }
+  .multi .badge .note { font-size: 16px; }
+  .badge .txt { overflow: hidden; text-overflow: ellipsis; }
+  #start-screen {
+    position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+    background: radial-gradient(circle at 50% 40%, #2a2117, #0c0a08);
+  }
+  #start-screen .big { font-size: 56px; margin-bottom: 6px; }
+  button {
+    font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line);
+    border-radius: 10px; padding: 8px 12px; cursor: pointer;
+  }
+  button:hover { border-color: var(--brass); }
+  button.primary { background: var(--brass); color: #1a1208; border: 0; font-weight: 700; padding: 12px 22px; font-size: 16px; }
+  button.sel { border-color: var(--brass); color: var(--brass-hi); }
+  #status { color: var(--muted); margin-top: 10px; font-size: 13px; min-height: 1.4em; }
+
+  aside { display: flex; flex-direction: column; gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .card h2 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .player-row { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .player-row button { padding: 5px 8px; font-size: 13px; }
+  .valves { display: flex; gap: 12px; justify-content: center; }
+  .valve {
+    width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--line);
+    display: grid; place-items: center; font-weight: 700; color: var(--muted); transition: all .08s;
+  }
+  .valve.down { background: var(--brass); border-color: var(--brass-hi); color: #1a1208; transform: translateY(3px); }
+  label { display: block; color: var(--muted); font-size: 13px; margin-top: 8px; }
+  input[type=range] { width: 100%; accent-color: var(--brass); }
+  select { font: inherit; color: var(--text); background: #2b241b; border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+  ol { margin: 0; padding-left: 18px; color: var(--muted); }
+  ol b, .card kbd { color: var(--text); }
+  kbd { background: #2b241b; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; font-size: 12px; }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .chip { padding: 5px 10px; font-size: 14px; min-width: 44px; }
+  #meters { display: grid; grid-template-columns: repeat(11, 1fr); gap: 4px; margin-top: 12px; align-items: end; }
+  .meter { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: var(--muted); }
+  .meter .bar { position: relative; width: 100%; height: 64px; background: #2b241b; border-radius: 4px; overflow: hidden; }
+  .meter .fill { position: absolute; left: 0; right: 0; bottom: 0; background: var(--muted); }
+  .meter.on .fill { background: var(--brass); }
+  .meter.on { color: var(--brass-hi); }
+  .meter .line { position: absolute; left: 0; right: 0; bottom: 50%; border-top: 2px dashed var(--brass-hi); }
+  .meter.gap { visibility: hidden; }
+  .meter.blocked .fill { background: #6b5a44; }
+  /* instrument cards only show when some player uses that instrument */
+  body:not(.uses-trumpet) .trumpet-only,
+  body:not(.uses-piano) .piano-only,
+  body:not(.uses-guitar) .guitar-only,
+  body:not(.uses-drums) .drums-only,
+  body:not(.uses-filter) .filter-only { display: none !important; }
+  .card h2 .tag { text-transform: none; letter-spacing: 0; font-weight: 500; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Air <span>Band</span></h1>
+  <p>Play invisible instruments on camera — up to 5 players at once.</p>
+</header>
+
+<main>
+  <div class="stage" id="stage">
+    <video id="video" playsinline muted></video>
+    <canvas id="overlay"></canvas>
+    <div id="zones"></div>
+    <div id="start-screen">
+      <div>
+        <div class="big">🎺 🎹 🎸 🥁 🎛️</div>
+        <button class="primary" id="start">Start camera + sound</button>
+        <div id="status"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside>
+    <div class="card">
+      <h2>Players</h2>
+      <div class="row" id="player-count">
+        <button data-n="1">1 player</button>
+        <button data-n="2">2</button>
+        <button data-n="3">3</button>
+        <button data-n="4">4</button>
+        <button data-n="5">5</button>
+      </div>
+      <div id="player-rows"></div>
+      <div class="hint">Stand side by side. The video is split into columns, left to right as you see yourselves — each player plays in their own column. The computer keyboard plays Player 1's instrument.</div>
+    </div>
+
+    <!-- ===== Filter ===== -->
+    <div class="card filter-only">
+      <h2>Filter</h2>
+      <label>Max resonance (hand raised high) <input id="f-q" type="range" min="0.7" max="14" step="0.1" value="6"></label>
+      <div class="hint">The filter shapes everyone's sound. The curve in the filter player's column shows what it's doing — flat means open.</div>
+    </div>
+
+    <!-- ===== Drums ===== -->
+    <div class="card drums-only">
+      <h2>Drums</h2>
+      <label>Pointing finger <select id="d-trig"><option value="enter">plays when it enters a pad</option><option value="tap">plays when it taps down</option></select></label>
+      <label>Hit sensitivity <input id="d-sens" type="range" min="0.5" max="2" step="0.05" value="1"></label>
+      <div class="row" style="margin-top:10px"><button id="d-clear">Clear all loops</button></div>
+      <div class="hint">Keys: <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd>F</kbd> hit pads (<kbd>Shift</kbd> = palm) · <kbd>←</kbd> <kbd>→</kbd> change drums · <kbd>R</kbd> record a loop · <kbd>Delete</kbd> clears loops</div>
+    </div>
+
+    <!-- ===== Guitar ===== -->
+    <div class="card guitar-only">
+      <h2>Guitar</h2>
+      <div class="row" id="g-songs"></div>
+      <div class="row" id="g-chords" style="margin-top:8px"></div>
+      <label><input type="checkbox" id="g-fret" checked> Other hand picks the chord</label>
+      <div class="hint" id="g-fingermap"></div>
+      <label>Strum hand <select id="g-strum"><option value="right">Right</option><option value="left">Left</option></select></label>
+      <label>Capo <select id="g-capo"></select></label>
+      <label>Line height <input type="range" id="g-lineY" min="0.35" max="0.9" step="0.01" value="0.72"></label>
+      <label>Strings position (within the player's column) <input type="range" id="g-stringsPos" min="0.15" max="0.85" step="0.01" value="0.5"></label>
+      <label>Strings width <input type="range" id="g-stringsWidth" min="0.1" max="1" step="0.01" value="0.6"></label>
+      <label>Strum sensitivity <input type="range" id="g-sens" min="0.5" max="2" step="0.1" value="1"></label>
+      <div class="hint">Keys: <kbd>1</kbd>–<kbd>9</kbd> pick chords · <kbd>Space</kbd> strums</div>
+    </div>
+
+    <!-- ===== Piano ===== -->
+    <div class="card piano-only">
+      <h2>Piano</h2>
+      <div class="row">
+        <button id="oct-down">− Octave</button>
+        <button id="oct-up">+ Octave</button>
+      </div>
+      <div class="hint" id="finger-map"></div>
+      <div class="row" style="margin-top:10px"><button id="calibrate" class="primary" style="padding:8px 14px;font-size:14px">Calibrate fingers</button></div>
+      <div class="hint">Hold fingers up, then press them all down when asked. Takes 5 seconds.</div>
+      <div id="meters"></div>
+      <div class="hint">Bars show how far each finger is pressed (first piano player) — it plays when a bar crosses the line.</div>
+      <label>Press amount needed <input id="press-depth" type="range" min="10" max="60" step="1" value="25"></label>
+      <label>Finger separation <input id="separation" type="range" min="0" max="1" step="0.05" value="0.75"></label>
+      <div class="hint">Higher = a finger must move on its own to play (stops the ring finger joining the middle). Lower = easier chords with neighbouring fingers.</div>
+      <label><input id="sustain" type="checkbox" checked> Let notes ring (sustain)</label>
+      <div class="hint" id="piano-status">Recordings load when you press Start.</div>
+      <div class="hint">Computer keys: <kbd>A</kbd> <kbd>W</kbd> <kbd>S</kbd> <kbd>E</kbd> <kbd>D</kbd> <kbd>F</kbd> <kbd>T</kbd> <kbd>G</kbd> <kbd>Y</kbd> <kbd>H</kbd> <kbd>U</kbd> <kbd>J</kbd> <kbd>K</kbd> · <kbd>↑</kbd> <kbd>↓</kbd> octave</div>
+    </div>
+
+    <!-- ===== Trumpet ===== -->
+    <div class="card trumpet-only">
+      <h2>Trumpet valves <span class="tag">(first trumpet player)</span></h2>
+      <div class="valves">
+        <div class="valve" id="v1">1</div>
+        <div class="valve" id="v2">2</div>
+        <div class="valve" id="v3">3</div>
+      </div>
+      <div class="hint">Curl index / middle / ring finger to press valves 1 / 2 / 3. Keyboard: <kbd>J</kbd> <kbd>K</kbd> <kbd>L</kbd>.</div>
+      <h2 style="margin-top:14px">Mode</h2>
+      <div class="row">
+        <button id="mode-hold" class="sel">Hold note</button>
+        <button id="mode-fanfare">Fanfare</button>
+      </div>
+      <h2 style="margin-top:14px">Register</h2>
+      <div class="row" id="registers"></div>
+      <div class="hint"><kbd>↑</kbd> <kbd>↓</kbd> change register · <kbd>Space</kbd> test blow</div>
+      <h2 style="margin-top:14px">Sound</h2>
+      <div class="row">
+        <button id="snd-real" class="sel">Real trumpet</button>
+        <button id="snd-synth">Synth</button>
+      </div>
+      <div class="hint" id="snd-status">Recordings load when you press Start.</div>
+      <label>Detection distance <input id="sens" type="range" min="0.6" max="1.8" step="0.05" value="1"></label>
+    </div>
+
+    <div class="card">
+      <h2>Settings</h2>
+      <label>Volume <input id="vol" type="range" min="0" max="1" step="0.01" value="0.7"></label>
+      <label><input id="show-skel" type="checkbox" checked> Show tracking overlay</label>
+    </div>
+
+    <!-- ===== How to play ===== -->
+    <div class="card filter-only">
+      <h2>How to play — filter</h2>
+      <ol>
+        <li>Your <b>right hand</b> is a low-pass: <b>pinch thumb and index together</b> to muffle the band, spread them to open it up.</li>
+        <li>Your <b>left hand</b> is a high-pass: pinch to thin out the bass, spread to bring it back.</li>
+        <li><b>Raise your hands</b> for more resonance (a sharper "wah"). Drop your hands out of view and the filter opens again.</li>
+      </ol>
+    </div>
+    <div class="card drums-only">
+      <h2>How to play — drums</h2>
+      <ol>
+        <li><b>Point a finger into a pad</b> at the top of your column to hit it; leave and come back to hit again.</li>
+        <li><b>Tap down with an open palm</b> for a deeper hit. Harder and faster is louder.</li>
+        <li><b>Swipe an open palm sideways</b> to change drums: kit, bongos, congas, electro.</li>
+        <li><b>Pinch</b> thumb to index to start a loop; pinch again to close it and it keeps playing.</li>
+      </ol>
+    </div>
+    <div class="card guitar-only">
+      <h2>How to play — guitar</h2>
+      <ol>
+        <li>Swing your strumming hand's <b>index fingertip all the way through</b> the shaded strings zone. Down and up both play; faster is louder.</li>
+        <li>To skip a stroke, bring your hand back <b>around the side</b> of the strings instead of through them.</li>
+        <li>Your other hand picks the chord by <b>how many fingers</b> you hold up (fist, 1–4, open hand).</li>
+      </ol>
+    </div>
+    <div class="card piano-only">
+      <h2>How to play — piano</h2>
+      <ol>
+        <li>Hold both hands up like they're resting on piano keys. Each finger is its own note — <b>middle fingers are C</b>.</li>
+        <li><b>Press a finger down</b> (bend it, like pressing a key) to play its note; lift it to let go.</li>
+        <li>Faster presses play louder. If notes trigger by accident, raise <b>Press amount needed</b>.</li>
+      </ol>
+    </div>
+    <div class="card trumpet-only">
+      <h2>How to play — trumpet</h2>
+      <ol>
+        <li>Bring <b>one hand to your mouth</b> as if holding the mouthpiece.</li>
+        <li>Put the <b>other hand in front of it</b>, like holding the valves.</li>
+        <li>It sounds while you hold the pose. Curl fingers on the far hand to change notes.</li>
+      </ol>
+    </div>
+  </aside>
+</main>
+
+<script type="module" src="js/band.js"></script>
+</body>
+</html>

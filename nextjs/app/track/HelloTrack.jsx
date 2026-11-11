@@ -11,6 +11,7 @@ import { clear, HAND_CONNECTIONS, label, skeleton, view, zone } from "../../lib/
 import { makeTriggers } from "../../lib/cv/trigger.js";
 import { fireCue } from "../../lib/cv/stage.js";
 import Stage from "../../lib/stage/Stage.jsx";
+import ZoneLinks from "../components/ZoneLinks.jsx";
 import { CameraBar, CueLog, Readout, Status, fmt, useCueLog } from "../../lib/cv/ui.jsx";
 import { zones } from "./cues.js";
 
@@ -56,11 +57,12 @@ export default function HelloTrack() {
 
   return (
     <div className="cv-page">
+      <ZoneLinks group="track" />
       <div className="cv-head">
         <div>
           <p className="eyebrow">Track · Hello World</p>
           <h1>Raise a hand, fire a cue.</h1>
-          <p className="cv-lede">MediaPipe finds 21 points on each hand. Put your index fingertip in a zone and its cue fires on the stage, once; take your hand out to re-arm. Change the zones and cues in <code>app/track/cues.js</code>. The same idea in one short file you can read top to bottom: <Link href="/track/hello">/track/hello</Link>. Next: <Link href="/track/instruments">instruments</Link> (fader, pinch, gestures, mouth, arms up, scrub a video) the <Link href="/track/xy">XY pad</Link> (your hand sweeps a filter over a loop), and <Link href="/track/three">Three.js</Link> (a 3D field your hand plays). How-to: <Link href="/docs/track">docs/track</Link>.</p>
+          <p className="cv-lede">Put your index fingertip in a zone and its cue fires on the stage. File to change: <code>app/track/cues.js</code>. The same in one short file: <Link href="/track/hello">/track/hello</Link>.</p>
         </div>
       </div>
       <CameraBar camera={camera} mirror={mirror} setMirror={setMirror} />
@@ -74,7 +76,7 @@ export default function HelloTrack() {
           <p className="eyebrow">What the model sees</p>
           <Readout rows={rows} />
           <div>
-            <p className="eyebrow">Stage preview (silent)</p>
+            <p className="eyebrow">Stage preview</p>
             <Stage preview />
           </div>
           <CueLog log={log} />

@@ -100,7 +100,7 @@ export default function Instruments() {
             </div>
           )}
           <div>
-            <p className="eyebrow">Stage preview (silent)</p>
+            <p className="eyebrow">Stage preview</p>
             <Stage preview />
           </div>
           <CueLog log={log} />

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getEntries, getEntry, getRoot, isAiGenerated, site } from "../../../lib/content.mjs";
+import { getEntries, getEntry, getRoot, site } from "../../../lib/content.mjs";
 import Markdown from "../../components/Markdown.jsx";
 
 export const dynamic = "force-dynamic";
@@ -22,7 +22,6 @@ function PrintBar({ hint }) {
 function Sheet({ entry, pageBreak }) {
   return (
     <article className={pageBreak ? "print-card page-break" : "print-card"}>
-      <p className="eyebrow">{isAiGenerated(entry) ? "AI-generated · " : ""}{entry.kind === "folder" ? "Folder" : entry.eyebrow}</p>
       <h1>{entry.title}</h1>
       {entry.description && <p className="lede">{entry.description}</p>}
       {entry.content.trim() && <div className="prose"><Markdown doc={entry} print /></div>}

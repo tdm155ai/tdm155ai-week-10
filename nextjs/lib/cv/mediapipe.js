@@ -20,7 +20,18 @@ export const MODELS = {
 let filesetPromise = null;
 const cache = new Map();
 
+// MediaPipe prints some INFO lines through console.error ("INFO: Created TensorFlow Lite XNNPACK delegate for CPU"),
+// which Next's dev overlay shows as a red "Issue". Drop just those lines (the fellows' apps do the same).
+function quietInfoLines() {
+  if (console.error.__quietInfo) return;
+  const original = console.error.bind(console);
+  const quiet = (...args) => { if (typeof args[0] === "string" && args[0].startsWith("INFO:")) return; original(...args); };
+  quiet.__quietInfo = true;
+  console.error = quiet;
+}
+
 async function build(kind, delegate) {
+  quietInfoLines();
   const vision = await import("@mediapipe/tasks-vision");
   filesetPromise ??= vision.FilesetResolver.forVisionTasks(WASM_URL);
   const fileset = await filesetPromise;

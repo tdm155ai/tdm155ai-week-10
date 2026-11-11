@@ -10,7 +10,7 @@ TDM 155AI week 10 (class Wednesday 2026-11-11, noon): installations. Read `READM
 
 ## Class-day ownership (November 11)
 
-- TL: this README and AGENTS, app shell (`nextjs/app/page.jsx`, `layout.jsx`, `globals.css`, `components/`, `docs/`, `print/`), `nextjs/lib/content.mjs`, `nextjs/lib/keys.mjs`; integration checks and the one shared dev server at http://localhost:3000.
+- TL: this README and AGENTS, app shell (`nextjs/app/page.jsx`, `layout.jsx`, `globals.css`, `components/`, `docs/`, `print/`, `inputs-outputs/`, `experiments/`), `nextjs/lib/content.mjs`, `nextjs/lib/keys.mjs`; integration checks and the one shared dev server at http://localhost:3000.
 - RS: all `nextjs/content/`, including the home page, docs, pro apps, inspiration, and new Markdown pages.
 - TR: `nextjs/app/launch/`, `voice/`, `stage/`, `media/`; `nextjs/lib/launch/`, `voice/`, `stage/`; `nextjs/public/samples/`.
 - CV: `nextjs/app/track/`, `draw-a-box/`; `nextjs/lib/cv/`; `nextjs/public/cv/`.

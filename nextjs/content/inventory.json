@@ -1,0 +1,416 @@
+{
+  "inputs": [
+    {
+      "href": "/launch/inputs",
+      "title": "Inputs: is it working?",
+      "detail": "keys, MIDI, mic, file, pointer diagnostics"
+    },
+    {
+      "href": "/voice/words",
+      "title": "Spoken words",
+      "detail": "last match shown large"
+    },
+    {
+      "href": "/voice/semantic",
+      "title": "Meaning",
+      "detail": "model names the topic; OpenRouter key"
+    },
+    {
+      "href": "/track/hello",
+      "title": "Hand",
+      "detail": "fingertip dot on the camera"
+    },
+    {
+      "href": "/track/instruments",
+      "title": "Hand, face, body numbers",
+      "detail": "live model values per instrument"
+    },
+    {
+      "href": "/track/zones",
+      "title": "Bodies in the room",
+      "detail": "columns light when occupied"
+    },
+    {
+      "href": "/draw-a-box",
+      "title": "Paper, cards, markers",
+      "detail": "tick What OpenCV sees"
+    }
+  ],
+  "outputs": [
+    {
+      "href": "/stage",
+      "title": "Stage: sound, picture, text",
+      "detail": "the projector window"
+    },
+    {
+      "href": "/launch",
+      "title": "Video and sound launches",
+      "detail": "cues on keys 1–9"
+    },
+    {
+      "href": "/launch/xy",
+      "title": "Audio effects",
+      "detail": "filter and echo sweeps"
+    },
+    {
+      "href": "/launch/spectrogram",
+      "title": "Sound as picture",
+      "detail": "spectrogram in 3D"
+    },
+    {
+      "href": "/draw-a-box",
+      "title": "Clips inside boxes",
+      "detail": "video warped onto paper"
+    },
+    {
+      "href": "/track/face-paint",
+      "title": "Face paint",
+      "detail": "camera: paint on your face"
+    },
+    {
+      "href": "/track/fellows/gesture-camera",
+      "title": "Gesture camera",
+      "detail": "record, relight, blur, resize yourself"
+    },
+    {
+      "href": "/track/effects/ghost",
+      "title": "Ghost trail",
+      "detail": "glowing cloud follows you"
+    },
+    {
+      "href": "/track/effects/splash",
+      "title": "Splash",
+      "detail": "fluid stirred by hand"
+    },
+    {
+      "href": "/launch/shader",
+      "title": "Shader",
+      "detail": "five looks: smoke to liquid"
+    },
+    {
+      "href": "/launch/kaleidoscope",
+      "title": "Kaleidoscope",
+      "detail": "mirrored fractal"
+    },
+    {
+      "href": "/launch/particles",
+      "title": "Particles",
+      "detail": "smoke trails, flung by pinch"
+    },
+    {
+      "href": "/track/three",
+      "title": "3D wave field",
+      "detail": "Three.js blocks"
+    },
+    {
+      "href": "https://www.shadertoy.com/results?query=tag%3Dcamera&sort=love&filter=webcam",
+      "title": "Shadertoy: webcam shaders",
+      "detail": "most-loved camera effects, external"
+    }
+  ],
+  "groups": [
+    {
+      "id": "launch",
+      "title": "Launch: keys, MIDI, cue lists",
+      "items": [
+        {
+          "href": "/stage",
+          "title": "Stage",
+          "detail": "the projector window; open first"
+        },
+        {
+          "href": "/launch/inputs",
+          "title": "Inputs: is it working?",
+          "detail": "keys, MIDI, mic, file, pointer"
+        },
+        {
+          "href": "/launch/hello",
+          "title": "Hello World: one key",
+          "detail": "one key fires one cue"
+        },
+        {
+          "href": "/launch",
+          "title": "Buttons and keys",
+          "detail": "nine cues on keys 1–9"
+        },
+        {
+          "href": "/launch/cue-list",
+          "title": "Cue list",
+          "detail": "Go, standby, panic, like QLab"
+        },
+        {
+          "href": "/launch/midi",
+          "title": "MIDI pads and knobs",
+          "detail": "MPK mini or on-screen pads"
+        },
+        {
+          "href": "/launch/xy",
+          "title": "XY pad",
+          "detail": "filter and echo over a loop"
+        },
+        {
+          "href": "/launch/hand",
+          "title": "Hand launch",
+          "detail": "gestures launch clips, synths, MIDI"
+        },
+        {
+          "href": "/launch/live-score",
+          "title": "Live score",
+          "detail": "loops follow the room's movement"
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "title": "Voice: sound, words, meaning",
+      "items": [
+        {
+          "href": "/launch/spectrogram",
+          "title": "Spectrogram",
+          "detail": "raw sound, seen in 3D"
+        },
+        {
+          "href": "/voice/hello",
+          "title": "Hello World: one word",
+          "detail": "say a word, fire a cue"
+        },
+        {
+          "href": "/voice",
+          "title": "Trigger words",
+          "detail": "your words fire cues"
+        },
+        {
+          "href": "/voice/words",
+          "title": "Your trigger words",
+          "detail": "edit your own word → cue list"
+        },
+        {
+          "href": "/voice/script",
+          "title": "Follow a script",
+          "detail": "cues marked in a sonnet"
+        },
+        {
+          "href": "/voice/compare",
+          "title": "Compare engines",
+          "detail": "Web Speech vs. OpenAI; OpenAI key"
+        },
+        {
+          "href": "/voice/semantic",
+          "title": "Cues by topic",
+          "detail": "a model hears meaning; OpenRouter key"
+        }
+      ]
+    },
+    {
+      "id": "track",
+      "title": "Track: hands, faces, bodies",
+      "items": [
+        {
+          "href": "/track/hello",
+          "title": "Hello World: raise a hand",
+          "detail": "fingertip above a line"
+        },
+        {
+          "href": "/track",
+          "title": "Hand zones",
+          "detail": "fingertip in a zone fires"
+        },
+        {
+          "href": "/track/instruments",
+          "title": "Instruments",
+          "detail": "fader, pinch, gestures, face, scrub"
+        },
+        {
+          "href": "/track/zones",
+          "title": "Body zones",
+          "detail": "step into a column"
+        },
+        {
+          "href": "/track/xy",
+          "title": "XY pad by hand",
+          "detail": "your palm sweeps the filter"
+        },
+        {
+          "href": "/track/face-paint",
+          "title": "Face paint",
+          "detail": "paint lands on your face"
+        }
+      ]
+    },
+    {
+      "id": "boxes",
+      "title": "Boxes: paper under a camera",
+      "items": [
+        {
+          "href": "/draw-a-box/hello",
+          "title": "Hello World: a box",
+          "detail": "a drawn box fires a cue"
+        },
+        {
+          "href": "/draw-a-box",
+          "title": "Draw a box",
+          "detail": "clips play inside drawn boxes"
+        },
+        {
+          "href": "/draw-a-box/markers",
+          "title": "Printable markers",
+          "detail": "four corners for a steady box"
+        }
+      ]
+    },
+    {
+      "id": "graphics",
+      "title": "Graphics: shaders and 3D",
+      "items": [
+        {
+          "href": "/launch/shader",
+          "title": "Shader",
+          "detail": "five looks; edit the GLSL live"
+        },
+        {
+          "href": "/launch/kaleidoscope",
+          "title": "Kaleidoscope",
+          "detail": "mirrored fractal; hand sets symmetry"
+        },
+        {
+          "href": "/launch/particles",
+          "title": "Particles",
+          "detail": "smoke trails around your palm"
+        },
+        {
+          "href": "/track/effects/splash",
+          "title": "Splash",
+          "detail": "fluid you stir by hand"
+        },
+        {
+          "href": "/track/effects/ghost",
+          "title": "Ghost",
+          "detail": "glowing cloud trails hand or head"
+        },
+        {
+          "href": "/track/three",
+          "title": "Three.js wave field",
+          "detail": "1,600 blocks; sliders or hand"
+        },
+        {
+          "href": "https://www.shadertoy.com/results?query=tag%3Dcamera&sort=love&filter=webcam",
+          "title": "Shadertoy: webcam shaders",
+          "detail": "most-loved camera effects, external"
+        }
+      ]
+    },
+    {
+      "id": "fellows",
+      "title": "The fellows' experiments",
+      "items": [
+        {
+          "href": "/fellows",
+          "title": "About the experiments",
+          "detail": "inputs, outputs, files to read"
+        },
+        {
+          "href": "/track/fellows/hand-drums",
+          "title": "Hand drums",
+          "detail": "point or slap four pads"
+        },
+        {
+          "href": "/track/fellows/finger-sounds",
+          "title": "Finger sounds",
+          "detail": "thumb to fingertip, eight sounds"
+        },
+        {
+          "href": "/track/fellows/gesture-camera",
+          "title": "Gesture camera",
+          "detail": "record and relight by gesture"
+        },
+        {
+          "href": "/track/fellows/air-band",
+          "title": "Air Band",
+          "detail": "five players, one webcam"
+        },
+        {
+          "href": "/track/fellows/blobs",
+          "title": "Blobs",
+          "detail": "head trail, finger splashes"
+        },
+        {
+          "href": "/track/fellows/blobs/display",
+          "title": "Blobs display",
+          "detail": "the second-screen window"
+        }
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Shows, tools, and guides",
+      "items": [
+        {
+          "href": "/inspiration",
+          "title": "Shows",
+          "detail": "concerts, theater, installations"
+        },
+        {
+          "href": "/inspiration/contemporary",
+          "title": "Recent shows",
+          "detail": "top 10 with videos"
+        },
+        {
+          "href": "/inspiration/examples/moment-factory",
+          "title": "Moment Factory"
+        },
+        {
+          "href": "/inspiration/examples/u2-sphere",
+          "title": "U2 at Sphere"
+        },
+        {
+          "href": "/inspiration/contemporary/dance-tech",
+          "title": "Dance and tracking",
+          "detail": "Perfume, ELEVENPLAY, live mocap"
+        },
+        {
+          "href": "/inspiration/case-studies",
+          "title": "Case studies",
+          "detail": "shows broken into moves"
+        },
+        {
+          "href": "/pro-apps",
+          "title": "Pro apps",
+          "detail": "QLab, TouchDesigner, Isadora, more"
+        },
+        {
+          "href": "/pro-apps/tools/qlab",
+          "title": "QLab",
+          "detail": "theater's cue-list app"
+        },
+        {
+          "href": "/pro-apps/mechanics/cue-list",
+          "title": "How a cue list works"
+        },
+        {
+          "href": "/pro-apps/build-it-yourself",
+          "title": "Build it yourself",
+          "detail": "pro app to browser library"
+        },
+        {
+          "href": "/repertoire",
+          "title": "Inputs and outputs",
+          "detail": "the whole map, in order"
+        },
+        {
+          "href": "/docs",
+          "title": "Guides",
+          "detail": "each page's file to change"
+        },
+        {
+          "href": "/prompts",
+          "title": "Prompts for Claude Code"
+        },
+        {
+          "href": "/perform",
+          "title": "Group performance worksheet",
+          "detail": "roles, cue sheet, rehearsal"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hand drums</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <video id="cam" playsinline muted></video>
+  <canvas id="view"></canvas>
+  <div id="hud">
+    <div id="kit"></div>
+    <div id="status">Loading hand tracking…</div>
+    <div id="rec" hidden><span class="dot"></span> Recording <b id="recTime">0.0</b>s · pinch to close the loop</div>
+  </div>
+  <div id="startCard">
+    <h1>Hand drums</h1>
+    <p>Point a finger and tap down, or tap with an open palm. Swipe an open palm sideways to change drums. Pinch to start and stop a loop. Make a fist over a loop at the bottom to grab it; open your hand outside the tray to throw it away.</p>
+    <button id="start">Start camera and sound</button>
+    <p class="small">Everything runs on this computer. The camera image is never recorded or sent anywhere.</p>
+  </div>
+  <div id="side">
+    <label>Pointing finger <select id="trig"><option value="enter">enters a pad</option><option value="tap">taps down</option></select></label>
+    <label>Sensitivity <input id="sens" type="range" min="0.5" max="2" step="0.05" value="1"></label>
+    <label>Camera <input id="dim" type="range" min="0.1" max="1" step="0.05" value="0.5"></label>
+    <details><summary>Keys (no camera)</summary>
+      <p>A S D F hit pads (Shift = palm) · ← → change drums · R or Space = loop · Del clears loops</p>
+    </details>
+  </div>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

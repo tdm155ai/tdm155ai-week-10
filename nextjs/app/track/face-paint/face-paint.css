@@ -1,0 +1,64 @@
+/* /track/face-paint: the Tailwind classes the original page used (mk-realtime-prototypes uses Tailwind; this app
+   doesn't), written out as plain CSS and kept inside .fp-root so they don't touch other pages. */
+.fp-root { --zinc-300: #d4d4d8; --zinc-400: #a1a1aa; --zinc-500: #71717a; --zinc-700: #3f3f46; --zinc-900: #18181b; }
+.fp-root .relative { position: relative; }
+.fp-root .absolute { position: absolute; }
+.fp-root .inset-0 { inset: 0; }
+.fp-root .bottom-3 { bottom: .75rem; }
+.fp-root .left-3 { left: .75rem; }
+.fp-root .hidden { display: none; }
+.fp-root .flex { display: flex; }
+.fp-root .grid { display: grid; }
+.fp-root .flex-col { flex-direction: column; }
+.fp-root .flex-wrap { flex-wrap: wrap; }
+.fp-root .items-center { align-items: center; }
+.fp-root .justify-center { justify-content: center; }
+.fp-root .gap-2 { gap: .5rem; }
+.fp-root .gap-3 { gap: .75rem; }
+.fp-root .gap-6 { gap: 1.5rem; }
+.fp-root .mt-4 { margin-top: 1rem; }
+.fp-root .mt-8 { margin-top: 2rem; }
+.fp-root .p-6 { padding: 1.5rem; }
+.fp-root .px-2 { padding-left: .5rem; padding-right: .5rem; }
+.fp-root .px-3 { padding-left: .75rem; padding-right: .75rem; }
+.fp-root .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+.fp-root .py-1 { padding-top: .25rem; padding-bottom: .25rem; }
+.fp-root .py-2 { padding-top: .5rem; padding-bottom: .5rem; }
+.fp-root .w-full { width: 100%; }
+.fp-root .h-full { height: 100%; }
+.fp-root .w-7 { width: 1.75rem; }
+.fp-root .h-7 { height: 1.75rem; }
+.fp-root .w-9 { width: 2.25rem; }
+.fp-root .aspect-square { aspect-ratio: 1 / 1; }
+.fp-root .aspect-video { aspect-ratio: 16 / 9; }
+.fp-root .object-contain { object-fit: contain; }
+.fp-root .overflow-hidden { overflow: hidden; }
+.fp-root .opacity-0 { opacity: 0; }
+.fp-root .-scale-x-100 { transform: scaleX(-1); }
+.fp-root .touch-none { touch-action: none; }
+.fp-root .cursor-crosshair { cursor: crosshair; }
+.fp-root .cursor-pointer { cursor: pointer; }
+.fp-root .rounded { border-radius: .25rem; }
+.fp-root .rounded-lg { border-radius: .5rem; }
+.fp-root .rounded-full { border-radius: 9999px; }
+.fp-root .border { border: 1px solid var(--zinc-700); }
+.fp-root .border-2 { border-width: 2px; border-style: solid; }
+.fp-root .border-white { border-color: #fff; }
+.fp-root .border-zinc-700 { border-color: var(--zinc-700); }
+.fp-root .hover\:border-zinc-400:hover { border-color: var(--zinc-400); }
+.fp-root .bg-black\/60 { background: rgba(0, 0, 0, .6); }
+.fp-root .bg-transparent { background: transparent; }
+.fp-root .bg-white { background: #fff; }
+.fp-root .bg-zinc-900 { background: var(--zinc-900); }
+.fp-root .text-black { color: #000; }
+.fp-root .text-zinc-300 { color: var(--zinc-300); }
+.fp-root .text-zinc-400 { color: var(--zinc-400); }
+.fp-root .text-rose-400 { color: #fb7185; }
+.fp-root .text-center { text-align: center; }
+.fp-root .text-xs { font-size: .75rem; line-height: 1rem; }
+.fp-root .text-sm { font-size: .875rem; line-height: 1.25rem; }
+.fp-root .font-medium { font-weight: 500; }
+.fp-root .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.fp-root .disabled\:opacity-50:disabled { opacity: .5; }
+.fp-root button { font: inherit; color: inherit; }
+@media (min-width: 1024px) { .fp-root .lg\:grid-cols-\[3fr_2fr\] { grid-template-columns: 3fr 2fr; } }

@@ -40,9 +40,15 @@ export default function Hello() {
           const script = Object.assign(document.createElement("script"), { src: OPENCV, onload: resolve, onerror: reject });
           document.head.appendChild(script);
         });
-        while (!window.cv?.Mat) await new Promise((r) => setTimeout(r, 200));
+        const started = Date.now();
+        while (!window.cv?.Mat) {
+          if (Date.now() - started > 60000) throw new Error("OpenCV.js took too long to start. Check the Wi-Fi and reload.");
+          await new Promise((r) => setTimeout(r, 200));
+        }
       }
       const cv = window.cv;
+      // OpenCV's cv has a then() that calls back with cv itself: if any page later awaits cv, it loops forever. Remove it.
+      if (typeof cv.then === "function") { try { delete cv.then; } catch {} if (typeof cv.then === "function") cv.then = undefined; }
       setMessage("Draw a box in thick dark marker.");
 
       // 3. Ten times a second.

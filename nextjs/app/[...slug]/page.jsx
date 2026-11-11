@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getEntry, isAiGenerated } from "../../lib/content.mjs";
+import { getEntry } from "../../lib/content.mjs";
 import { SiteFooter, SiteHeader } from "../components/Chrome.jsx";
 import Markdown from "../components/Markdown.jsx";
 
@@ -35,7 +35,6 @@ function FolderList({ folder }) {
         <Link className="document-link" href={item.href} key={item.slug}>
           <span className="document-number">{item.kind === "folder" ? "▸" : String(index + 1 - folder.folders.length).padStart(2, "0")}</span>
           <span className="document-copy">
-            <span className="eyebrow">{item.kind === "folder" ? `Folder · ${item.count} document${item.count === 1 ? "" : "s"}` : item.eyebrow}</span>
             <strong>{item.title}</strong>
             {item.description && <span>{item.description}</span>}
           </span>
@@ -75,7 +74,6 @@ export default async function EntryPage({ params }) {
   const position = siblings.indexOf(entry);
   const previous = position > 0 ? siblings[position - 1] : null;
   const next = position >= 0 && position < siblings.length - 1 ? siblings[position + 1] : null;
-  const folderPath = entry.source;
 
   return (
     <>
@@ -83,12 +81,9 @@ export default async function EntryPage({ params }) {
       <main id="main" className="article-shell">
         <Breadcrumbs trail={trail} title={entry.title} />
         <header className="article-heading">
-          {isAiGenerated(entry) && <p className="ai-badge">AI-generated</p>}
-          <p className="eyebrow">{entry.kind === "folder" ? `Folder · ${entry.count} document${entry.count === 1 ? "" : "s"}` : entry.eyebrow}</p>
           <h1>{entry.title}</h1>
           {entry.description && <p className="lede">{entry.description}</p>}
-          {entry.updated && <p className="updated">Updated {entry.updated}</p>}
-          <p className="updated">In the repo: <code>{folderPath}</code> · <Link className="print-link" href={`/print${entry.href}`}>Print {entry.kind === "folder" ? "this folder" : "this page"}</Link></p>
+          <p className="updated"><Link className="print-link" href={`/print${entry.href}`}>Print this page</Link></p>
         </header>
         {entry.kind === "folder" ? (
           <>

@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 // API keys for the machine's server routes. A key set in the environment wins; otherwise it comes from the repo's
-// root .env (one level above nextjs/), read on every call so an edit to .env applies without a restart. Keys stay on
+// nextjs/.env.local, then the repo's root .env, read on every call so local file edits apply without a restart. Keys stay on
 // the server: nothing here is ever sent to the browser.
 const repoRoot = path.dirname(/* turbopackIgnore: true */ process.cwd());
 
@@ -17,9 +17,11 @@ function parse(text) {
 
 export async function env(name) {
   if (process.env[name]?.trim()) return process.env[name].trim();
-  try {
-    return parse(await readFile(/* turbopackIgnore: true */ path.join(repoRoot, ".env"), "utf8"))[name] || "";
-  } catch {
-    return "";
+  for (const file of [path.join(process.cwd(), ".env.local"), path.join(repoRoot, ".env")]) {
+    try {
+      const value = parse(await readFile(/* turbopackIgnore: true */ file, "utf8"))[name]?.trim();
+      if (value) return value;
+    } catch {}
   }
+  return "";
 }

@@ -16,7 +16,11 @@ pnpm dev -p 3000
 
 Open http://localhost:3000 in Chrome (camera, microphone, Web MIDI, and Web Serial need Chrome or Edge).
 
-The first-hour starts—buttons, MIDI, spoken-word matching, and hand tracking—need no model API key. If you use the optional OpenAI speech comparison or semantic cues, copy `.env.example` to `.env` at the repo root and add your own key. These experiments incur API charges. Keys are read on the server through `nextjs/lib/keys.mjs`; never put them in browser code.
+The first-hour starts—buttons, MIDI, spoken-word matching, and hand tracking—need no model API key. For AI topic cues, put `OPENROUTER_API_KEY` in `nextjs/.env.local` (gitignored). The optional OpenAI speech comparison uses `OPENAI_API_KEY`; the repo-root `.env` is also supported. These experiments incur API charges. Keys are read on the server through `nextjs/lib/keys.mjs`; never put them in browser code.
+
+## Navigate
+
+The landing page `/` links to Shows (`/inspiration`), Inputs & outputs (`/inputs-outputs`), and the complete experiment inventory (`/experiments`). Zone pages link directly to their demos.
 
 ## First hour: open, change, try again
 
@@ -35,7 +39,7 @@ Then combine manual launching and voice cues into a short performance. `/voice/s
 
 ## Research and examples
 
-`/pro-apps` renders the comparison of professional apps, with `/pro-apps/tools`, `/pro-apps/mechanics`, and `/pro-apps/build-it-yourself` for individual tools, maneuvers, and implementation ideas. `/inspiration` has concert and theater clips, individual examples, and show case studies. Markdown under `nextjs/content/` renders as routes automatically; folder `README.md` files become folder introductions. These research pages are labeled as AI-assisted and link their sources.
+`/pro-apps` renders the comparison of professional apps, with `/pro-apps/tools`, `/pro-apps/mechanics`, and `/pro-apps/build-it-yourself` for individual tools, maneuvers, and implementation ideas. `/inspiration` has concert and theater clips, individual examples, and show case studies. Markdown under `nextjs/content/` renders as routes automatically; folder `README.md` files become folder introductions. These pages link their sources. The inventory data is in `nextjs/content/inventory.json`.
 
 ## Equipment and fallbacks
 
@@ -52,3 +56,9 @@ The physical printing-buttons station is an in-room activity. It is separate fro
 Run `pnpm build` in `nextjs/` before pushing. The class-day orchestrator runs the one shared development server on port 3000; other panes use it rather than starting another. Build one at a time. Commit only your own files by path. See `AGENTS.md` for ownership.
 
 Media you bring (clips, sounds, concert footage) goes in the gitignored root `_media/`; it stays on the machine that has it.
+
+## Local workshop collection
+
+The collected workshop originals are kept locally in `_raw/ll-week-10-experiments/`. The collection’s media folder is in `_media/ll-week-10-experiments/`, so its audio files are available in the app’s media menus. Both locations are gitignored. The raw collection includes session traces and recordings and must stay outside the public site. Runnable adaptations and their editable files are listed at `/fellows`; these are separate from the retained originals.
+
+The spectrogram source is `https://github.com/ll-26-27/spectrogram-next`; its local checkout belongs in the gitignored `_raw/spectrogram-next/`.

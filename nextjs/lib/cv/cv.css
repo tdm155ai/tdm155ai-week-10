@@ -86,3 +86,45 @@
 .three-holder:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; }
 .three-holder canvas { display: block; width: 100%; height: 100%; }
 .three-cam { aspect-ratio: 4 / 3; }
+
+/* /track/fellows */
+.fellow-frame { display: block; width: 100%; height: 82vh; margin-top: 20px; border: 1px solid var(--line); border-radius: 10px; background: #000; }
+.fellow-page .eyebrow a { color: inherit; }
+.fellow-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+.fellow-card { display: flex; flex-direction: column; gap: 8px; padding: 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--wash); color: var(--ink); text-decoration: none; }
+.fellow-card:hover { border-color: var(--accent); }
+.fellow-card strong { font-size: 20px; }
+.fellow-card span:last-child { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+/* /track/effects */
+.fx-stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 78vh; margin-top: 16px; overflow: hidden; border-radius: 10px; background: #000; touch-action: none; }
+.fx-stage:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; }
+.fx-stage .fx-layer { position: absolute; inset: 0; }
+.fx-hint { position: absolute; left: 16px; bottom: 12px; color: rgba(236,236,230,.55); font-size: 13px; pointer-events: none; }
+.fx-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+.fx-grid.with-camera { grid-template-columns: minmax(0, 1fr) 260px; }
+@media (max-width: 900px) { .fx-grid.with-camera { grid-template-columns: 1fr; } }
+.handfeed { margin-top: 16px; }
+.handfeed .cv-stagebox { aspect-ratio: 4 / 3; }
+.cv-bar input[type="color"] { width: 36px; height: 28px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; }
+/* The Tailwind class names the React Bits effects use, defined inside the effects stage only. */
+.fx-stage .absolute { position: absolute; }
+.fx-stage .inset-0 { inset: 0; }
+.fx-stage .w-full { width: 100%; }
+.fx-stage .h-full { height: 100%; }
+.fx-stage .block { display: block; }
+.fx-stage .pointer-events-none { pointer-events: none; }
+
+/* /draw-a-box: one menu per box */
+.box-menus { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.box-menus label { display: flex; align-items: center; gap: 8px; }
+.box-menus label button, .box-all { flex: none; padding: 5px 10px; border: 2px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.box-menus label button[aria-pressed="true"], .box-all[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.box-menus select { flex: 1; min-width: 0; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--ink); font: inherit; font-size: 13px; }
+.box-all { align-self: flex-start; }
+
+/* /track/zones: the sound switch, big, above the camera */
+.zones-sound { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 20px; }
+.zones-sound > button { padding: 12px 22px; border: 2px solid var(--accent); border-radius: 999px; background: var(--accent); color: var(--accent-ink); font: inherit; font-size: 17px; font-weight: 800; cursor: pointer; }
+.zones-sound > button.is-on { background: transparent; color: var(--ink); border-color: var(--ok); }
+.zones-sound .ctl-row { flex: 1; margin: 0; }

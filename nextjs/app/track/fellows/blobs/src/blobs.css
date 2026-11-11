@@ -1,0 +1,114 @@
+/* Blobs' own styles (from its globals.css), without Tailwind: the few utility classes it used are written out at the end. */
+
+:root {
+  --paper: #121412;
+  --ink: #ecece6;
+  --muted: #a0a49a;
+  --line: #2c2f2b;
+  --accent: #ff6b57;
+  --accent-ink: #1f0703;
+  --wash: #1a1c19;
+  --hover: #20231f;
+  --gutter: clamp(18px, 4vw, 64px);
+  color-scheme: dark;
+}
+
+
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Inter Variable", Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.eyebrow { margin: 0; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.badge { display: inline-block; padding: 5px 10px; border: 1px solid var(--accent); border-radius: 999px; color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+
+.site-header { min-height: 80px; margin: 0 var(--gutter); border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.wordmark { font-size: 20px; font-weight: 800; letter-spacing: -.035em; }
+.wordmark span { margin-left: 8px; color: var(--muted); font-weight: 450; }
+.site-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; padding: 26px var(--gutter); border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+
+.hero { max-width: 1220px; padding: clamp(64px, 12vh, 130px) var(--gutter) clamp(40px, 8vh, 80px); }
+.hero h1 { margin: 22px 0 0; font-size: clamp(48px, 8vw, 112px); font-weight: 800; letter-spacing: -.065em; line-height: 1.02; text-wrap: balance; }
+.hero h1 span { color: var(--accent); }
+.hero-deck { max-width: 700px; margin: 32px 0 0; color: var(--muted); font-size: clamp(18px, 2.2vw, 26px); line-height: 1.4; letter-spacing: -.02em; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; padding: 0 var(--gutter) 96px; }
+.card { display: flex; flex-direction: column; gap: 10px; min-height: 220px; padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: var(--wash); transition: border-color .15s, background .15s, transform .15s; }
+.card:hover { border-color: var(--accent); background: var(--hover); transform: translateY(-2px); }
+.card h2 { margin: 6px 0 0; font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -.04em; line-height: 1.1; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+.card .card-arrow { margin-top: auto; color: var(--accent); font-size: 22px; }
+
+.shell { width: min(100%, 1100px); margin: 0 auto; padding: 40px var(--gutter) 90px; }
+.breadcrumbs { display: flex; gap: 10px; margin-bottom: 40px; color: var(--muted); font-size: 12px; }
+.breadcrumbs a:hover { text-decoration: underline; }
+.page-title { margin: 14px 0 16px; font-size: clamp(40px, 6vw, 72px); line-height: .98; letter-spacing: -.055em; }
+.lede { max-width: 700px; margin: 0; color: var(--muted); font-size: 18px; line-height: 1.6; }
+
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--line); border-radius: 999px; background: var(--wash); color: var(--ink); font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; transition: border-color .15s, background .15s; }
+.btn:hover:not(:disabled) { border-color: var(--accent); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-primary { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover:not(:disabled) { background: var(--accent); filter: brightness(1.08); }
+
+.stage { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: #000; }
+/* Direct children only: the shader canvases inside the effects layer already use mirrored coordinates. */
+.stage > video, .stage > canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.status { margin: 0; color: var(--muted); font-size: 13px; }
+.status.error { color: #ff8a80; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+
+/* MIDI monitor */
+.midi { margin-top: 32px; display: grid; gap: 16px; }
+.midi-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.midi-inputs { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+.midi-count { margin: 8px 0 0; font-size: 22px; letter-spacing: -.03em; }
+.midi-count span { margin-left: 10px; color: var(--muted); font-size: 14px; font-weight: 500; }
+.midi-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.midi-table th, .midi-table td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+.midi-table th { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.midi-idle { color: var(--muted); }
+.midi-bar { position: relative; display: inline-block; width: 110px; height: 10px; margin-right: 8px; vertical-align: middle; border-radius: 2px; background: var(--wash); }
+.midi-bar > i { position: absolute; top: 0; bottom: 0; background: var(--accent); }
+.midi-bar-centered::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--muted); }
+.midi-log { max-height: 260px; margin: 0; padding: 12px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--wash); font: 12px/1.5 ui-monospace, Menlo, monospace; }
+
+/* MIDI monitor */
+.midi { margin-top: 32px; display: grid; gap: 16px; }
+.midi-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.midi-controls { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; font-size: 14px; }
+.midi-controls label { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.midi-controls select { font: inherit; padding: 4px 8px; }
+.midi-canvas { width: 100%; height: 380px; border: 1px solid var(--line); border-radius: 18px; background: #08080a; display: block; }
+.midi-details > summary { cursor: pointer; font-weight: 650; margin-bottom: 12px; }
+.midi-inputs { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+.midi-count { margin: 8px 0 0; font-size: 22px; letter-spacing: -.03em; }
+.midi-count span { margin-left: 10px; color: var(--muted); font-size: 14px; font-weight: 500; }
+.midi-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.midi-table th, .midi-table td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+.midi-table th { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.midi-idle { color: var(--muted); }
+.midi-bar { position: relative; display: inline-block; width: 110px; height: 10px; margin-right: 8px; vertical-align: middle; border-radius: 2px; background: var(--wash); }
+.midi-bar > i { position: absolute; top: 0; bottom: 0; background: var(--accent); }
+.midi-bar-centered::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--muted); }
+.midi-log { max-height: 260px; margin: 12px 0 0; padding: 12px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--wash); font: 12px/1.5 ui-monospace, Menlo, monospace; }
+
+/* The Tailwind utilities Blobs used, as plain CSS. */
+.absolute { position: absolute; }
+.inset-0 { inset: 0; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.block { display: block; }
+.pointer-events-none { pointer-events: none; }

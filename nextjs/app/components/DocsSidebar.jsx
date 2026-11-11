@@ -17,7 +17,7 @@ export function SidebarFolder({ folder, current, top = false }) {
 // A folder with no README of its own lists its documents, so the page isn't empty.
 export function FolderContents({ folder }) {
   const docs = [...folder.docs, ...folder.folders.flatMap((child) => child.docs)];
-  if (!docs.length) return <p className="empty-state">Nothing here yet. Add a Markdown file to <code>{folder.source}</code>.</p>;
+  if (!docs.length) return null;
   return (
     <ul className="docs-index">
       {docs.map((doc) => <li key={doc.href}><Link href={doc.href}>{doc.title}</Link>{doc.description && <span>{doc.description}</span>}</li>)}
@@ -32,12 +32,10 @@ export function DocsArticle({ entry, eyebrow, children }) {
   return (
     <>
       <header className="docs-heading">
-        <p className="eyebrow">{eyebrow}</p>
         <h1>{entry.title}</h1>
         {entry.description && <p className="lede">{entry.description}</p>}
         <p className="updated">
-          {entry.updated && <>Updated {entry.updated} · </>}
-          In the repo: <code>{entry.source}</code> · <Link className="print-link" href={`/print${entry.href}`}>Print {entry.kind === "folder" ? "this folder" : "this page"}</Link>
+          <Link className="print-link" href={`/print${entry.href}`}>Print this page</Link>
         </p>
       </header>
       {hasIntro && <article className="prose"><Markdown doc={entry} /></article>}

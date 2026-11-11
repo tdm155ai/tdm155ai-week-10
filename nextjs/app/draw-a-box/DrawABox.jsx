@@ -12,11 +12,12 @@ import { makeBoxTracker } from "../../lib/cv/boxes.js";
 import { boxFromMarkers, findMarkers } from "../../lib/cv/aruco.js";
 import { speechSupported, startListening, triggerWatcher } from "../../lib/voice/speech.js";
 import { CameraBar, Readout, Status } from "../../lib/cv/ui.jsx";
+import ZoneLinks from "../components/ZoneLinks.jsx";
 import { cards, clearWord, clips } from "./clips.js";
 
 const WORK_WIDTH = 640; // OpenCV looks at a 640-pixel-wide copy of each frame: fast enough, sharp enough.
 const MARKER_WIDTH = 1280; // printed markers are small from up high, so they get a sharper copy.
-const MAX_BOXES = 6; // the most boxes the page will play at once (each one is a GIF or video on screen)
+const MAX_BOXES = 4; // the most boxes the page will play at once (each has its own menu)
 const COLORS = ["#7fc787", "#ff6b57", "#7fb3ff", "#f2c14e", "#c88bff", "#4fd1c5"];
 
 export default function DrawABox() {
@@ -36,15 +37,22 @@ export default function DrawABox() {
   const [locked, setLocked] = useState(false);
   const [showDebug, setShowDebug] = useState(false);
   const [offset, setOffset] = useState(12);
-  const [minArea, setMinArea] = useState(3);
-  const [clip, setClip] = useState(clips[0]);
+  const [minArea, setMinArea] = useState(1); // % of the picture: small boxes on a big sheet are ~1–2%
+  // What plays in each box (by its number on screen): a clip's src, or null. Words, buttons, and keys set the target box.
+  const [library, setLibrary] = useState(clips); // clips.js, then any GIFs in _media/ (this computer)
+  const [perBox, setPerBox] = useState(() => Array.from({ length: MAX_BOXES }, (_, i) => clips[i % clips.length]?.src ?? null));
+  const [target, setTarget] = useState(0); // 0–3, or "all"
+  const targetRef = useRef(0);
+  targetRef.current = target;
+  const assign = useCallback((c) => setPerBox((p) => p.map((v, i) => (targetRef.current === "all" || targetRef.current === i ? (c?.src ?? null) : v))), []);
+  const labelOf = (src) => library.find((c) => c.src === src)?.label || decodeURIComponent(src?.split("/").pop() || "");
   const [maxBoxes, setMaxBoxes] = useState(4);
   const [rows, setRows] = useState([]);
   const [listening, setListening] = useState(false);
   const [heard, setHeard] = useState("");
   const [voiceState, setVoiceState] = useState({ tone: "muted", text: "" });
   const [fullscreen, setFullscreen] = useState(false);
-  settingsRef.current = { pickBy, clip, maxBoxes, source, mirror, outline, locked, showDebug, offset, minArea };
+  settingsRef.current = { pickBy, perBox, labelOf, maxBoxes, source, mirror, outline, locked, showDebug, offset, minArea };
 
   // Load OpenCV, then look at frames ~20 times a second.
   useEffect(() => {
@@ -118,13 +126,10 @@ export default function DrawABox() {
         }
       }
 
-      // What plays in each box. Card color: each card's own color. Otherwise, left to right: the chosen clip, then the
-      // next ones in clips.js.
-      const order = [...boxes].sort((a, b) => (s.mirror ? b.middle.x - a.middle.x : a.middle.x - b.middle.x));
-      const first = clips.indexOf(s.clip);
+      // What plays in each box. Card color: each card's own color. Otherwise: that box's menu (box 1, 2, 3, 4 on screen).
       for (const b of boxes) {
         if (s.pickBy === "color") b.content = b.vote.shown || null;
-        else b.content = first < 0 ? null : clips[(first + order.indexOf(b)) % clips.length];
+        else { const src = s.perBox[b.slot]; b.content = src ? { src, label: s.labelOf(src) } : null; }
       }
 
       // Map each box from the work frame to the screen (the camera is shown "contain" in the box element).
@@ -203,7 +208,7 @@ export default function DrawABox() {
     if (!speechSupported()) { setVoiceState({ tone: "error", text: "No speech recognition in this browser: use Chrome." }); return; }
     const watch = triggerWatcher(
       () => [...clips.map((c) => ({ say: c.word, clip: c })), { say: clearWord, clip: null }],
-      (t) => { setClip(t.clip); setHeard((h) => `→ ${t.say}   ${h}`.slice(0, 120)); },
+      (t) => { assign(t.clip); setHeard((h) => `→ ${t.say}   ${h}`.slice(0, 120)); },
       { cooldown: 1 },
     );
     stopRef.current = startListening({
@@ -212,15 +217,23 @@ export default function DrawABox() {
       onError: (error) => setVoiceState({ tone: "error", text: error.message }),
     });
     setListening(true);
-  }, []);
+  }, [assign]);
   useEffect(() => () => stopRef.current?.(), []);
 
-  // Number keys pick clips; 0 clears; L locks the box; F goes full screen.
+  // Your GIFs: anything in the repo-root _media/ (gitignored, this computer only) joins the menus.
+  useEffect(() => {
+    fetch("/draw-a-box/gifs").then((r) => r.json()).then(({ files }) => {
+      const pretty = (src) => decodeURIComponent(src.split("/").pop()).replace(/\.gif$/i, "").replace(/[-_]+/g, " ");
+      setLibrary([...clips, ...files.filter((f) => !clips.some((c) => c.src === f)).map((src) => ({ label: pretty(src), src }))]);
+    }).catch(() => {});
+  }, []);
+
+  // Number keys put a clip in the target box; 0 empties it; L locks the boxes; F goes full screen.
   useEffect(() => {
     const onKey = (event) => {
       if (event.target.closest?.("input, select, textarea")) return;
-      if (/^[1-9]$/.test(event.key) && clips[Number(event.key) - 1]) setClip(clips[Number(event.key) - 1]);
-      if (event.key === "0") setClip(null);
+      if (/^[1-9]$/.test(event.key) && library[Number(event.key) - 1]) assign(library[Number(event.key) - 1]);
+      if (event.key === "0") assign(null);
       if (event.key === "l" || event.key === "L") setLocked((v) => !v);
       if (event.key === "f" || event.key === "F") toggleFullscreen();
     };
@@ -241,10 +254,11 @@ export default function DrawABox() {
 
   return (
     <div className="cv-page">
+      <ZoneLinks group="boxes" />
       <div className="cv-head">
         <p className="eyebrow">Draw a box</p>
         <h1>Draw a box, say a word.</h1>
-        <p className="cv-lede">Point the overhead camera at a big sheet of paper and draw a rectangle in thick dark marker. OpenCV finds the biggest four-sided shape; the clip is warped onto its corners. Say a clip&apos;s word (after <strong>Listen</strong>), click it, or press its number. Or set <strong>Pick by</strong> to card color and hold a colored index card under the camera: the card is the box, and its color picks the GIF. Lines flaky under the lights? Set <strong>Box from</strong> to printed markers and <Link href="/draw-a-box/markers">print four markers</Link> for the corners. Change the words and clips in <code>app/draw-a-box/clips.js</code>. The finding part in one short file you can read top to bottom: <Link href="/draw-a-box/hello">/draw-a-box/hello</Link>. How-to: <Link href="/docs/draw-a-box">docs/draw-a-box</Link>.</p>
+        <p className="cv-lede">Draw boxes on paper under the camera (or hold up colored cards); a GIF plays in each. Say a word, click, or press 1–5 to pick. File to change: <code>app/draw-a-box/clips.js</code>. Flaky lines? <Link href="/draw-a-box/markers">Print markers</Link>.</p>
       </div>
       <CameraBar camera={camera} mirror={mirror} setMirror={setMirror}>
         <button type="button" onClick={toggleListening} className={listening ? "" : "cv-quiet"}>{listening ? "Listening… (stop)" : "Listen"}</button>
@@ -290,11 +304,28 @@ export default function DrawABox() {
           <canvas ref={overlayRef} className="box-overlay" />
         </div>
         <aside className="cv-side">
+          {pickBy === "word" && (
+            <div>
+              <p className="eyebrow">Each box plays</p>
+              <div className="box-menus">
+                {Array.from({ length: source === "markers" ? 1 : maxBoxes }, (_, i) => (
+                  <label key={i} className={target === i ? "is-target" : ""}>
+                    <button type="button" aria-pressed={target === i} onClick={() => setTarget(i)} style={{ borderColor: COLORS[i] }}>box {i + 1}</button>
+                    <select value={perBox[i] ?? ""} onChange={(e) => setPerBox((p) => p.map((v, k) => (k === i ? e.target.value || null : v)))}>
+                      <option value="">(nothing)</option>
+                      {library.map((c) => <option key={c.src} value={c.src}>{c.label}</option>)}
+                    </select>
+                  </label>
+                ))}
+                <button type="button" className="box-all" aria-pressed={target === "all"} onClick={() => setTarget("all")}>all boxes</button>
+              </div>
+            </div>
+          )}
           <div>
-            <p className="eyebrow">Clips (say the word)</p>
+            <p className="eyebrow">{pickBy === "word" ? `Launch into ${target === "all" ? "all boxes" : `box ${target + 1}`} (say the word, click, or press the number)` : "Clips"}</p>
             <div className="box-clips">
-              {clips.map((c, i) => <button key={c.word} type="button" aria-pressed={clip?.word === c.word} onClick={() => setClip(c)}>{i + 1} · {c.word}</button>)}
-              <button type="button" aria-pressed={!clip} onClick={() => setClip(null)}>0 · {clearWord}</button>
+              {library.map((c, i) => <button key={c.src} type="button" aria-pressed={pickBy === "word" && (target === "all" ? perBox.every((v) => v === c.src) : perBox[target] === c.src)} onClick={() => assign(c)}>{i < 9 ? `${i + 1} · ` : ""}{c.word || c.label}</button>)}
+              <button type="button" onClick={() => assign(null)}>0 · {clearWord}</button>
             </div>
             <p className="box-heard">{heard}</p>
             {pickBy === "color" && <p className="cv-muted">Cards: {cards.map((c) => `${c.color} → ${c.label.replace(/^.*?: /, "")}`).join(" · ")}</p>}

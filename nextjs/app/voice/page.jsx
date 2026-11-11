@@ -1,6 +1,7 @@
 import { SiteFooter, SiteHeader } from "../components/Chrome.jsx";
 import VoiceTabs from "../../lib/voice/VoiceTabs.jsx";
 import VoiceWords from "../../lib/voice/VoiceWords.jsx";
+import ZoneLinks from "../components/ZoneLinks.jsx";
 import "../../lib/stage/stage.css";
 import "../../lib/stage/controls.css";
 
@@ -11,11 +12,12 @@ export default function VoicePage() {
     <>
       <SiteHeader current="voice" />
       <main id="main" className="ctl-shell">
-        <div className="ctl-head">
+        <ZoneLinks group="voice" />
+        <div className="ctl-head" style={{ marginTop: 32 }}>
           <div>
-            <p className="eyebrow">Voice cues · Hello World</p>
+            <p className="eyebrow">Try it here · trigger words</p>
             <h1>Say a word</h1>
-            <p>Chrome listens and writes down what it hears. When a trigger word shows up, its cue fires on the stage, often before you finish the sentence.</p>
+            <p>Say a trigger word; its cue fires on the stage, often before you finish the sentence.</p>
           </div>
         </div>
         <VoiceTabs current="/voice" />

@@ -10,6 +10,16 @@ const SOURCES = [
 
 let ready = null;
 
+// OpenCV.js's `cv` is "thenable": its then() calls back with cv itself, so resolving a promise with cv (returning it
+// from an async function, or `await cv`) loops forever and freezes the tab. Strip then() before cv is ever returned.
+function unthen(cv) {
+  if (cv && typeof cv.then === "function") {
+    try { delete cv.then; } catch {}
+    if (typeof cv.then === "function") cv.then = undefined; // a then() further up its prototype chain: shadow it
+  }
+  return cv;
+}
+
 function inject(src) {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -28,9 +38,9 @@ function settle() {
     const started = Date.now();
     const check = () => {
       const cv = window.cv;
-      if (cv && cv.Mat && cv.imread) { delete cv.then; resolve(); return; } // ready (polled: Mat appears at init)
+      if (cv && cv.Mat && cv.imread) { unthen(cv); resolve(); return; } // ready (polled: Mat appears at init)
       if (cv instanceof Promise) {
-        cv.then((mod) => { if (mod?.then) delete mod.then; window.cv = mod; check(); }, reject);
+        cv.then((mod) => { window.cv = unthen(mod); check(); }, reject);
         return;
       }
       if (Date.now() - started > 60000) { reject(new Error("OpenCV.js took too long to start")); return; }
@@ -43,10 +53,11 @@ function settle() {
 export function loadOpenCV() {
   if (ready) return ready;
   ready = (async () => {
-    if (window.cv?.Mat) return window.cv;
+    // Already loaded (by this page earlier, or by /draw-a-box/hello): use it, without its then().
+    if (window.cv?.Mat) return unthen(window.cv);
     let lastError;
     for (const src of SOURCES) {
-      try { await inject(src); await settle(); return window.cv; } catch (error) { lastError = error; }
+      try { await inject(src); await settle(); return unthen(window.cv); } catch (error) { lastError = error; }
     }
     throw lastError;
   })();
@@ -62,7 +73,7 @@ export function orderCorners(points) {
 }
 
 // Find the four-sided shapes in a frame (boxes drawn in marker on paper, or index cards), biggest first, up to `max`.
-// A box inside another box doesn't count (a thick marker line has an inside and an outside edge: that's one box).
+// The inside and outside edges of one drawn line count as one box; a sheet of paper with boxes drawn on it isn't a box.
 // `source` is a canvas holding the frame. Returns [{ quad: [tl, tr, br, bl] in that canvas's pixels, area }].
 // `mats` holds reusable OpenCV images so we don't allocate every frame; call freeMats(mats) when done.
 // `colorful: true` finds colored index cards instead of drawn lines: it looks for patches of strong color (saturation),
@@ -119,14 +130,17 @@ export function findBoxes(cv, source, mats, { minArea = 0.02, maxArea = 0.9, blo
   contours.delete();
   hierarchy.delete();
   shapes.sort((a, b) => b.area - a.area);
-  const boxes = [];
+  // A thick marker line has an inside and an outside edge: two outlines of nearly the same size, one inside the other.
+  // Keep one (the bigger) for each box.
+  const nests = (big, small) => inside(centre(small.quad), big.quad);
+  const kept = [];
   for (const shape of shapes) {
-    if (boxes.length >= max) break;
-    const middle = centre(shape.quad);
-    if (boxes.some((box) => inside(middle, box.quad) || inside(centre(box.quad), shape.quad))) continue;
-    boxes.push(shape);
+    if (kept.some((k) => nests(k, shape) && shape.area / k.area > 0.6)) continue;
+    kept.push(shape);
   }
-  return boxes;
+  // A big shape with other boxes inside it is the sheet of paper (or a card holding drawings): drop it, keep the boxes.
+  const boxes = kept.filter((shape) => !kept.some((other) => other !== shape && nests(shape, other)));
+  return boxes.slice(0, max);
 }
 
 // The biggest box only (the one-box version).
