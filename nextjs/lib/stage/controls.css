@@ -98,3 +98,7 @@
 .topic .ctl-note { grid-column: 1 / -1; margin: 0; font-size: 12px; }
 .topic.on { border-color: var(--ok); }
 .topic.armed { border-color: var(--accent); border-style: dashed; }
+.script-text .skipped { color: #6b5a3a; text-decoration: line-through; text-decoration-color: #8a6a2a; }
+.cue-mark.skipped { background: transparent; outline: 1px dashed #c98a2b; color: #c98a2b; text-decoration: line-through; }
+.recovery { color: #e0a64a !important; }
+.ctl-log li.skipped-entry { color: #c98a2b; }

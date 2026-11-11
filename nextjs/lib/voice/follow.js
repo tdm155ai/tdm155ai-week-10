@@ -48,19 +48,58 @@ export function similar(a, b) {
   return 1 - distance(a, b) / Math.max(a.length, b.length);
 }
 
-// From script position `from` (the next word expected), walk the heard words and return the new position.
-// window: how far ahead a heard word may jump (skipped words). Short words can only match close by.
-export function align(list, from, heard, { window = 6, threshold = 0.72 } = {}) {
+// From script position `from` (the next word expected), walk the heard words and return where the reader is now.
+//
+// Two ways to move forward:
+// 1. Step: a heard word matches one of the next few script words (`window`; short words only very close by).
+//    Misheard words and a word or two skipped are absorbed here.
+// 2. Re-anchor: when the step fails (the reader skipped more, or the recognizer dropped a stretch), look further
+//    ahead, up to `lookahead` words, for the last 3–4 heard words in a row matching script words in a row. The
+//    nearest such run wins, and the place jumps to the end of it. A run of short words ("and in the") isn't enough:
+//    it has to contain real content (at least `minChars` letters and two words of 4+ letters), so "of the" can't
+//    send the place flying.
+//
+// Returns { pos, jumps }: each jump is { from, to, end }: words from..to-1 were skipped (their cues should not
+// fire), words to..end-1 are the run that was recognized.
+export function follow(list, from, heard, { window = 6, threshold = 0.72, lookahead = 60, minChars = 10 } = {}) {
   let pos = from;
-  for (const raw of heard) {
-    const h = raw.replace(/'/g, "");
+  const jumps = [];
+  const norm = heard.map((w) => w.replace(/'/g, ""));
+  for (let i = 0; i < norm.length; i++) {
+    const h = norm[i];
     const reach = h.length <= 3 ? 2 : window;
     let best = -1, bestScore = 0;
     for (let j = pos; j < Math.min(list.length, pos + reach); j++) {
       const s = similar(h, list[j].norm) - (j - pos) * 0.02; // prefer the nearest
       if (s > bestScore) { bestScore = s; best = j; }
     }
-    if (best >= 0 && bestScore >= threshold) pos = best + 1;
+    if (best >= 0 && bestScore >= threshold) { pos = best + 1; continue; }
+    const anchor = reanchor(list, pos, norm.slice(Math.max(0, i - 3), i + 1), { threshold, lookahead, minChars });
+    if (anchor) { jumps.push({ from: pos, to: anchor.start, end: anchor.end }); pos = anchor.end; }
   }
-  return pos;
+  return { pos, jumps };
+}
+
+// The nearest place in list[pos .. pos+lookahead) where the tail of `recent` (3 or 4 words, ending with the newest)
+// matches consecutive script words, or null.
+function reanchor(list, pos, recent, { threshold, lookahead, minChars }) {
+  for (const k of [4, 3]) {
+    if (recent.length < k) continue;
+    const run = recent.slice(-k);
+    const need = k === 4 ? 3 : 3; // 3 of 4, or 3 of 3
+    for (let j = pos; j + k <= Math.min(list.length, pos + lookahead); j++) {
+      let hits = 0, chars = 0, long = 0;
+      for (let m = 0; m < k; m++) {
+        if (similar(run[m], list[j + m].norm) >= threshold) { hits++; chars += list[j + m].norm.length; if (list[j + m].norm.length >= 4) long++; }
+      }
+      const lastOk = similar(run[k - 1], list[j + k - 1].norm) >= threshold;
+      if (hits >= need && lastOk && chars >= minChars && long >= 2) return { start: j, end: j + k };
+    }
+  }
+  return null;
+}
+
+// The old interface: just the new position.
+export function align(list, from, heard, options) {
+  return follow(list, from, heard, options).pos;
 }

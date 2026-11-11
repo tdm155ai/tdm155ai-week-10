@@ -30,7 +30,8 @@ Pick words that the recognizer gets right and that don't come up by accident. "M
 
 Read Sonnet 18 aloud from the top. The page **keeps your place** (the surtitle box lights up the words you've read) and fires each cue when you reach the word it's marked on. It matches each word it hears to the next few words of the text, loosely, so a misheard word ("thee" as "the", "winds" as "wins") or a skipped one doesn't lose the place.
 
-- **Simulate a reader** reads the sonnet in the page, with a few mistakes, so you can see it work without a mic.
+- **If it loses the place** (you skip a line, or the recognizer drops a stretch), keep reading: once it hears three or four words in a row that match the text further on (up to about 60 words ahead), it jumps there. The words it jumped over are struck through, and their cues are **skipped, not fired** (dashed outline, and a line in the log saying why), so nothing stale flashes up when it catches up. If several cues are passed at once, only the latest fires. Runs of little words ("and in the") never cause a jump.
+- **Simulate a reader** reads the sonnet in the page, with a few mistakes, so you can see it work without a mic. With **skip stretches** ticked, it also loses nine words every third line, to show the recovery.
 - **Go: next cue by hand** (`Space`) is the operator's backup: it fires the next cue now and moves the place there.
 - **Click any word** to jump there (cues before it count as done).
 - Tick **surtitles on the stage** to send each line to the projector as you reach it.
