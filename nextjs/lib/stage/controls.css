@@ -163,6 +163,7 @@
 .vsplash-stage:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; }
 .vsplash-layer, .vsplash-catch { position: absolute; inset: 0; }
 .vsplash-catch { cursor: pointer; }
+.vsplash-black { position: absolute; inset: 0; background: #000; }
 .vsplash-layer .absolute { position: absolute; }
 .vsplash-layer .inset-0 { inset: 0; }
 .vsplash-layer .w-full { width: 100%; }

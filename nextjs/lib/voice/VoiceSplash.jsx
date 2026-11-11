@@ -1,22 +1,26 @@
 "use client";
 
-// /voice/shaders: say "splash" and a fluid simulation bursts. The words and what each one does are in
-// ./splash-words.js (the file to change). This file is the machinery: listening (the same matcher as /voice/words),
-// the burst, the reset timer, and full screen. The fluid is React Bits' SplashCursor (lib/cv/react-bits/), used as is:
-// a burst is a few clicks it already understands plus jets it follows as "trackers", the way /track/effects/splash
-// follows a hand. Between words the screen goes dark; the mouse only stirs it if you tick "Mouse stirs".
+// /voice/shaders: three spoken commands run a little show. "hit it" starts the dance loop, "splash" throws a fluid
+// burst over the camera, "stop" stops the music at once, clears the splash, puts STOP on your forehead, then goes black.
+// The words are in ./splash-words.js (the file to change). This file is the machinery: listening (the same matcher as
+// /voice/words), the music, the burst, and full screen. The fluid is React Bits' SplashCursor (lib/cv/react-bits/),
+// drawn see-through over the camera: a burst is a click it already understands plus jets it follows as "trackers", the
+// way /track/effects/splash follows a hand. The camera with "Dance!!" and "STOP" on your forehead is CV's
+// lib/cv/DanceCamera.jsx. Nothing needs a stage window: this page is the show.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import SplashCursor from "../cv/react-bits/SplashCursor.jsx";
+import DanceCamera from "../cv/DanceCamera.jsx";
 import { startWebSpeech, useMic } from "./mic.js";
 import MicPicker from "./MicPicker.jsx";
 import { speechSupported, triggerWatcher } from "./speech.js";
-import { BUTTON, REARM_SECONDS, RESET_SECONDS, effects, words } from "./splash-words.js";
+import { BUTTON, MUSIC, REARM_SECONDS, RESET_SECONDS, effects, words } from "./splash-words.js";
 
 const BLACK = { r: 0, g: 0, b: 0 };
 const QUALITY = { SIM_RESOLUTION: 64, DYE_RESOLUTION: 512, PRESSURE_ITERATIONS: 10 }; // one light simulation
 const RESTING = { radius: 0.25, rainbow: true, color: "#ffffff" };
 const FRAMES = 14; // how many frames a burst's jets keep pushing
+const STOP_MS = 4000; // how long STOP stays on the camera (3 s hold + 1 s fade) before the screen goes black
 
 const hue = (h) => {
   const f = (n) => { const k = (n + h * 12) % 12; return Math.round(255 * (0.5 - 0.5 * Math.max(-1, Math.min(k - 3, 9 - k, 1)))); };
@@ -29,14 +33,63 @@ function place(at) {
   return [0.5, 0.5];
 }
 
+// The loop: decoded once, played as a looping buffer so it starts and stops on the spot.
+function useLoop(src) {
+  const ctx = useRef(null);
+  const buffer = useRef(null);
+  const source = useRef(null);
+  const [playing, setPlaying] = useState(false);
+  const [status, setStatus] = useState("sound off: press Start");
+
+  // Call from a click: browsers only let a page make sound after one.
+  const unlock = useCallback(async () => {
+    if (!ctx.current) ctx.current = new AudioContext();
+    await ctx.current.resume();
+    if (!buffer.current) {
+      setStatus("loading the loop…");
+      try { buffer.current = await ctx.current.decodeAudioData(await (await fetch(src)).arrayBuffer()); setStatus("sound ready: say “hit it”"); }
+      catch (e) { setStatus(`couldn't load ${src}: ${e.message}`); }
+    }
+  }, [src]);
+
+  const play = useCallback(async () => {
+    await unlock();
+    if (!buffer.current || source.current) return;
+    const s = ctx.current.createBufferSource();
+    s.buffer = buffer.current;
+    s.loop = true;
+    s.connect(ctx.current.destination);
+    s.start();
+    source.current = s;
+    setPlaying(true);
+    setStatus("▶ playing (looping)");
+  }, [unlock]);
+
+  const stop = useCallback(() => {
+    try { source.current?.stop(); } catch {}
+    source.current?.disconnect();
+    source.current = null;
+    setPlaying(false);
+    if (buffer.current) setStatus("■ stopped");
+  }, []);
+
+  useEffect(() => () => { try { source.current?.stop(); } catch {} ctx.current?.close(); }, []);
+  return { playing, status, unlock, play, stop };
+}
+
 export default function VoiceSplash() {
   const stageRef = useRef(null);
   const layerRef = useRef(null);
   const trackers = useRef(null);
   const timers = useRef(new Set());
+  const blackTimer = useRef(null);
   const [look, setLook] = useState(RESTING);
   const [generation, setGeneration] = useState(0);
   const [mouse, setMouse] = useState(false);
+  const [camera, setCamera] = useState(false);
+  const [camStatus, setCamStatus] = useState("");
+  const [black, setBlack] = useState(false);
+  const [stops, setStops] = useState(0);
   const [state, setState] = useState("off");
   const [error, setError] = useState("");
   const [supported, setSupported] = useState(true);
@@ -45,8 +98,11 @@ export default function VoiceSplash() {
   const [count, setCount] = useState(0);
   const [typed, setTyped] = useState("");
   const mic = useMic();
+  const loop = useLoop(MUSIC);
   const stopRef = useRef(null);
   const typedIndex = useRef(0);
+  const cameraRef = useRef(camera);
+  useEffect(() => { cameraRef.current = camera; }, [camera]);
 
   useEffect(() => { setSupported(speechSupported()); }, []);
 
@@ -59,9 +115,11 @@ export default function VoiceSplash() {
 
   const later = (fn, ms) => { const t = setTimeout(() => { timers.current.delete(t); fn(); }, ms); timers.current.add(t); };
   const nextFrames = (fn) => requestAnimationFrame(() => requestAnimationFrame(fn)); // after the new look reaches the simulation
-  useEffect(() => () => { timers.current.forEach(clearTimeout); trackers.current = null; }, []);
+  useEffect(() => () => { timers.current.forEach(clearTimeout); clearTimeout(blackTimer.current); trackers.current = null; }, []);
 
-  // One splash at x, y (0 to 1): bright drops where it lands, then jets thrown outward for FRAMES frames.
+  const reveal = useCallback(() => { clearTimeout(blackTimer.current); setBlack(false); }, []);
+
+  // One splash at x, y (0 to 1): a bright drop where it lands, then jets thrown outward for FRAMES frames.
   const splashAt = useCallback((fx, x, y) => {
     const host = layerRef.current?.firstElementChild; // SplashCursor listens for clicks on this element
     if (!host) return;
@@ -92,37 +150,62 @@ export default function VoiceSplash() {
   const burst = useCallback((name, at) => {
     const fx = effects[name];
     if (!fx) return;
+    reveal();
     setLook({ radius: fx.radius, rainbow: fx.colors === "rainbow", color: fx.colors === "rainbow" ? RESTING.color : fx.colors[0] });
     const times = fx.repeat || 1;
     nextFrames(() => {
       for (let i = 0; i < times; i++) later(() => { const [x, y] = at && i === 0 ? at : place(fx.at); splashAt(fx, x, y); }, i * (fx.gap || 250));
       later(() => setLook(RESTING), times * (fx.gap || 250) + 600);
     });
-  }, [splashAt]);
+  }, [splashAt, reveal]);
 
-  const fire = useCallback((say, name, how) => {
-    burst(name);
+  const play = useCallback(() => { reveal(); loop.play(); }, [loop, reveal]);
+
+  // Stop: the music stops at once and the splash is wiped. With the camera on, STOP shows on your forehead, then black.
+  const stopShow = useCallback(() => {
+    loop.stop();
+    trackers.current = null;
+    setGeneration((g) => g + 1);
+    setStops((n) => n + 1);
+    clearTimeout(blackTimer.current);
+    if (cameraRef.current) blackTimer.current = setTimeout(() => setBlack(true), STOP_MS);
+    else setBlack(true);
+  }, [loop]);
+
+  const run = useCallback((t, how) => {
+    if (t.command === "play") play();
+    else if (t.command === "stop") stopShow();
+    else burst(t.effect || t.command);
     setCount((c) => c + 1);
-    setLast({ say, label: effects[name]?.label || name, how, at: new Date().toLocaleTimeString() });
-  }, [burst]);
+    const label = t.command === "play" ? "music on" : t.command === "stop" ? "stop" : effects[t.effect || t.command]?.label || t.effect;
+    setLast({ say: t.say, label, how, at: new Date().toLocaleTimeString() });
+  }, [play, stopShow, burst]);
+  const runRef = useRef(run);
+  useEffect(() => { runRef.current = run; }, [run]);
 
   // The matcher from /voice: whole words, as soon as Chrome writes them down, once per place they were said.
   const watch = useMemo(() => triggerWatcher(
     () => words,
-    (t, info) => fire(t.say, t.effect, info.final ? "heard" : "heard (while still talking)"),
+    (t, info) => runRef.current(t, info.final ? "heard" : "heard (while still talking)"),
     { cooldown: REARM_SECONDS },
-  ), [fire]);
+  ), []);
 
   const onResult = useCallback((r) => { watch(r); setHeard(r.text); }, [watch]);
 
-  const start = async () => { setError(""); setState("starting"); stopRef.current = await startWebSpeech(mic, { onResult, onState: setState, onError: (e) => setError(e.message) }); };
-  const stop = () => { stopRef.current?.(); stopRef.current = null; setState("off"); };
+  // Start: one click unlocks the sound, turns on the camera, and starts listening.
+  const start = async () => {
+    setError(""); setState("starting"); setCamera(true);
+    loop.unlock();
+    stopRef.current = await startWebSpeech(mic, { onResult, onState: setState, onError: (e) => setError(e.message) });
+  };
+  const stopListening = () => { stopRef.current?.(); stopRef.current = null; setState("off"); };
   useEffect(() => () => stopRef.current?.(), []);
   const listening = !["off", "stopped"].includes(state);
 
   const sendTyped = (e) => {
     e.preventDefault();
     if (!typed.trim()) return;
+    loop.unlock();
     typedIndex.current += 1;
     onResult({ index: typedIndex.current, text: typed, final: true, session: "typed", at: performance.now() });
     setTyped("");
@@ -138,7 +221,7 @@ export default function VoiceSplash() {
       if (e.target.closest?.("input, select, textarea, button")) return;
       if (e.key === "f" || e.key === "F") toggleFullscreen();
       if (e.key === "r" || e.key === "R") reset();
-      if (e.key === " ") { e.preventDefault(); fire(BUTTON, BUTTON, "Space bar"); }
+      if (e.key === " ") { e.preventDefault(); run({ say: BUTTON, effect: BUTTON }, "Space bar"); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -152,28 +235,39 @@ export default function VoiceSplash() {
     setLast({ say: "(click)", label: effects[BUTTON]?.label, how: "click", at: new Date().toLocaleTimeString() });
   };
 
+  const say = (command) => words.find((w) => w.command === command)?.say || command;
+
   return (
     <div className="vsplash">
       <div className="ctl-row vsplash-bar">
         {!listening
-          ? <button className="ctl-btn primary vsplash-big" onClick={start} disabled={!supported}>🎙 Listen</button>
-          : <button className="ctl-btn on vsplash-big" onClick={stop}>■ Stop listening</button>}
-        <button className="ctl-btn vsplash-big" onClick={() => fire(BUTTON, BUTTON, "button")}>💦 Splash</button>
+          ? <button className="ctl-btn primary vsplash-big" onClick={start} disabled={!supported}>🎙 Start (mic, camera, sound)</button>
+          : <button className="ctl-btn on vsplash-big" onClick={stopListening}>■ Stop listening</button>}
+        <button className="ctl-btn vsplash-big" onClick={() => { loop.unlock(); run({ say: say("play"), command: "play" }, "button"); }}>▶ {say("play")}</button>
+        <button className="ctl-btn vsplash-big" onClick={() => run({ say: BUTTON, effect: BUTTON }, "button")}>💦 {BUTTON}</button>
+        <button className="ctl-btn vsplash-big" onClick={() => run({ say: say("stop"), command: "stop" }, "button")}>■ {say("stop")}</button>
+      </div>
+      <div className="ctl-row vsplash-bar">
         <span className={listening ? "ctl-status ok" : "ctl-status"}>{state === "listening" ? "● listening" : listening ? `● ${state}` : "○ not listening"}</span>
+        <span className={loop.playing ? "ctl-status ok" : "ctl-status"}>{loop.status}</span>
+        {camera && camStatus && <span className="ctl-status">camera: {camStatus}</span>}
         <span className="ctl-spacer" />
+        <label className="ctl-note"><input type="checkbox" checked={camera} onChange={(e) => setCamera(e.target.checked)} /> Camera</label>
         <label className="ctl-note"><input type="checkbox" checked={mouse} onChange={(e) => setMouse(e.target.checked)} /> Mouse stirs</label>
         <button className="ctl-btn" onClick={reset}>Reset (R)</button>
         <button className="ctl-btn" onClick={toggleFullscreen}>Full screen (F)</button>
       </div>
 
       <div ref={stageRef} className="vsplash-stage">
+        <DanceCamera active={camera} playing={loop.playing} stopToken={stops} showStatus={false} onStatus={setCamStatus} />
         <div ref={layerRef} className="vsplash-layer" key={`layer-${generation}`}>
           <SplashCursor trackers={trackers} {...QUALITY} CURL={4} DENSITY_DISSIPATION={1.8} VELOCITY_DISSIPATION={1.6} SPLAT_FORCE={3500}
-            SPLAT_RADIUS={look.radius} RAINBOW_MODE={look.rainbow} COLOR={look.color} BACK_COLOR={BLACK} TRANSPARENT={false} />
+            SPLAT_RADIUS={look.radius} RAINBOW_MODE={look.rainbow} COLOR={look.color} BACK_COLOR={BLACK} TRANSPARENT />
         </div>
+        {black && <div className="vsplash-black" />}
         {!mouse && <div className="vsplash-catch" onPointerDown={onStageDown} />}
         {last && <p className="vsplash-word" key={`word-${count}`}>{last.say}</p>}
-        <p className="vsplash-hint">{listening ? `say: ${words.map((w) => w.say).join(" · ")}` : "press Listen, or the Splash button, or Space"} · matches: {count}</p>
+        <p className="vsplash-hint">{listening ? `say: ${words.map((w) => w.say).join(" · ")}` : "press Start, or use the buttons"} · matches: {count}</p>
       </div>
 
       <div className="ctl-grid" style={{ marginTop: 18 }}>
@@ -184,24 +278,24 @@ export default function VoiceSplash() {
           {error && <p className="ctl-note" style={{ color: "var(--error)" }}>{error}</p>}
           <div className="transcript" aria-live="polite"><p className={heard ? "" : "interim"}>{heard || "What Chrome hears shows up here."}</p></div>
           <form className="ctl-row" onSubmit={sendTyped} style={{ marginTop: 10 }}>
-            <input className="ctl-input" style={{ flex: 1 }} value={typed} onChange={(e) => setTyped(e.target.value)} placeholder="No mic? Type “splash” and press Enter" />
+            <input className="ctl-input" style={{ flex: 1 }} value={typed} onChange={(e) => setTyped(e.target.value)} placeholder="No mic? Type “hit it”, “splash” or “stop” and press Enter" />
           </form>
         </div>
         <div className="ctl-panel">
           <h2>Last match</h2>
           {last ? <p className="words-last"><b>“{last.say}”</b> → {last.label}<small>{last.at} · {last.how} · {count} so far</small></p> : <p className="ctl-note">Nothing yet.</p>}
           <table className="words-table" style={{ marginTop: 12 }}>
-            <thead><tr><th>Say</th><th>Effect</th><th /></tr></thead>
+            <thead><tr><th>Say</th><th>Does</th><th /></tr></thead>
             <tbody>
               {words.map((w) => (
                 <tr key={w.say} className={last?.say === w.say ? "words-hit" : ""}>
-                  <td>{w.say}</td><td>{effects[w.effect]?.label || w.effect}</td>
-                  <td><button className="ctl-btn" onClick={() => fire(w.say, w.effect, "Test button")}>Test</button></td>
+                  <td>{w.say}</td><td>{w.command === "play" ? "start the music (loops)" : w.command === "stop" ? "stop the music, STOP, then black" : effects[w.effect]?.label || w.effect}</td>
+                  <td><button className="ctl-btn" onClick={() => { loop.unlock(); run(w, "Test button"); }}>Test</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <p className="ctl-note">Change the words and effects in <code>nextjs/lib/voice/splash-words.js</code>. It starts fresh every {RESET_SECONDS} seconds.</p>
+          <p className="ctl-note">Change the words, the music and the splashes in <code>nextjs/lib/voice/splash-words.js</code>. The splash starts fresh every {RESET_SECONDS} seconds.</p>
         </div>
       </div>
     </div>

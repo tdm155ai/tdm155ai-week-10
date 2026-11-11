@@ -3,8 +3,12 @@
 //  Save it and the page updates. Each word fires one effect; each effect is a few numbers.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// What you say → which effect. Whole words; a phrase fires when its words come in order.
+// What you say → what happens. Whole words; a phrase fires when its words come in order.
+// `command` is one of the page's three moves: "play" (start the loop), "stop" (music off, screen to black), "splash".
+// `effect` is one of the splashes below.
 export const words = [
+  { say: "hit it", command: "play" },
+  { say: "stop", command: "stop" },
   { say: "splash", effect: "splash" },
   { say: "drop", effect: "drop" },
   { say: "boom", effect: "boom" },
@@ -30,6 +34,9 @@ export const effects = {
 
 // The button on the page fires this one.
 export const BUTTON = "splash";
+
+// The music "hit it" starts. It loops until "stop". (lib/launch/loop.js makes it; any file in public/ works.)
+export const MUSIC = "/samples/loop-house.wav";
 
 // A word fires again once this many seconds have passed (so one long "splaaash" fires once).
 export const REARM_SECONDS = 0.6;
