@@ -155,3 +155,20 @@
 .diag-pad { position: relative; height: 160px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); touch-action: none; cursor: crosshair; overflow: hidden; }
 .diag-dot { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); pointer-events: none; transition: transform .08s; }
 .diag-grid .ctl-select { max-width: 100%; min-width: 0; flex: 1 1 200px; }
+
+.vsplash-bar { margin-bottom: 12px; }
+.vsplash-bar .ctl-spacer { flex: 1; }
+.vsplash-big { padding: 12px 22px; font-size: 18px; }
+.vsplash-stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 78vh; overflow: hidden; border-radius: 10px; background: #000; touch-action: none; }
+.vsplash-stage:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; }
+.vsplash-layer, .vsplash-catch { position: absolute; inset: 0; }
+.vsplash-catch { cursor: pointer; }
+.vsplash-layer .absolute { position: absolute; }
+.vsplash-layer .inset-0 { inset: 0; }
+.vsplash-layer .w-full { width: 100%; }
+.vsplash-layer .h-full { height: 100%; }
+.vsplash-layer .block { display: block; }
+.vsplash-layer .pointer-events-none { pointer-events: none; }
+.vsplash-word { position: absolute; left: 0; right: 0; top: 8%; margin: 0; color: #fff; font-size: clamp(28px, 6vw, 90px); font-weight: 900; letter-spacing: -.03em; text-align: center; pointer-events: none; animation: vsplash-fade 1.6s ease-out forwards; }
+.vsplash-hint { position: absolute; left: 16px; bottom: 12px; margin: 0; color: rgba(236,236,230,.55); font-size: 13px; pointer-events: none; }
+@keyframes vsplash-fade { 0% { opacity: 0; transform: scale(.9); } 12% { opacity: .9; transform: scale(1); } 100% { opacity: 0; } }
