@@ -93,3 +93,8 @@
 .level { display: inline-block; width: 80px; height: 8px; margin-left: 6px; border: 1px solid var(--line); border-radius: 4px; vertical-align: middle; overflow: hidden; }
 .level span { display: block; height: 100%; background: var(--ok); transition: width .05s; }
 .midi-table thead td { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.topic-list { display: grid; gap: 8px; }
+.topic { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; }
+.topic .ctl-note { grid-column: 1 / -1; margin: 0; font-size: 12px; }
+.topic.on { border-color: var(--ok); }
+.topic.armed { border-color: var(--accent); border-style: dashed; }

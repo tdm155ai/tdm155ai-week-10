@@ -56,6 +56,14 @@ The menu next to **Start listening** picks the engine: **Web Speech** (free) or 
 
 It costs a little per minute of audio, so stop it when you're not using it.
 
+## 4. Cues by topic (with AI)
+
+[/voice/semantic](/voice/semantic) drops the magic words. You talk freely (a lecture, an improvised scene), and at each pause the last few sentences go to a small, fast AI model (OpenAI's `gpt-6-luna`, through `app/voice/decide/route.js`) along with a list of **topics**. It answers in a fixed JSON shape: which topic you're on now, how sure it is, and which topic seems to be coming next. A confident new topic fires its cue. That takes a second or two, so there's also a fast lane: when the model **arms** a topic ("this is coming"), the first of that topic's words to show up in the live transcript fires it immediately.
+
+- **No mic?** Play the sample lecture: it wanders from night to the sea to fractals to evolution to a love poem, mostly without naming the topics.
+- **fire above**: how sure the model has to be before the cue changes.
+- **The one file to change:** `nextjs/lib/voice/topics.js`. Describe each topic the way you'd brief a human operator; the model reads your description.
+
 ## Ask Claude Code
 
 > On /voice, add a "confidence" display and only fire a trigger word if Chrome's confidence is above a threshold I can set with a slider.
