@@ -50,7 +50,7 @@ export default function SpectrogramShell() {
     <div className="spectrogram-page">
       <div className="spectrogram-credit">
         <a href="/launch">← Launch</a>
-        <span>Spectrogram from <a href="https://musiclab.chromeexperiments.com/Spectrogram/" target="_blank" rel="noreferrer">Chrome Music Lab</a> (Google Creative Lab, Apache 2.0), via the Next.js port <a href="https://github.com/ll-26-27/spectrogram-next" target="_blank" rel="noreferrer">ll-26-27/spectrogram-next</a>.</span>
+        <span>Spectrogram from <a href="https://musiclab.chromeexperiments.com/Spectrogram/" target="_blank" rel="noreferrer">Chrome Music Lab</a> (Google Creative Lab, Apache 2.0).</span>
       </div>
       <canvas id="spectrogram" />
       <canvas id="legend" />

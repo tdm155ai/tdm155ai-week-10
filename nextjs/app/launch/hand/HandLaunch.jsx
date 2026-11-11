@@ -261,7 +261,7 @@ export default function HandLaunch() {
   }
 
   return <main id="main" className={styles.shell}>
-    <header className={styles.header}><a href="/launch">← Launch</a><span>FROM MK-AUDIO-EDITING · BOK TO THE FUTURE, OCT 22</span><span className={styles.green}>HAND LAUNCH</span></header>
+    <header className={styles.header}><a href="/launch">← Launch</a><span>GESTURE → SOUND</span><span className={styles.green}>HAND LAUNCH</span></header>
     <div className={styles.intro}><div><p className={styles.kicker}>A gesture becomes a cue.</p><h1>Sound, by hand<span>.</span></h1><p>Hold a shape. Launch a clip, strike a chord, or send a cue to your DAW.</p></div><div className={styles.controls}><button onClick={enableAudio} disabled={audioState === "loading"}>{audioState === "ready" ? "Audio enabled · resume" : audioState === "loading" ? "Enabling…" : "1 · Enable audio"}</button><button className={styles.primary} onClick={cameraState === "off" ? startCamera : () => { panic(); stopCamera(); }} disabled={cameraState === "loading"}>{cameraState === "on" ? "Stop camera" : cameraState === "loading" ? "Loading model…" : "2 · Start camera"}</button><button className={styles.panic} onClick={() => { panic(); setArmed(false); }}>Stop all · Esc</button></div></div>
     {error && <div role="alert" className={styles.error}>{error}<button onClick={() => setError("")} aria-label="Dismiss error">×</button></div>}
     <section className={styles.liveGrid} aria-label="Camera and trigger settings">

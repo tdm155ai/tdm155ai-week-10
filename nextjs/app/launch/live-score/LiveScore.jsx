@@ -214,7 +214,7 @@ export default function LiveScore() {
     <main id="main" className="ls">
       <header className="ls-head">
         <div>
-          <p className="eyebrow"><Link href="/launch">Launch</Link> · from mk-audio-editing, Bok to the Future, Oct 22</p>
+          <p className="eyebrow"><Link href="/launch">Launch</Link> · a generative score</p>
           <h1>Live score</h1>
           <p className="ls-deck">The camera watches the room; five loops of different lengths, after Eno's <em>Music for Airports</em>, one per zone from low (1) to high (5). In <strong>Zones (launch)</strong>, stepping into a zone plays its figure at once and brings its loop up; raise a hand to play the zone it's in, reach into the next zone to play that one too, raise both to swell the room.</p>
         </div>
