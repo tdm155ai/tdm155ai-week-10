@@ -141,6 +141,7 @@ export default function Stage({ preview = false }) {
       case "stop": stopSounds(o.fadeOut ?? 1, o.target); break;
       case "blackout":
         stopSounds(o.fadeOut ?? 1);
+        if (cue.id === "panic" && fxRef.current) for (const [k, v] of Object.entries({ filter: 0.5, resonance: 0, echo: 0 })) fxRef.current.set(k, v); // panic: effects back to neutral
         showPicture({ ...cue, kind: "color", src: "#000", options: { fadeIn: o.fadeOut ?? 1 } });
         break;
       case "video": case "image": case "text": case "color": showPicture(cue); break;
@@ -172,9 +173,9 @@ export default function Stage({ preview = false }) {
           for (const s of sounds.current.values()) if (!s.el._fade) s.el.volume = clamp(s.volume * data.value);
         }
       }
-      if (data.type === "ping" && !preview) bus.postMessage({ type: "status", open: true, started, at: Date.now() });
+      if (data.type === "ping" && !preview) bus.postMessage({ type: "status", open: true, started, fx: fxRef.current ? { ...fxRef.current.state } : null, sink: !!sinkRef.current, at: Date.now() });
     };
-    if (!preview) bus.postMessage({ type: "status", open: true, started, at: Date.now() });
+    if (!preview) bus.postMessage({ type: "status", open: true, started, fx: fxRef.current ? { ...fxRef.current.state } : null, sink: !!sinkRef.current, at: Date.now() });
     return () => bus.close();
   }, [play, preview, started, ensureFx]);
 

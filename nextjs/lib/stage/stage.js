@@ -49,9 +49,12 @@ export function fireCue(cue) {
   return sent;
 }
 
-// Black out the picture and fade every sound: the panic button.
+// Black out the picture and fade every sound: the panic button. Also puts the stage effects (filter, echo) back to
+// neutral, so a sound fired next isn't left muffled.
 export function panic(fadeOut = 0.5) {
-  return fireCue({ id: "panic", label: "Panic", kind: "blackout", options: { fadeOut } });
+  const sent = fireCue({ id: "panic", label: "Panic", kind: "blackout", options: { fadeOut } });
+  setParam("filter", 0.5); setParam("resonance", 0); setParam("echo", 0);
+  return sent;
 }
 
 // Set a continuous control, value 0–1 (see PARAMS above).
