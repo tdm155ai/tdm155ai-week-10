@@ -10,3 +10,7 @@
 .stage-start strong { font-size: clamp(24px, 4vw, 48px); letter-spacing: -.03em; }
 .stage-start span { max-width: 560px; color: #888; font-size: 15px; line-height: 1.5; }
 .stage-preview-label { position: absolute; left: 8px; bottom: 6px; z-index: 2; padding: 2px 8px; border-radius: 4px; background: rgba(0, 0, 0, .65); color: #bbb; font-size: 11px; font-family: ui-monospace, monospace; }
+.stage-outputs { position: absolute; left: 50%; bottom: 28px; z-index: 3; transform: translateX(-50%); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; max-width: calc(100% - 32px); padding: 10px 14px; border: 1px solid #333; border-radius: 8px; background: rgba(12, 12, 12, .92); color: #bbb; font-size: 13px; cursor: default; }
+.stage-outputs select, .stage-outputs button { padding: 6px 10px; border: 1px solid #444; border-radius: 5px; background: #1b1b1b; color: #eee; font: inherit; font-size: 13px; cursor: pointer; }
+.stage-outputs select { max-width: 320px; }
+.stage-outputs span { flex-basis: 100%; text-align: center; color: #888; }

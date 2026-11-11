@@ -7,6 +7,16 @@ import { CHANNEL } from "./stage.js";
 // muted copy as a preview (preview: true), so the sound comes only from the real stage window.
 
 const clamp = (v) => Math.max(0, Math.min(1, v));
+const OUTPUT_STORE = "tdm155ai-stage-output";
+
+// Send an <audio> or <video> element's sound to a chosen output (the PA, the projector's HDMI) instead of the Mac's
+// default. "" = the default. Chrome only (setSinkId); elsewhere it plays on the default.
+function routeTo(el, sinkId) {
+  const want = sinkId || "";
+  if (!el?.setSinkId || (el._sink ?? el.sinkId ?? "") === want) return;
+  el._sink = want; // a call is on its way: don't repeat it on every render
+  el.setSinkId(want).catch((err) => { el._sink = undefined; console.warn("[stage] couldn't use that output:", err.message); });
+}
 
 // Fade an <audio> or <video> element's volume to `to` over `seconds`, then call done.
 function fadeVolume(el, to, seconds, done) {
@@ -32,6 +42,19 @@ export default function Stage({ preview = false }) {
   const masterRef = useRef(1);
   const busRef = useRef(null);
   const rootRef = useRef(null);
+  const [sink, setSink] = useState("");
+  const [showOutputs, setShowOutputs] = useState(false);
+  const sinkRef = useRef("");
+  useEffect(() => {
+    if (preview) return;
+    try { const id = localStorage.getItem(OUTPUT_STORE) || ""; sinkRef.current = id; setSink(id); } catch {}
+  }, [preview]);
+  const chooseOutput = useCallback((id) => {
+    sinkRef.current = id; setSink(id);
+    try { id ? localStorage.setItem(OUTPUT_STORE, id) : localStorage.removeItem(OUTPUT_STORE); } catch {}
+    for (const s of sounds.current.values()) routeTo(s.el, id);
+    rootRef.current?.querySelectorAll("video").forEach((v) => routeTo(v, id));
+  }, []);
 
   const stopSounds = useCallback((fadeOut = 1, target) => {
     for (const [id, s] of sounds.current) {
@@ -47,6 +70,7 @@ export default function Stage({ preview = false }) {
     if (old) { old.el.pause(); old.el.src = ""; }
     if (preview) return; // the preview stays silent
     const el = new Audio(cue.src);
+    routeTo(el, sinkRef.current);
     el.loop = !!o.loop;
     const volume = clamp(o.volume ?? 1);
     el.volume = o.fadeIn ? 0 : volume * masterRef.current;
@@ -120,6 +144,7 @@ export default function Stage({ preview = false }) {
         else rootRef.current?.requestFullscreen?.();
       }
       if (e.key === "Escape") play({ id: "panic", kind: "blackout", options: { fadeOut: 0.5 } });
+      if ((e.key === "o" || e.key === "O") && !e.target.closest?.("select")) setShowOutputs((v) => !v);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -138,22 +163,62 @@ export default function Stage({ preview = false }) {
       <div className="stage-picture" style={{ opacity: params.opacity, filter }}>
         {layers.map(({ key, cue, fade, visible }) => (
           <div key={key} className="stage-layer" style={{ opacity: visible ? 1 : 0, transition: `opacity ${fade}s linear` }}>
-            <Picture cue={cue} preview={preview} master={params.master} />
+            <Picture cue={cue} preview={preview} master={params.master} sink={sink} />
           </div>
         ))}
       </div>
       {!started && (
         <button className="stage-start" onClick={start}>
           <strong>Click to start the stage</strong>
-          <span>Turns on sound and goes full screen. F toggles full screen, Esc blacks out. Fire cues from /launch, /voice, /track in another tab.</span>
+          <span>Turns on sound and goes full screen. F toggles full screen, Esc blacks out, O picks the sound output. Fire cues from /launch, /voice, /track in another tab.</span>
         </button>
       )}
+      {!preview && (!started || showOutputs) && <OutputMenu sink={sink} onChange={chooseOutput} onClose={started ? () => setShowOutputs(false) : null} />}
       {preview && <span className="stage-preview-label">{last ? `${last.kind}: ${last.label}` : "stage preview"}</span>}
     </div>
   );
 }
 
-function Picture({ cue, preview, master }) {
+// Where the stage's sound goes. Device names appear once this site has had microphone permission (any /voice page),
+// or after "Show names".
+function OutputMenu({ sink, onChange, onClose }) {
+  const [outputs, setOutputs] = useState([]);
+  const [supported, setSupported] = useState(true);
+  const refresh = useCallback(async () => {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      setOutputs(devices.filter((d) => d.kind === "audiooutput" && d.deviceId && d.deviceId !== "default").map((d) => ({ id: d.deviceId, label: d.label })));
+    } catch {}
+  }, []);
+  useEffect(() => {
+    setSupported("setSinkId" in HTMLMediaElement.prototype);
+    refresh();
+    navigator.mediaDevices?.addEventListener?.("devicechange", refresh);
+    return () => navigator.mediaDevices?.removeEventListener?.("devicechange", refresh);
+  }, [refresh]);
+  const unnamed = outputs.some((o) => !o.label);
+  const showNames = async () => {
+    try { const s = await navigator.mediaDevices.getUserMedia({ audio: true }); s.getTracks().forEach((t) => t.stop()); } catch {}
+    refresh();
+  };
+  const test = () => { const a = new Audio("/samples/ping.mp3"); routeTo(a, sink); a.play().catch(() => {}); };
+  return (
+    <div className="stage-outputs" onClick={(e) => e.stopPropagation()}>
+      <label>Sound out{" "}
+        <select value={sink} onChange={(e) => onChange(e.target.value)} disabled={!supported}>
+          <option value="">The Mac's default output</option>
+          {outputs.map((o, i) => <option key={o.id} value={o.id}>{o.label || `Output ${i + 1}`}</option>)}
+        </select>
+      </label>
+      {unnamed && <button onClick={showNames}>Show names</button>}
+      <button onClick={test}>Test (ping)</button>
+      {onClose && <button onClick={onClose}>Done (O)</button>}
+      {!supported && <span>This browser can't choose an output: use Chrome, or set the Mac's output in System Settings › Sound.</span>}
+    </div>
+  );
+}
+
+function Picture({ cue, preview, master, sink }) {
   const o = cue.options || {};
   const fit = o.fit || "cover";
   if (cue.kind === "color") return <div className="stage-fill" style={{ background: cue.src || "#000" }} />;
@@ -162,7 +227,7 @@ function Picture({ cue, preview, master }) {
     const muted = preview || o.muted !== false;
     return (
       <video className="stage-fill" src={cue.src} autoPlay playsInline loop={!!o.loop} muted={muted} style={{ objectFit: fit }}
-        ref={(el) => { if (el && !muted) el.volume = clamp((o.volume ?? 1) * master); }} />
+        ref={(el) => { if (el && !muted) { el.volume = clamp((o.volume ?? 1) * master); routeTo(el, sink); } }} />
     );
   }
   if (cue.kind === "text") {
