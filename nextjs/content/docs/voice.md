@@ -44,6 +44,18 @@ Rough winds [[wind]] do shake the darling buds of May,
 
 Put cues on words that are clearly said and clearly recognized (nouns, stressed words), not on "thee" or "and".
 
+The menu next to **Start listening** picks the engine: **Web Speech** (free) or **OpenAI** (uses the class key; the cue words and the text are sent along as hints, so it tends to get them right).
+
+## 3. Compare engines
+
+[/voice/compare](/voice/compare) runs two listeners on the same voice at once: Chrome's **Web Speech** and OpenAI's **`gpt-live-transcribe`**, a streaming model that sends words back while you talk. Both watch for the trigger words, and a table shows which heard each word first and by how many milliseconds. You can fire cues from whichever hears a word first (two listeners racing is one way to cut the delay), from one engine, or from neither.
+
+- **OpenAI delay**: `minimal` is fastest; `medium` waits for more of the sentence and is more accurate.
+- **OpenAI listens to a recording**: put an audio file in `_media/` and type `/media/your-file.mp3` to test without talking.
+- How it works: the page asks this app's server for a short-lived token (`app/voice/token/route.js`: the real key never leaves the server), then streams the mic straight to OpenAI over WebRTC (`lib/voice/openai-live.js`). OpenAI's model doesn't decide when you've stopped talking, so the page does: when the mic goes quiet for about half a second, it tells OpenAI to finish that phrase.
+
+It costs a little per minute of audio, so stop it when you're not using it.
+
 ## Ask Claude Code
 
 > On /voice, add a "confidence" display and only fire a trigger word if Chrome's confidence is above a threshold I can set with a slider.

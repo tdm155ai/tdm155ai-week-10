@@ -7,6 +7,7 @@ import StageBar from "../stage/StageBar.jsx";
 import { buttons } from "../launch/buttons.js";
 import { align, parseScript } from "./follow.js";
 import { cues as scriptCues, text as scriptText, title as scriptTitle } from "./script.js";
+import { startOpenAILive } from "./openai-live.js";
 import { speechSupported, startListening, words } from "./speech.js";
 
 // /voice/script: read a text aloud; the page follows along (like surtitles) and fires each cue as you reach its
@@ -35,7 +36,10 @@ export default function ScriptFollower() {
   const [simulating, setSimulating] = useState(false);
   const script = useMemo(() => parseScript(source), [source]);
   const scriptRef = useRef(script);
-  const committed = useRef(0);
+  const committed = useRef(0); // the place: the next word expected
+  const bases = useRef(new Map()); // each phrase the recognizer sends is matched from where the place was when it began
+  const [engine, setEngine] = useState("webspeech");
+  const liveRef = useRef(null);
   const fired = useRef(new Set());
   const stopRef = useRef(null);
   const simRef = useRef(null);
@@ -72,15 +76,18 @@ export default function ScriptFollower() {
 
   const onResult = useCallback((r) => {
     setHeard(r.text);
-    const next = align(scriptRef.current.list, committed.current, words(r.text));
-    if (r.final) committed.current = next;
-    advance(next, r.final ? "final" : "interim");
+    const key = `${r.session}:${r.index}`;
+    if (!bases.current.has(key)) bases.current.set(key, committed.current);
+    const next = align(scriptRef.current.list, bases.current.get(key), words(r.text));
+    committed.current = Math.max(committed.current, next); // the place only moves forward (click a word to go back)
+    advance(committed.current, r.final ? "final" : "interim");
   }, [advance]);
 
   // Jump to a word by hand (click it): cues before it count as done, so nothing fires in a burst.
   const jump = (index) => {
     fired.current = new Set(scriptRef.current.list.filter((w) => w.cues && w.index < index).map((w) => w.index));
     committed.current = index;
+    bases.current = new Map();
     lineRef.current = -1;
     setPos(index);
   };
@@ -90,6 +97,7 @@ export default function ScriptFollower() {
     const w = scriptRef.current.list.find((x) => x.cues && !fired.current.has(x.index));
     if (!w) return;
     committed.current = w.index + 1;
+    bases.current = new Map();
     advance(w.index + 1, "Go (by hand)");
   }, [advance]);
 
@@ -102,7 +110,23 @@ export default function ScriptFollower() {
     return () => window.removeEventListener("keydown", onKey);
   }, [goNext]);
 
-  const start = () => { setError(""); stopRef.current = startListening({ onResult, onState: setState, onError: (e) => setError(e.message) }); };
+  const start = async () => {
+    setError("");
+    bases.current = new Map();
+    if (engine === "webspeech") { stopRef.current = startListening({ onResult, onState: setState, onError: (e) => setError(e.message) }); return; }
+    try {
+      setState("connecting");
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      const cueWords = scriptRef.current.list.filter((w) => w.cues).map((w) => w.text.replace(/[^\p{L}'-]+/gu, ""));
+      const live = await startOpenAILive({
+        stream, delay: "minimal", keywords: cueWords,
+        prompt: `Someone reading this text aloud: ${scriptRef.current.list.map((w) => w.text).join(" ").slice(0, 900)}`,
+        onResult, onState: (s) => setState(s === "closed" || s === "stopped" ? "off" : s), onError: (e) => setError(e.message),
+      });
+      liveRef.current = live;
+      stopRef.current = () => { live.stop(); stream.getTracks().forEach((t) => t.stop()); liveRef.current = null; };
+    } catch (e) { setError(e.message); setState("off"); }
+  };
   const stop = () => { stopRef.current?.(); stopRef.current = null; setState("off"); };
   const stopSim = () => { clearInterval(simRef.current); simRef.current = null; setSimulating(false); };
   useEffect(() => () => { stopRef.current?.(); clearInterval(simRef.current); }, []);
@@ -135,7 +159,7 @@ export default function ScriptFollower() {
   const saveDraft = () => { setSource(draft); setEditing(false); try { localStorage.setItem(STORE, draft); } catch {} reset(); };
   const backToFile = () => { setSource(scriptText); try { localStorage.removeItem(STORE); } catch {} reset(); };
 
-  const listening = state === "listening" || state === "restarting";
+  const listening = ["listening", "restarting", "connecting", "getting a token"].includes(state);
   const at = Math.max(0, pos - 1);
   const lineIndex = Math.max(0, script.lines.findIndex((line) => line.some((w) => w.index === at)));
   const current = script.lines[lineIndex] || [];
@@ -147,8 +171,12 @@ export default function ScriptFollower() {
         <div className="ctl-panel">
           <div className="ctl-row">
             {!listening
-              ? <button className="ctl-btn primary" onClick={start} disabled={!supported}>Start listening</button>
-              : <button className="ctl-btn on" onClick={stop}>Stop listening</button>}
+              ? <button className="ctl-btn primary" onClick={start} disabled={engine === "webspeech" && !supported}>Start listening</button>
+              : <button className="ctl-btn on" onClick={stop}>Stop listening ({state})</button>}
+            <select className="ctl-select" value={engine} onChange={(e) => setEngine(e.target.value)} disabled={listening} title="Which engine listens">
+              <option value="webspeech">with Web Speech (free)</option>
+              <option value="openai">with OpenAI (key, cue words as hints)</option>
+            </select>
             <button className={simulating ? "ctl-btn on" : "ctl-btn"} onClick={simulate}>{simulating ? "Stop the simulation" : "No mic? Simulate a reader"}</button>
             <button className="ctl-btn" onClick={goNext} title="Space">Go: next cue by hand</button>
             <button className="ctl-btn" onClick={reset}>Back to the top</button>
