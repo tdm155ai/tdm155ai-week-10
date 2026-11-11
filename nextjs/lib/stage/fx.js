@@ -47,7 +47,7 @@ export function createFx(ctx, destination = ctx.destination) {
   wet.gain.value = 0;
 
   const state = { filter: 0.5, resonance: 0, echo: 0, echoTime: 0.4 };
-  const glide = (param, value, seconds = 0.03) => param.setTargetAtTime(value, ctx.currentTime, seconds); // no clicks
+  const glide = (param, value, seconds = 0.012) => param.setTargetAtTime(value, ctx.currentTime, seconds); // no clicks
 
   const applyFilter = () => {
     const f = state.filter;

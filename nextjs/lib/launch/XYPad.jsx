@@ -5,6 +5,7 @@ import { onStage, setParam } from "../stage/stage.js";
 import { createFx, describeFilter, FX_PARAMS } from "../stage/fx.js";
 import { LABELS, PARTS, PATTERN, renderLoop } from "./loop.js";
 import { connectMidi } from "./midi.js";
+import HandPad from "./HandPad.jsx";
 import { bend as bendParam, dials } from "./midi-map.js";
 
 // /launch/xy: a Kaoss-pad-style XY pad over an EDM loop made in the browser (lib/launch/loop.js) or a file of yours
@@ -24,7 +25,8 @@ const SWEEPS = [
   { label: "Riser: high-pass climbs, then drops (4 bars)", from: 0.5, to: 0.93, bars: 4, q: 0.55, snap: true },
 ];
 
-export default function XYPad() {
+export default function XYPad({ control: initialControl = "mouse" }) {
+  const [control, setControl] = useState(initialControl); // "mouse" (the on-screen pad) or "camera" (hands)
   const [mode, setMode] = useState("filter");
   const [hold, setHold] = useState(false);
   const [fx, setFx] = useState(REST); // what the effects are set to now (from the bus)
@@ -44,13 +46,24 @@ export default function XYPad() {
   const onRef = useRef(on);
   const sweepRef = useRef(0);
 
-  // Every effects change arrives on the stage bus, from this pad or anything else (MIDI, a hand).
-  useEffect(() => onStage((m) => {
-    if (m.type !== "param" || !FX_PARAMS.includes(m.name)) return;
-    audio.current?.fx.set(m.name, m.value);
-    setFx((f) => ({ ...f, [m.name]: m.value }));
-  }), []);
-  const send = useCallback((name, value) => setParam(name, value), []);
+  // The effects' values. The sound changes at once (apply); the words and the dot on screen catch up a few times a
+  // second, so React isn't redrawing the page for every pixel the pad moves.
+  const values = useRef({ ...REST });
+  const dotRef = useRef(null);
+  const modeRef = useRef(mode);
+  modeRef.current = mode;
+  const readoutTimer = useRef(null);
+  const apply = useCallback((name, value) => {
+    values.current[name] = value;
+    audio.current?.fx.set(name, value);
+    const m = MODES[modeRef.current];
+    if (dotRef.current) { dotRef.current.style.left = `${values.current[m.x] * 100}%`; dotRef.current.style.top = `${(1 - values.current[m.y]) * 100}%`; }
+    if (!readoutTimer.current) readoutTimer.current = setTimeout(() => { readoutTimer.current = null; setFx({ ...values.current }); }, 90);
+  }, []);
+  // Changes from anywhere else (a MIDI knob, a hand on /track, another tab) arrive on the stage bus.
+  useEffect(() => onStage((m) => { if (m.type === "param" && FX_PARAMS.includes(m.name)) apply(m.name, m.value); }), [apply]);
+  // From this page: change the sound here right away, and tell the stage (and anything listening).
+  const send = useCallback((name, value) => { apply(name, value); setParam(name, value); }, [apply]);
 
   useEffect(() => {
     fetch("/media").then((r) => r.json()).then((d) => setFiles(d.files || [])).catch(() => {});
@@ -65,7 +78,7 @@ export default function XYPad() {
     master.threshold.value = -6; master.ratio.value = 4;
     master.connect(ctx.destination);
     const effects = createFx(ctx, master);
-    for (const [k, v] of Object.entries(fx)) effects.set(k, v);
+    for (const [k, v] of Object.entries(values.current)) effects.set(k, v);
     if (sink && ctx.setSinkId) ctx.setSinkId(sink).catch(() => {});
     audio.current = { ctx, fx: effects, master, gains: {}, sources: [], el: null };
     return audio.current;
@@ -201,14 +214,19 @@ export default function XYPad() {
     <div className="ctl-grid">
       <div>
         <div className="xy-modes ctl-row">
+          <button className={control === "mouse" ? "ctl-btn on" : "ctl-btn"} onClick={() => setControl("mouse")}>Mouse / touch</button>
+          <button className={control === "camera" ? "ctl-btn on" : "ctl-btn"} onClick={() => setControl("camera")}>Hands (camera)</button>
+          <span className="ctl-note">·</span>
           {Object.entries(MODES).map(([k, v]) => <button key={k} className={k === mode ? "ctl-btn on" : "ctl-btn"} onClick={() => setMode(k)}>{v.label}</button>)}
           <label className="ctl-note"><input type="checkbox" checked={hold} onChange={(e) => setHold(e.target.checked)} /> Hold (don't spring back)</label>
         </div>
-        <div ref={padRef} className={touching ? "xy-pad touching" : "xy-pad"} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
-          <div className="xy-center" />
-          <div className="xy-dot" style={dot} />
-          <span className="xy-label">{m.hint}</span>
-        </div>
+        {control === "camera" ? <HandPad modes={MODES} mode={mode} send={send} rest={REST} hold={hold} /> : (
+          <div ref={padRef} className={touching ? "xy-pad touching" : "xy-pad"} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
+            <div className="xy-center" />
+            <div ref={dotRef} className="xy-dot" style={dot} />
+            <span className="xy-label">{m.hint}</span>
+          </div>
+        )}
         <p className="ctl-note">Filter: <b style={{ color: "var(--ink)" }}>{describeFilter(fx.filter)}</b> · resonance {Math.round(fx.resonance * 100)}% · echo {Math.round(fx.echo * 100)}%{sweeping ? ` · sweeping: ${sweeping}` : ""}</p>
         <div className="ctl-row">
           {SWEEPS.map((s) => <button key={s.label} className={sweeping === s.label ? "ctl-btn on" : "ctl-btn"} onClick={() => sweep(s)}>{s.label}</button>)}
