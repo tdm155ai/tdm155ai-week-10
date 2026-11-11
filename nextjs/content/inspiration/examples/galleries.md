@@ -3,8 +3,6 @@ title: "Galleries"
 description: "teamLab, Olafur Eliasson, James Turrell, and Meow Wolf. More for reporting and context than for this class."
 ---
 
-*Researched with AI (Claude), November 11, 2026.*
-
 For this week, concerts matter more than gallery installations; these are here for context.
 
 - [teamLab Borderless Teaser Video](https://www.youtube.com/watch?v=LOMbrwzqW4A) (teamLab, 1:45): rooms of projection that respond to visitors and flow between rooms. Sensor triggers at museum scale.

@@ -12,7 +12,7 @@ TDM students often run shows in QLab. Lighting designers program ETC Eos or gran
 
 ## The table, by mechanic
 
-Prices and free versions were checked on the makers' sites on November 11, 2026. Routes in the last column are this app's.
+Prices and free versions are from the makers' sites. Routes in the last column are this app's.
 
 | Mechanic | App | Maker · cost | The maneuver in one sentence | Build a version today? | Here |
 | --- | --- | --- | --- | --- | --- |
@@ -23,7 +23,7 @@ Prices and free versions were checked on the makers' sites on November 11, 2026.
 | [Clip launching](/pro-apps/mechanics/clip-launching) | [Resolume](/pro-apps/tools/resolume) | Resolume · unlimited watermarked demo; €299/€799 | Fire a grid of video clips live, in time with the beat, layered and mapped. | **Partly:** grid, pads, quantize; not 60 fps HD layers | [/launch](/launch) |
 | | [Ableton Live](/pro-apps/tools/ableton-live) | Ableton · 30-day trial; Lite free with many controllers; $99–749 | Launch loops and scenes from a grid; quantized to the bar. | **Partly:** a Tone.js grid | [/launch](/launch) |
 | [Projection mapping](/pro-apps/mechanics/projection-mapping) | [MadMapper](/pro-apps/tools/madmapper) | GarageCube + 1024 architecture · free, watermarked; €479 | Draw a quad, drag its corners onto the object, assign media. | **Partly:** four-corner warps on one projector | [/stage](/stage) |
-| | [Millumin](/pro-apps/tools/millumin) | (maker not verified) · 30-day trial; from $499; Mac only | A theater dashboard of layers × cues, each layer warped to the set. | **Partly** | [/stage](/stage) |
+| | [Millumin](/pro-apps/tools/millumin) | 30-day trial; from $499; Mac only | A theater dashboard of layers × cues, each layer warped to the set. | **Partly** | [/stage](/stage) |
 | [Lighting console](/pro-apps/mechanics/lighting-console) | [ETC Eos, grandMA3](/pro-apps/tools/eos-grandma) | ETC; MA Lighting · free offline software; consoles are hardware | Patch fixtures, build a look, Record Cue, press Go. | **No** for real lights; a projector "board" yes | [/launch](/launch) + MIDI dials |
 | [Media server](/pro-apps/mechanics/media-server) | [disguise, Notch](/pro-apps/tools/disguise-notch) | disguise; Notch · Designer Starter free; Notch 60-day trial | Map content onto a 3D model of the stage; play it in sync, with live real-time graphics. | **No:** previs and shaders only | |
 | [MIDI control](/pro-apps/mechanics/midi-control) | all of the above | controllers ~$100 | Bind pads, keys, and dials to anything. | **Yes**: Web MIDI in Chrome | [/launch](/launch) |

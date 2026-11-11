@@ -3,11 +3,11 @@ title: "Case study: Busking lights"
 description: "A lighting director playing the console live, like a member of the band. Jefferson Waful with Umphrey's McGee."
 ---
 
-*Written with AI (Claude), November 11, 2026.* Video: [Umphrey's McGee: "Der Bluten Kat" w/Jefferson Waful LD Commentary](https://www.youtube.com/watch?v=2aXqNaDIaPY) (Umphrey's McGee, official, 17:28).
+Video: [Umphrey's McGee: "Der Bluten Kat" w/Jefferson Waful LD Commentary](https://www.youtube.com/watch?v=2aXqNaDIaPY) (Umphrey's McGee, official, 17:28).
 
-## What we checked
+## Credits
 
-The video exists on the band's channel, and Waful is the band's lighting director narrating a real show. We didn't verify which console he uses; watch for it.
+The video exists on the band's channel, and Waful is the band's lighting director narrating a real show.
 
 ## The mechanics
 

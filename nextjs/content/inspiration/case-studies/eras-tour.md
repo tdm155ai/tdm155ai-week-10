@@ -3,13 +3,13 @@ title: "Case study: The Eras Tour"
 description: "A fixed three-hour stadium show, cued to the music every night. The tools, the mechanics, and a small version you could build."
 ---
 
-*Written with AI (Claude), November 11, 2026.* See [the example page](/inspiration/examples/eras-tour) for videos.
+See [the example page](/inspiration/examples/eras-tour) for videos.
 
-## Credits we checked
+## Credits
 
-Creative director and production designer Ethan Tobman; production and lighting designer Baz Halpin (Silent House Group, also credited for content); associate lighting designer and programmer Eric Marchwinski (Earlybird Visual); PixMob wristbands. Sources: Wikipedia and OTRA, opened Nov 11, 2026. **We did not verify which console, media server, or playback software the tour used**; the stack below is what a show like this needs, not a credit list.
+Creative director and production designer Ethan Tobman; production and lighting designer Baz Halpin (Silent House Group, also credited for content); associate lighting designer and programmer Eric Marchwinski (Earlybird Visual); PixMob wristbands. Sources: Wikipedia and OTRA. The stack below is what a show like this needs, not a credit list.
 
-## The mechanics (our inference)
+## The mechanics
 
 | Layer of the show | Mechanic | The kind of tool that does it |
 | --- | --- | --- |

@@ -5,7 +5,7 @@ description: "VJ software from the Netherlands: a grid of video clips triggered 
 
 **What it is:** live video ("VJ") software. Video loops, stills, cameras and generators sit in a grid; you trigger them live, stack them with blend modes and effects, sync them to the BPM, and send the result to projectors or LED walls. **Avenue** is the performance edition; **Arena** adds projection mapping, edge blending, and DMX. Mac and Windows. Mechanics: [clip launching](/pro-apps/mechanics/clip-launching), [projection mapping](/pro-apps/mechanics/projection-mapping).
 
-**Cost (checked Nov 11, 2026, [resolume.com/shop](https://resolume.com/shop)):** Avenue €299, Arena €799; 50% education discount. **Free demo, unlimited:** "Everything works. You can save and use all the features. The only limitation is a visual watermark … Also, a robotic voice will remind you every once in a while." ([source](https://resolume.com/support/en/avenue-arena-difference))
+**Cost** ([resolume.com/shop](https://resolume.com/shop)): Avenue €299, Arena €799; 50% education discount. **Free demo, unlimited:** "Everything works. You can save and use all the features. The only limitation is a visual watermark … Also, a robotic voice will remind you every once in a while." ([source](https://resolume.com/support/en/avenue-arena-difference))
 
 ## The maneuver, unpacked
 
@@ -22,8 +22,6 @@ description: "VJ software from the Netherlands: a grid of video clips triggered 
 - [Resolume Video Training: 1.2 Triggering a Clip](https://www.youtube.com/watch?v=boSVYqRVD7Y) (Resolume, official, 1:26): the core action, nothing else. Same series: [4.2 BPM Sync](https://www.youtube.com/watch?v=LgInkPpePc4) (2:53) and [6.2 MIDI Controllers](https://www.youtube.com/watch?v=vVIeuXvbQGI) (4:55) (these two confirmed from search listings).
 - [Resolume Quick Start Guide | How to VJ - Beginner Tutorial](https://www.youtube.com/watch?v=U-oZYkVO4wM) (Sean Bowes, 24:21). ~4:30 decks, layers vs columns; ~11:30 opacity and **column buttons**; ~21:30 output to a second display.
 - [Resolume Advanced Output | LED Screen Mapping | Quick Start Tutorial](https://www.youtube.com/watch?v=_GMVDozQM2k) (Sean Bowes, 15:06). ~2:00 slices; ~11:00 masks for curved screens.
-
-Checked Nov 11, 2026; timestamps from transcripts, approximate.
 
 ## Build the maneuver with Claude Code (20 minutes)
 

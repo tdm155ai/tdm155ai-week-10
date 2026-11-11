@@ -3,7 +3,7 @@ title: "Tools"
 description: "One page per professional app: what it is, what it costs, its maneuver step by step, videos to watch, and a prompt to build the maneuver yourself."
 ---
 
-Each page has the same parts: **what it is** (and what it costs, checked November 11, 2026), **the maneuver** unpacked step by step, **videos** with what to watch for and when, and **a prompt** you can paste into Claude Code to build a version of the maneuver in about 20 minutes, firing cues on this app's stage.
+Each page has the same parts: **what it is** (and what it costs), **the maneuver** unpacked step by step, **videos** with what to watch for and when, and **a prompt** you can paste into Claude Code to build a version of the maneuver in about 20 minutes, firing cues on this app's stage.
 
 | App | Mechanic | Free to try? | Build a version today? |
 | --- | --- | --- | --- |
@@ -18,4 +18,4 @@ Each page has the same parts: **what it is** (and what it costs, checked Novembe
 | [ETC Eos and grandMA3](/pro-apps/tools/eos-grandma) | lighting console | yes, offline software | no (for real lights) |
 | [disguise and Notch](/pro-apps/tools/disguise-notch) | media server | Starter free; Notch 60-day trial | no |
 
-Marlon will have TouchDesigner, Isadora, and Blender open in class to show the graphical side.
+TouchDesigner, Isadora, and Blender will be open in class to show the graphical side.

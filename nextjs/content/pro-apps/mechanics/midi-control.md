@@ -5,7 +5,7 @@ description: "Pads, keys, and dials as a cheap control surface for anything in t
 
 **The maneuver:** a MIDI controller sends tiny messages: "pad 36 pressed, velocity 100", "dial 3 moved to 64". Every pro app above lets you **MIDI-map** them: touch a control on screen, touch the pad, and they're linked. A $100 controller becomes a lighting board, a clip launcher, or a Go button.
 
-**What's in the room (Marlon):** 4×4 drum pads, and Akai MPKs (25 keys, 8 pads, 8 dials). "Not as good as a professional lighting board, but for a lot of their small things they don't need something as extreme as a big-theater board."
+**What's in the room:** 4×4 drum pads, and Akai MPKs (25 keys, 8 pads, 8 dials). "Not as good as a professional lighting board, but for a lot of their small things they don't need something as extreme as a big-theater board."
 
 ## Unpacked
 

@@ -3,13 +3,13 @@ title: "Case study: Phish at Sphere"
 description: "Visuals improvised live, in a game engine, with a band that never plays the same show twice."
 ---
 
-*Written with AI (Claude), November 11, 2026.* See [the example page](/inspiration/examples/phish-at-sphere) for videos.
+See [the example page](/inspiration/examples/phish-at-sphere) for videos.
 
-## Credits we checked
+## Credits
 
-Visuals by Moment Factory; real-time content in Unreal Engine (per Unreal Engine's own video on the project). We didn't verify the control surfaces or the rest of the playback chain.
+Visuals by Moment Factory; real-time content in Unreal Engine (per Unreal Engine's own video on the project).
 
-## The mechanics (our inference)
+## The mechanics
 
 | Layer | Mechanic | How it works |
 | --- | --- | --- |

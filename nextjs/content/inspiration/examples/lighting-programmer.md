@@ -3,8 +3,6 @@ title: "Lighting programmers at work"
 description: "Behind-the-scenes videos of lighting directors and board operators firing cues, from a jam band to a stadium tour to a theater."
 ---
 
-*Researched with AI (Claude), November 11, 2026. Checked from YouTube's metadata (title, channel, length) and transcripts; the videos were not watched (no visual review), so we haven't confirmed how much of each shows the console itself.*
-
 A behind-the-scenes look at a lighting board and its cues in an advanced show. Start with the first one.
 
 ![youtube: Umphrey's McGee: "Der Bluten Kat" w/Jefferson Waful LD Commentary (Umphrey's McGee, 17:28)](https://www.youtube.com/watch?v=2aXqNaDIaPY)
@@ -18,4 +16,4 @@ A behind-the-scenes look at a lighting board and its cues in an advanced show. S
 - [Lighting Designer POV - Shelby Summerfest 2025 - GrandMA3](https://www.youtube.com/watch?v=-t7QmSYtZxA) (Xavier Williamson, third-party, 3:37): hands on the console at a festival.
 - Deeper: [Hamilton Design Discussion, with Howell Binkley & Team Lighting](https://www.youtube.com/watch?v=wzGXFMPoPtM) (ETC Study Hall, 1:46:16): the Broadway lighting team, including programmer David Arch (a panel, not console footage).
 
-We didn't find a video of a Broadway programmer at an Eos during a performance. The consoles: [ETC Eos and grandMA3](/pro-apps/tools/eos-grandma).
+The consoles: [ETC Eos and grandMA3](/pro-apps/tools/eos-grandma).

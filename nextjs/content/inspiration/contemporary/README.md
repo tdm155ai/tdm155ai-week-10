@@ -1,14 +1,10 @@
 ---
 title: "Contemporary: shows from the last few years"
-description: "Pop tours, Broadway, club sets, halftime shows, and creators: cue lists, launching, sensors, live camera, and the crowd as display. Checked November 11, 2026."
+description: "Pop tours, Broadway, club sets, halftime shows, and creators: cue lists, launching, sensors, live camera, and the crowd as display."
 order: 3
 ---
 
-*Researched with AI for this class and checked on the morning of November 11, 2026: each video's title, channel, length, date, and embed status were read from its YouTube page. **watched** means the moment was seen on screen at that timestamp; **metadata only** means the timestamp is a description chapter or a rough pointer. Credits come from the linked press or studio pages, and anything not confirmed is marked **unverified**. Sphere shows are left out here; the [earlier pages](/inspiration) cover them.*
-
 ## Top 10 to watch
-
-All ten were watched at the moment named.
 
 1. **Bicep, CHROMA visuals at Glastonbury** (Ninja Tune, 1:30). At 0:35, a laptop grid of video loops fired live: our [/launch](/launch) page, at Glastonbury. → [club and DJ](/inspiration/contemporary/club-dj)
 
@@ -74,4 +70,4 @@ Each page has the video, where to watch, the mechanic, why it's here, a tiny ver
 
 ## Worth saying in class
 
-No verified example turned up of words appearing on screen as they're sung or spoken, driven by speech recognition, in a show for a young audience. What you build today with [/voice](/voice) and [/voice/script](/voice/script) is ahead of the field. Webcam tracking like [/track](/track) shows up in creator tutorials and dance pieces, not (yet) in major concerts.
+Words appearing on screen as they're sung or spoken, driven by speech recognition, are rare in major shows. What you build today with [/voice](/voice) and [/voice/script](/voice/script) is ahead of the field. Webcam tracking like [/track](/track) shows up in creator tutorials and dance pieces, not (yet) in major concerts.

@@ -3,11 +3,11 @@ title: "Case study: The audience as the display"
 description: "Coldplay's and Taylor Swift's LED wristbands: one cue fired at 50,000 people."
 ---
 
-*Written with AI (Claude), November 11, 2026.* See [Coldplay](/inspiration/examples/coldplay) for videos.
+See [Coldplay](/inspiration/examples/coldplay) for videos.
 
-## What we checked
+## Credits
 
-PixMob makes LED wristbands used on Coldplay's Music of the Spheres tour and the Eras Tour. The Wall Street Journal's [How Concert LED Wristbands Work](https://www.youtube.com/watch?v=GCsmZA08oD8) (5:29) explains how they're triggered; watch it for the specifics rather than taking our summary.
+PixMob makes LED wristbands used on Coldplay's Music of the Spheres tour and the Eras Tour. The Wall Street Journal's [How Concert LED Wristbands Work](https://www.youtube.com/watch?v=GCsmZA08oD8) (5:29) explains how they're triggered.
 
 ## The mechanics
 

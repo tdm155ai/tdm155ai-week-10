@@ -5,7 +5,7 @@ description: "Figure 53's cue-list app for theater sound, video, and lighting. T
 
 **What it is:** QLab is "sound, video, and lighting control for macOS" (Figure 53's words). A show is a **cue list**; the operator presses **GO** (the space bar) and the next cue fires. It is the standard playback tool in theater sound departments. **Mac only.** Mechanic: [cue list](/pro-apps/mechanics/cue-list).
 
-**Cost (checked Nov 11, 2026, [qlab.app/shop](https://qlab.app/shop/)):** free to download and use, with Audio, Video and Lighting cues and unlimited cue lists, but limited to 2 audio output channels, 1 single-output video stage, and 16 DMX addresses; Network, MIDI, Script and Timecode cues need a license. Licenses: $599 / $1,099 / $1,399 for one, two, or all three feature sets, or rent by the day ($8–15). [Educational pricing](https://qlab.app/educational-pricing/): $479–1,119, or $6–12 a day.
+**Cost** ([qlab.app/shop](https://qlab.app/shop/)): free to download and use, with Audio, Video and Lighting cues and unlimited cue lists, but limited to 2 audio output channels, 1 single-output video stage, and 16 DMX addresses; Network, MIDI, Script and Timecode cues need a license. Licenses: $599 / $1,099 / $1,399 for one, two, or all three feature sets, or rent by the day ($8–15). [Educational pricing](https://qlab.app/educational-pricing/): $479–1,119, or $6–12 a day.
 
 ## The maneuver, unpacked
 
@@ -22,7 +22,7 @@ description: "Figure 53's cue-list app for theater sound, video, and lighting. T
 - [Qlab Tutorial | Basics Episode 2 "Pre Show Loops & Auto Follows"](https://www.youtube.com/watch?v=a3v5xfDPe9w) (Qlab Tutorial, 3:49). ~2:00 auto-continue fires everything at once; ~3:00 auto-follow plays one song after another. The clearest short demo of the difference.
 - [Exploring the Fade Cue in QLab 5](https://www.youtube.com/watch?v=tPlRyKKG4TQ) (Figure 53, official, 10:41). ~1:41 why a fade is its own cue; ~2:40 fading video opacity, scale and position; ~8:42 timeline groups.
 
-Checked Nov 11, 2026 against YouTube's metadata and transcripts; timestamps approximate. There's no QLab "show reel": it's invisible infrastructure.
+There's no QLab "show reel": it's invisible infrastructure.
 
 ## Build the maneuver with Claude Code (20 minutes)
 

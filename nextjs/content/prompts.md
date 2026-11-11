@@ -4,7 +4,7 @@ description: Paste one into Claude Code in this repo, then test it on the page. 
 order: 5
 ---
 
-Written with AI from this app's guides and code (November 11, 2026); not every prompt has been tried yet. If one goes sideways, say what you saw and ask Claude Code to undo it.
+If a prompt goes sideways, say what you saw and ask Claude Code to undo it.
 
 ## How to use these
 

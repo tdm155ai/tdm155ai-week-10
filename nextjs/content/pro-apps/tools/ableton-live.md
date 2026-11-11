@@ -5,7 +5,7 @@ description: "Music software whose Session view is a grid of clips launched live
 
 **What it is:** music software from Ableton (Berlin), Mac and Windows. Its **Session view** is a grid of loops and one-shots you launch live, the direct ancestor of Resolume's clip grid; the **Arrangement view** is a traditional timeline. In theater it runs sound cues and live loops. Current version Live 12 (Live 13 announced for early 2027). Mechanics: [clip launching](/pro-apps/mechanics/clip-launching), [MIDI control](/pro-apps/mechanics/midi-control).
 
-**Cost (checked Nov 11, 2026, [ableton.com/shop](https://www.ableton.com/en/shop/live/)):** Intro $99, Standard $349, Suite $749 (20% off from Nov 10 until Live 13 ships). **[30-day free trial](https://www.ableton.com/en/trial/)** of Suite. **Live Lite** comes free with many controllers: Novation says all its Launchpads include it, so check your controller's box.
+**Cost** ([ableton.com/shop](https://www.ableton.com/en/shop/live/)): Intro $99, Standard $349, Suite $749 (20% off from Nov 10 until Live 13 ships). **[30-day free trial](https://www.ableton.com/en/trial/)** of Suite. **Live Lite** comes free with many controllers: Novation says all its Launchpads include it, so check your controller's box.
 
 ## The maneuver, unpacked
 
@@ -21,8 +21,6 @@ description: "Music software whose Session view is a grid of clips launched live
 - [Learn Live: Session View](https://www.youtube.com/watch?v=qv_N3plJYx4) (Ableton, official, 7:36). ~0:31 loops vs one-shots; **~1:32 Global Quantization**; ~3:00 "a row of clips is called a Scene".
 - [Novation // Launchpad With Ableton Live: Super Simple Setup](https://www.youtube.com/watch?v=WDivIS-LI6w) (Novation, official, 0:28): plug in, pick the controller, play.
 - [Felix Raphael: Preparing Ableton Session View for Playing Live | incl. LIVE JAM](https://www.youtube.com/watch?v=EidG8BobNS4) (Ableton Tips by PML, 19:46). **11:15 live jam**; 16:10 a live set excerpt.
-
-Checked Nov 11, 2026; timestamps from captions and chapters.
 
 ## Build the maneuver with Claude Code (20 minutes)
 

@@ -4,14 +4,11 @@ description: "Rhizomatiks, live mocap, and AI choreography."
 order: 10
 ---
 
-*Researched with AI for this class and checked on the morning of November 11, 2026 (title, channel, length, date, and embed status read from each YouTube page). **watched** means the moment was seen on screen at that timestamp; **metadata only** means the timestamp is a description chapter or a rough pointer. Credits come from the linked press or studio pages; anything not confirmed is marked **unverified**. Where a "build a tiny version" idea needs something this app doesn't do yet (a webcam layer on the stage, pitch tracking, a timeline), it's a prompt for Claude Code, not a feature.*
-
 **Best 2:** Perfume's Reframe Tour, ELEVENPLAY × Rhizomatiks "multiplex."
 
 ## Perfume: "FUSION" and "edge" from the Reframe Tour 2021
 
 - **Video:** [Perfume "FUSION"&"edge" from Reframe Tour 2021](https://www.youtube.com/watch?v=T_d13UVEfzM) (Perfume, 11:55, 2022-02-26; official)
-- **Watch at:** metadata only
 - **Mechanic:** dance tech, projection, sensors
 - **Why it's here:** J-pop's high-water mark for tech staging.
 - **Build a tiny version:** [/track](/track). Body outlines are projected behind the dancer.
@@ -20,16 +17,14 @@ order: 10
 ## ELEVENPLAY × Rhizomatiks: "multiplex"
 
 - **Video:** [Rhizomatiks×ELEVENPLAY "multiplex"](https://www.youtube.com/watch?v=a1hG__i4ems) (Rhizomatiks, 8:03, 2023-06-13; official studio)
-- **Watch at:** metadata only
 - **Mechanic:** dance tech, sensors, projection
 - **Why it's here:** Robots, recorded dancers and an infrared camera, all explained.
 - **Build a tiny version:** [/draw-a-box](/draw-a-box). Track paper boxes moving under the overhead camera and project onto them.
-- **Credits and sources:** "An infrared camera was used to precisely detect the cubes' positions" (description). Also [ELEVENPLAY x Rhizomatiks "border 2021"](https://www.youtube.com/watch?v=rqmO7FA2vdw) (ELEVENPLAY ARCHIVES, 3:00, uploaded 2026-04-27; a 2021 work; metadata only).
+- **Credits and sources:** "An infrared camera was used to precisely detect the cubes' positions" (description). Also [ELEVENPLAY x Rhizomatiks "border 2021"](https://www.youtube.com/watch?v=rqmO7FA2vdw) (ELEVENPLAY ARCHIVES, 3:00, uploaded 2026-04-27; a 2021 work).
 
 ## Outlines: Apotheosis (a live mocap show)
 
 - **Video:** [Outlines: Apotheosis - live motion capture show by Serwah Attafuah x SOFT CENTRE | Behind the Scenes](https://www.youtube.com/watch?v=H1cU2kq-mhg) (Sydney Opera House, 1:49, 2021-07-06; official venue)
-- **Watch at:** metadata only
 - **Mechanic:** dance tech, sensors
 - **Why it's here:** A dancer drives a game-engine avatar live.
 - **Build a tiny version:** [/track](/track) to an avatar on [/stage](/stage).
@@ -38,7 +33,6 @@ order: 10
 ## Wayne McGregor: Living Archive (AI choreography)
 
 - **Video:** [LIVING ARCHIVE: AI Experiment with WAYNE MCGREGOR | Google Arts & Culture](https://www.youtube.com/watch?v=Hd3BDvfmg4k) (Google Arts & Culture, 2:38, 2019-11-20; official)
-- **Watch at:** metadata only
 - **Mechanic:** dance tech, AI
 - **Why it's here:** AI that predicts the next dance move. Older (2019).
 - **Build a tiny version:** [/track](/track). Recorded poses trigger cues.

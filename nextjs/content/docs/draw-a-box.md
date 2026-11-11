@@ -8,12 +8,12 @@ description: Draw a rectangle on paper under the overhead camera (or lay down a 
 
 ## What it does
 
-The idea (Marlon): people often present by drawing under an overhead camera, a big piece of paper filling the frame. What if you could draw a box and have a video show up inside it, with a spoken word choosing which video?
+The idea: people often present by drawing under an overhead camera, a big piece of paper filling the frame. What if you could draw a box and have a video show up inside it, with a spoken word choosing which video?
 
 1. **Find the box.** [OpenCV.js](https://docs.opencv.org/4.x/d5/d10/tutorial_js_root.html), the browser build of the classic computer-vision library, looks at each frame: grayscale, an adaptive threshold (dark ink on light paper becomes white lines on black), then `findContours` and `approxPolyDP` keep shapes with exactly four corners. The biggest one wins. No training, no model.
 2. **Steady it.** Small wobbles are smoothed, a one-frame jump is ignored, and if your hand covers the box it holds for a second. **Lock the box** (or press `L`) freezes it while you keep drawing.
 3. **Warp the clip onto it.** A homography (the math of projecting a rectangle onto any four corners) becomes a CSS `matrix3d` transform on the clip (a GIF or a video).
-4. **Pick the clip by voice.** Press **Listen**; Chrome's speech recognition (TR's `lib/voice/speech.js`) watches for the words in `clips.js`. Or click a clip, or press its number; `0` or "clear" empties the box.
+4. **Pick the clip by voice.** Press **Listen**; Chrome's speech recognition (`lib/voice/speech.js`) watches for the words in `clips.js`. Or click a clip, or press its number; `0` or "clear" empties the box.
 
 OpenCV.js is about 11 MB. It loads only on this page, from jsDelivr (or opencv.org as a backup); after the first time the browser caches it.
 

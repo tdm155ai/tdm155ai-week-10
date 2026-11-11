@@ -4,8 +4,6 @@ description: "Every way into the stage and every thing it can do, in the order w
 order: 1
 ---
 
-Written with AI from Marlon's class direction (November 11, 2026). The order is a working sequence and may change during class; the last two may swap.
-
 Every piece today is an **input** (something the computer notices) wired to an **output** (something that happens in the room). Try each input on its own first, with the simplest output. Then, in your group, combine them.
 
 ## The sequence

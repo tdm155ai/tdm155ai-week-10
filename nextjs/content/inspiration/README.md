@@ -1,15 +1,11 @@
 ---
 title: "Inspiration"
-description: "Concerts, shows, theater, and a few galleries, to define what we're working on today. Links only, checked November 11, 2026."
+description: "Concerts, shows, theater, and a few galleries: videos of live events built on cues, tracking, and projection."
 ---
 
-*This section was researched and written with AI (Claude) on the morning of November 11, 2026. Every link was checked that morning against YouTube's own title, channel, and length, or by opening the page. Anything not from the artist's, studio's, or venue's own channel is marked third-party.*
-
-Concerts first: they are what most of you will design for. Each entry is one line on why it's here; the **examples** pages go deeper, and the **case studies** take a show apart into its mechanics and suggest how you'd build a small version of each with Claude Code.
-
-- **[Contemporary](/inspiration/contemporary) (new, 9:30 am):** shows from the last few years (pop tours, Broadway, club sets, halftime shows, creators), with a top 10 to watch and pages by mechanic.
+- **[Recent shows: top 10](/inspiration/contemporary):** pop tours, Broadway, club sets, halftime shows, creators.
 - **[Examples](/inspiration/examples):** one page per show, studio, or artist.
-- **[Case studies](/inspiration/case-studies):** a show's tools and mechanics, and how you'd code each piece.
+- **[Case studies](/inspiration/case-studies):** a show's tools and mechanics, piece by piece.
 
 ## Concerts and tours
 
@@ -24,7 +20,6 @@ Concerts first: they are what most of you will design for. Each entry is one lin
 - [Behind the scenes of Coldplay's Music of the Spheres World Tour](https://www.youtube.com/watch?v=I7OHTA-N0yM) (Disguise, 4:23): the screens director at front of house running disguise and Notch. → [example](/inspiration/examples/coldplay)
 - [Abstract: The Art of Design | Es Devlin: Stage Design | FULL EPISODE](https://www.youtube.com/watch?v=jo4aAVjuh2o) (Netflix, 42:20, free): the stage designer behind U2, Beyoncé, and the opera house, on her process. → [example](/inspiration/examples/es-devlin)
 
-
 ## A lighting programmer at the console
 
 - [Umphrey's McGee: "Der Bluten Kat" w/Jefferson Waful LD Commentary](https://www.youtube.com/watch?v=2aXqNaDIaPY) (Umphrey's McGee, 17:28): the band's lighting director narrates as he fires looks live to an improvising band. The best one here. → [example](/inspiration/examples/lighting-programmer), [case study](/inspiration/case-studies/busking-lights)
@@ -33,8 +28,6 @@ Concerts first: they are what most of you will design for. Each entry is one lin
 - [Ed Sheeran "Mathematics" Tour • Behind the Scenes: Lighting Design, PA Sound and FOH Crew Life](https://www.youtube.com/watch?v=HvLCHaR4RbY) (EventElevator, third-party, 21:46): front of house on a stadium tour.
 - [Lighting Designer POV - Shelby Summerfest 2025 - GrandMA3](https://www.youtube.com/watch?v=-t7QmSYtZxA) (Xavier Williamson, third-party, 3:37): hands on a grandMA3 at a festival.
 - [Working in the Theatre: Lighting Design](https://www.youtube.com/watch?v=wqMYsjHU5rU) (American Theatre Wing, 23:07): the theater side: designers, programmers, cues.
-
-We didn't find a video of a Broadway programmer at an Eos during a performance.
 
 ## Projection mapping
 

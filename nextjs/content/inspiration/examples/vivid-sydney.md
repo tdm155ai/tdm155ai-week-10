@@ -3,8 +3,6 @@ title: "Vivid Sydney"
 description: "The annual festival that projection-maps the sails of the Sydney Opera House."
 ---
 
-*Researched with AI (Claude), November 11, 2026.*
-
 **What:** every year Vivid Sydney's "Lighting of the Sails" turns the Opera House into a screen, with a different artist each year.
 
 **Why it's here:** building-scale mapping on one of the most curved surfaces in the world; the designers talk about drawing for the shape, not the rectangle.

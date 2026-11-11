@@ -3,15 +3,11 @@ title: "Phish at Sphere"
 description: "Moment Factory's live, game-engine visuals on the Las Vegas Sphere's LED dome, different every night because the band improvises."
 ---
 
-*Researched with AI (Claude), November 11, 2026.*
-
 **What:** Phish's 2024 run at Sphere in Las Vegas (and a 2026 residency), with visuals by Moment Factory. Phish improvises, so the show can't be locked to a timeline: the visuals are driven live, in Unreal Engine, by operators following the band.
 
 **Why it's here:** it's the professional version of today's question. When the performance isn't fixed, cues have to be fired (or generated) live. That's what you're building with keys, pads, voice, and tracking.
 
 ## Watch
-
-*Checked Nov 11, 2026 from YouTube's metadata (title, channel, length) and transcripts; the videos were not watched frame by frame (no visual review).*
 
 ![youtube: Phish, Live at Sphere | Exclusive Behind-the-Scenes (Moment Factory, 5:46)](https://www.youtube.com/watch?v=aP-y5CDJBUs)
 

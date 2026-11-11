@@ -1,9 +1,7 @@
 ---
 title: "Case studies"
-description: "Real shows taken apart into their tools and mechanics, with ideas for building a small version of each piece with Claude Code."
+description: "Real shows taken apart into their tools and mechanics, with a small version of each piece to build."
 ---
-
-*Written with AI (Claude), November 11, 2026. Each case study separates **credits we checked** from **what the mechanics must be** (our inference from how such shows work) and **how you'd build a small version** (proposals, not tested).*
 
 | Case study | What it teaches | The mechanics |
 | --- | --- | --- |

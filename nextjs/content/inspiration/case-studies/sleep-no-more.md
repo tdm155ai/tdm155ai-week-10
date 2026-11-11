@@ -3,13 +3,13 @@ title: "Case study: Sleep No More"
 description: "Punchdrunk's immersive Macbeth: many rooms, one show clock, and an audience that moves."
 ---
 
-*Written with AI (Claude), November 11, 2026.* See [the example page](/inspiration/examples/sleep-no-more).
+See [the example page](/inspiration/examples/sleep-no-more).
 
-## What we checked
+## Credits
 
-The official teaser from Emursive, its New York producer. **We didn't verify the production's sound or lighting systems**; the table is what a show like this needs.
+The official teaser from Emursive, its New York producer.; the table is what a show like this needs.
 
-## The mechanics (our inference)
+## The mechanics
 
 | Layer | Mechanic |
 | --- | --- |

@@ -5,10 +5,10 @@ description: "The two lighting consoles that run most theater (Eos) and most con
 
 **What they are:** professional lighting consoles. A programmer **patches** every fixture to a DMX address, builds **looks**, records them as **cues**, and the operator plays them back with **Go**. ETC (Electronic Theatre Controls) makes the **Eos** family (Apex, Ti, Ion Xe, Element): keypad and command-line driven, built around channels and cue lists, dominant in theater and on Broadway. MA Lighting (Germany) makes **grandMA3**: built around fixtures, groups, presets, sequences, and **executors** (playback faders), dominant on concerts, tours, and TV. Mechanic: [lighting console](/pro-apps/mechanics/lighting-console).
 
-**Cost (checked Nov 11, 2026):** both have **free software you can program on**:
+**Cost:** both have **free software you can program on**:
 - ETC: "The Eos software is always free to download and use on Mac and PC" ([ETCnomad](https://www.etcconnect.com/ETCnomad/)). Without a USB key it runs Offline (program and save, no DMX out); the ETCnomad key turns a laptop into a real console.
 - MA: grandMA3 onPC is free "without any restrictions… the same as the grandMA3 console software" ([MA](https://www.malighting.com/special/grandma3-onpc/)); output to real lights needs MA hardware.
-- Console prices: not checked (they're five to six figures).
+- Consoles: five to six figures.
 
 ## The maneuver, unpacked (Eos)
 
@@ -29,7 +29,7 @@ description: "The two lighting consoles that run most theater (Eos) and most con
 - [MAking of – Eurovision Song Contest 2024 | The grandMA3 System](https://www.youtube.com/watch?v=Wi0wEcMD2dQ) (MA Lighting, 9:40). ~1:32 eleven consoles; ~3:01 several programmers in one show file.
 - [MA3 onPC: The 40min Crash Course!](https://www.youtube.com/watch?v=7VD3ZcEq1wo) (Jonathan D. Martin, third-party, 40:02): patch to timecode in one sitting (no chapters).
 
-Checked Nov 11, 2026; timestamps from captions, approximate. More programmers at work: [inspiration](/inspiration#a-lighting-programmer-at-the-console).
+More programmers at work: [inspiration](/inspiration#a-lighting-programmer-at-the-console).
 
 ## Build the maneuver with Claude Code (20 minutes)
 

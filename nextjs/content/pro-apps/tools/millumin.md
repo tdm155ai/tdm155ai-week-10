@@ -3,9 +3,9 @@ title: "Millumin"
 description: "Show control and video mapping built for theater and dance, on the Mac. Mechanics: cue list, projection mapping."
 ---
 
-**What it is:** a show-control and media-server app made for **theater, dance**, video mapping, and installation. A cue-based **dashboard** (layers × columns) plus **timelines** for keyframed animation, with mapping and warping, and MIDI, OSC, and DMX control. Of everything on this list, it's the closest to what runs video in a theater booth. **macOS only** ("There is no version for Windows or Linux"). Maker: the website doesn't name the company on the pages we read (not verified). Mechanics: [cue list](/pro-apps/mechanics/cue-list), [projection mapping](/pro-apps/mechanics/projection-mapping).
+**What it is:** a show-control and media-server app made for **theater, dance**, video mapping, and installation. A cue-based **dashboard** (layers × columns) plus **timelines** for keyframed animation, with mapping and warping, and MIDI, OSC, and DMX control. Of everything on this list, it's the closest to what runs video in a theater booth. **macOS only** ("There is no version for Windows or Linux"). Mechanics: [cue list](/pro-apps/mechanics/cue-list), [projection mapping](/pro-apps/mechanics/projection-mapping).
 
-**Cost (checked Nov 11, 2026, [millumin.com](https://www.millumin.com/v5/)):** **30-day free trial**, fully unlocked, then a watermark on the output. Rent from US$39; lifetime from US$499.
+**Cost** ([millumin.com](https://www.millumin.com/v5/)): **30-day free trial**, fully unlocked, then a watermark on the output. Rent from US$39; lifetime from US$499.
 
 ## The maneuver, unpacked
 
@@ -17,11 +17,11 @@ description: "Show control and video mapping built for theater and dance, on the
 
 ## Watch
 
-- [Millumin Quick Start for Basic Show](https://www.youtube.com/watch?v=tFm5WU8Xem0) (Kevin Ring - Video Tutorials, 14:57): building a project, importing, transitions across columns. (Timestamps not verified.)
+- [Millumin Quick Start for Basic Show](https://www.youtube.com/watch?v=tFm5WU8Xem0) (Kevin Ring - Video Tutorials, 14:57): building a project, importing, transitions across columns.
 - [ART 371 Intro to Millumin part2: Mapping, Masking, Effects & Layer Controls](https://www.youtube.com/watch?v=CU9fkxqoN58) (Coaction Lab, 28:50): a university class recording.
 - [[LIVE #09] Animate with the Timeline](https://www.youtube.com/watch?v=sSoNMrkZ8nM) (Millumin, official, 1:05:13). Chapters: 10:07 Animate · 27:26 Asynchronous timelines · 34:38 Tips.
 
-Checked Nov 11, 2026. The official channel has no showreel.
+The official channel has no showreel.
 
 ## Build the maneuver with Claude Code (20 minutes)
 

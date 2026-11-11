@@ -5,7 +5,7 @@ description: "Derivative's node-based environment for real-time visuals, install
 
 **What it is:** a visual programming environment where you wire **operators** into a live **network** that renders in real time: audio-reactive visuals, projection mapping, sensor-driven installations. Made by Derivative (Toronto). Windows and macOS (Apple Silicon recommended; some operators, such as Kinect and Face Track, are Windows/Nvidia only). Mechanic: [node graph](/pro-apps/mechanics/node-graph).
 
-**Cost (checked Nov 11, 2026, [derivative.ca licensing](https://derivative.ca/UserGuide/Licensing)):** **Non-Commercial is free**: no paid work, image resolution capped at 1280×1280, a few pro operators missing, 10 install keys per account. Educational $300, Commercial $600, Pro $2,200.
+**Cost** ([derivative.ca licensing](https://derivative.ca/UserGuide/Licensing)): **Non-Commercial is free**: no paid work, image resolution capped at 1280×1280, a few pro operators missing, 10 install keys per account. Educational $300, Commercial $600, Pro $2,200.
 
 ## The maneuver, unpacked
 
@@ -31,8 +31,6 @@ description: "Derivative's node-based environment for real-time visuals, install
 - [03 – The Interface – TouchDesigner Beginner Course](https://www.youtube.com/watch?v=xtp1CLzWRUk) (bileam tschepe / elekktronaut, 13:03). **08:16 the network.** Part of a free [22-video beginner course](https://www.youtube.com/playlist?list=PLFrhecWXVn5862cxJgysq9PYSjLdfNiHz).
 - [01 – About TouchDesigner](https://www.youtube.com/watch?v=u2Jr060p8dY) (bileam tschepe, 6:34). **03:30 use cases, 05:58 showcase.** For inspiration, browse [derivative.ca/showcase](https://derivative.ca/showcase).
 
-Checked Nov 11, 2026 against YouTube's metadata (chapters from the descriptions).
-
 ## Build the maneuver with Claude Code (20 minutes)
 
 ```text
@@ -48,4 +46,4 @@ TouchDesigner-style network written as code, with a preview at each step.
 Keep it one file and explain the data flow in a comment at the top.
 ```
 
-**Could you replace it?** Partly. A single-purpose patch, yes; TouchDesigner as a whole studio, no. Worth knowing it's free to try: Marlon will have it open in class.
+**Could you replace it?** Partly. A single-purpose patch, yes; TouchDesigner as a whole studio, no. It's free to try, and it will be open in class.

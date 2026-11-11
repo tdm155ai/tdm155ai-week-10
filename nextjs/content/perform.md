@@ -4,8 +4,6 @@ description: "A worksheet for your group: roles, a cue sheet, a backup for every
 order: 4
 ---
 
-Written with AI from Marlon's class plan (November 11, 2026). A proposal for the group build; your instructor may change the timing.
-
 The goal: a short piece, a minute or two, where things **pop up in the room at the right moments**. A reader reads (a sonnet, a poem, a scene, a little lecture) and cues fire: a sound, a picture, a color, a line of text. Combine **voice-triggered cues** with **keys, buttons, or MIDI**, so a person can always run the show by hand.
 
 ## 1. Choose your roles (5 minutes)

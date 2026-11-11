@@ -5,7 +5,7 @@ description: "Cycling '74's visual programming environment for music, sound, and
 
 **What it is:** a visual programming environment. You place **objects** in a **patcher** and connect them with **patch cords**; MSP handles audio and Jitter handles video. The grandparent of the node-graph apps, and the tool of choice in experimental music and sound art. Made by Cycling '74 (owned by Ableton); macOS and Windows; current version Max 9. **Max for Live** runs Max devices inside Ableton Live (bundled with Live Suite). Mechanic: [node graph](/pro-apps/mechanics/node-graph).
 
-**Cost (checked Nov 11, 2026, [cycling74.com/shop](https://cycling74.com/shop/max)):** $399 permanent, or $120/year, or $12.99/month. **Free 30-day demo; after that you can still run and edit patches, but not save** ([source](https://support.cycling74.com/hc/en-us/articles/32781890060947-Is-there-a-Max-demo)).
+**Cost** ([cycling74.com/shop](https://cycling74.com/shop/max)): $399 permanent, or $120/year, or $12.99/month. **Free 30-day demo; after that you can still run and edit patches, but not save** ([source](https://support.cycling74.com/hc/en-us/articles/32781890060947-Is-there-a-Max-demo)).
 
 ## The maneuver, unpacked
 
@@ -22,8 +22,6 @@ description: "Cycling '74's visual programming environment for music, sound, and
 - [Getting Started~ a beginners' guide to Max MSP (2025)](https://www.youtube.com/watch?v=oNpi9Y7w4D8) (oliver thurley, 51:41). Chapters: 05:38 kinds of objects · 08:31 message boxes · 18:52 inlets and outlets · 20:05 edit vs interaction mode.
 - [Intro to MIDI in Max 7](https://www.youtube.com/watch?v=zCx_7lum-DU) (Kimberlee Swisher, 8:28). ~2:02 `noteout`; ~2:32 `makenote`; ~6:08 metro → counter → select firing chords.
 - [Welcome to Max 9](https://www.youtube.com/watch?v=XZNu1Lcj9js) (Cycling '74, official, 1:09): what it looks like now.
-
-Checked Nov 11, 2026 against YouTube's metadata.
 
 ## Build the maneuver with Claude Code (20 minutes)
 

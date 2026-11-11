@@ -1,6 +1,6 @@
 ---
 title: Installations and Live Events
-description: TDM 155AI · November 11, 2026 · Make something happen in the room.
+description: TDM 155AI · Make something happen in the room.
 ---
 
 Make a cue happen: a sound, a picture, a color, a few words. Then give it a trigger—a key, a pad, a spoken word, or a hand in the camera. Everything sends cues to the same [stage](/stage), a separate window you can put on a projector.

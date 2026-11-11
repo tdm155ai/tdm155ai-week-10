@@ -3,8 +3,6 @@ title: "Coldplay, Music of the Spheres"
 description: "A stadium tour run on disguise and Notch, with the crowd's LED wristbands as part of the light show."
 ---
 
-*Researched with AI (Claude), November 11, 2026.*
-
 **What:** Coldplay's Music of the Spheres World Tour (2022–25): circular screens, inflatable spherical screens, and PixMob LED wristbands for every audience member. The screens director runs disguise at front of house, with real-time Notch content.
 
 **Why it's here:** it shows the whole stack (media server, real-time graphics, lighting, and the audience as a display) in one show, and a screens director explaining it in four minutes.

@@ -5,7 +5,7 @@ description: "TroikaTronix's patching-and-cueing app built for theater and dance
 
 **What it is:** a node-based media server and cueing tool made for theater, dance, and installation. You build **scenes** out of **actors** wired together, then step through the scenes like cues. It sits between QLab (scenes + space bar) and TouchDesigner (patching), and it's built for interactive, sensor-driven performance. Made by TroikaTronix (created by Mark Coniglio). Mac and Windows; one license runs on both. Mechanics: [node graph](/pro-apps/mechanics/node-graph), [cue list](/pro-apps/mechanics/cue-list), [sensor triggers](/pro-apps/mechanics/sensor-triggers).
 
-**Cost (checked Nov 11, 2026, [TroikaTronix pricing](https://support.troikatronix.com/support/solutions/articles/13000106528)):** **free demo: everything works except saving.** $199/year; rentals $17.50 for 7 days or $30 for 30; perpetual $725. Academic discounts 30% (institutions, faculty) and 50% (students), not on rentals.
+**Cost** ([TroikaTronix pricing](https://support.troikatronix.com/support/solutions/articles/13000106528)): **free demo: everything works except saving.** $199/year; rentals $17.50 for 7 days or $30 for 30; perpetual $725. Academic discounts 30% (institutions, faculty) and 50% (students), not on rentals.
 
 ## The maneuver, unpacked
 
@@ -23,8 +23,6 @@ All three from the official troikatronix channel ("Isadora 101", made for Isador
 - [Isadora 101 - #1: How to Build Your First Isadora Patch](https://www.youtube.com/watch?v=2IOoTTQ9d94) (13:13). ~5:00 add a Movie Player; ~8:00 the Projector; ~9:30 patch the wire, red to green.
 - [Isadora 101 - #2: Building Scene Transitions & Cues](https://www.youtube.com/watch?v=LUX28Js6wEk) (21:58). ~4:30 space bar fires the next scene; ~6:30 crossfade time; ~14:00 cue numbering for the stage manager; ~16:30 auto-follow with a Jump actor.
 - [Isadora and IzzyCast Demo - Prolight + Sound 2023](https://www.youtube.com/watch?v=mObxmEInPqc) (8:20): an overview demo (content not reviewed).
-
-Checked Nov 11, 2026; timestamps from caption tracks, approximate.
 
 ## Build the maneuver with Claude Code (20 minutes)
 

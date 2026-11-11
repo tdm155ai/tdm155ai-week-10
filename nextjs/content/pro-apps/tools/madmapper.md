@@ -5,7 +5,7 @@ description: "Projection-mapping (and LED-mapping) software: draw a surface, war
 
 **What it is:** projection-mapping and LED/DMX light-mapping software, a collaboration between the French installation studio 1024 architecture and the Swiss developers GarageCube. You draw surfaces that match real objects, warp them until they line up, and give each its own media; it also has cues, a timeline, lasers, and 3D calibration. Mac and Windows; current version MadMapper 6. Mechanic: [projection mapping](/pro-apps/mechanics/projection-mapping).
 
-**Cost (checked Nov 11, 2026, [madmapper.com](https://madmapper.com/madmapper/software)):** **free to try, every feature, no time limit**, with a watermarked output (and DMX blacking out every 30 seconds). Rent from €44/month; buy from €479.
+**Cost** ([madmapper.com](https://madmapper.com/madmapper/software)): **free to try, every feature, no time limit**, with a watermarked output (and DMX blacking out every 30 seconds). Rent from €44/month; buy from €479.
 
 ## The maneuver, unpacked
 
@@ -22,8 +22,6 @@ description: "Projection-mapping (and LED-mapping) software: draw a surface, war
 - [Quad Creation — MADTutorial Basics](https://www.youtube.com/watch?v=Lrf3lO9vsCs) (MadMapper, official, 1:56): the whole maneuver in two minutes (2017 interface). Companion: [Quad Mask](https://www.youtube.com/watch?v=tJzjmDEilUk) (1:56, confirmed from search listing).
 - [MadMapper House Projection Mapping Walkthrough](https://www.youtube.com/watch?v=YVgUWpfaRNU) (Luma Box, 23:03): a real Halloween house. Chapters: 03:45 Input · 05:49 Masking · 14:07 two projectors · 16:44 Mapping.
 - [MadMapper Artists Showreel](https://www.youtube.com/watch?v=6WwWu8i2bCg) (MadMapper, official, 2:28, Nov 2025): 1024 architecture in Lyon at 00:00; the reopening of Notre-Dame de Paris at 00:31; the Eiffel Tower at 02:20.
-
-Checked Nov 11, 2026 against YouTube's metadata.
 
 ## Build the maneuver with Claude Code (20 minutes)
 
