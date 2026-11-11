@@ -9,12 +9,10 @@ const MEDIAPIPE_VERSION = "1.2.2"; // keep in step with package.json
 const LOCAL = "/mediapipe";
 const ONLINE_WASM = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_VERSION}/wasm`;
 
-async function exists(url) {
-  try {
-    return (await fetch(url, { method: "HEAD" })).ok;
-  } catch {
-    return false;
-  }
+// In the class app there are no copies in public/mediapipe/, so everything comes from the internet. Checking first
+// only printed red 404s in the console, so this answers "no" without asking.
+async function exists() {
+  return false;
 }
 
 let files = null;

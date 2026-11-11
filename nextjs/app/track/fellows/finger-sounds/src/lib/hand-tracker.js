@@ -12,12 +12,10 @@ const ONLINE_MODEL =
 
 let loading = null;
 
-async function exists(url) {
-  try {
-    return (await fetch(url, { method: "HEAD" })).ok;
-  } catch {
-    return false;
-  }
+// In the class app there are no copies in public/mediapipe/, so everything comes from the internet. Checking first
+// only printed red 404s in the console, so this answers "no" without asking.
+async function exists() {
+  return false;
 }
 
 async function create() {
