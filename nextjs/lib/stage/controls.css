@@ -75,3 +75,15 @@
 .cue-kind { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .cue-label { font-weight: 600; }
 .cue-src { overflow: hidden; color: var(--muted); font-family: ui-monospace, monospace; font-size: 11px; white-space: nowrap; text-overflow: ellipsis; }
+.surtitle { margin: 16px 0 8px; padding: 22px 20px; border-radius: 8px; background: #000; text-align: center; }
+.sur-now { margin: 0; font-size: clamp(22px, 2.6vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1.3; color: #666; }
+.sur-now .read { color: #fff; }
+.sur-next { margin: 10px 0 0; color: #555; font-size: 15px; }
+.script-text { margin-top: 12px; font-size: 16px; line-height: 1.75; }
+.script-text p { margin: 0; }
+.script-text span { cursor: pointer; border-radius: 3px; }
+.script-text span:hover { background: var(--hover); }
+.script-text .read { color: var(--muted); }
+.script-text .here { background: #12331c; outline: 1px solid #1f7a3a; }
+.cue-mark { margin: 0 2px 0 1px; padding: 0 5px; border-radius: 3px; background: var(--accent); color: var(--accent-ink); font-size: 10px; font-weight: 700; }
+.cue-mark.fired { background: var(--line); color: var(--muted); }
