@@ -35,7 +35,7 @@ order: 4
 - **Mechanic:** sensors (a depth camera), generative graphics, MIDI and audio control
 - **Why it's here:** the depth camera's points become the picture itself, not a trigger: the point cloud is the output.
 - **Build a tiny version:** [/launch/particles](/launch/particles) moved by your palm, or the 21 hand points on [/track](/track); a webcam has no depth, so MediaPipe's points stand in for the Kinect's.
-- **Credits and sources:** the creator's description: "250k points in real-time from Kinect camera into TouchDesigner controlled with midi and audio via custom setup." Music: Caribou, "Can't Do Without You" (Tale of Us & Mano le Tough remix). The patch itself isn't shown or explained.
+- **Credits and sources:** the creator's description: "250k points in real-time from Kinect camera into TouchDesigner controlled with midi and audio via custom setup." Music: Caribou, "Can't Do Without You" (Tale of Us & Mano le Tough remix). The patch itself isn't shown or explained. For a similar technique step by step: [Simple Motion Visualisation – TouchDesigner Tutorial 55](https://www.youtube.com/watch?v=QGuquFiInqY) (bileam tschepe / elekktronaut, 22:29; 17:05 motion extraction with a plain webcam).
 
 ![youtube: self, 2023 (TouchDesigner + Kinect) (kristaps kazaks, 2:44)](https://www.youtube.com/watch?v=OndaS-HD7dc)
 

@@ -23,6 +23,10 @@ description: "Derivative's node-based environment for real-time visuals, install
 
 ![youtube: self, 2023 (TouchDesigner + Kinect) (kristaps kazaks, 2:44)](https://www.youtube.com/watch?v=OndaS-HD7dc)
 
+**How to make something like it:** [Simple Motion Visualisation – TouchDesigner Tutorial 55](https://www.youtube.com/watch?v=QGuquFiInqY) (bileam tschepe / elekktronaut, 22:29, 2022). Capturing motion from a camera or a Kinect and drawing it. Chapters: 01:48 video setup · 03:35 technique 1 · 05:34 Kinect input · 07:31 technique 2 · 17:05 motion extraction and overlay (works with a plain webcam).
+
+![youtube: Simple Motion Visualisation – TouchDesigner Tutorial 55 (bileam tschepe, 22:29)](https://www.youtube.com/watch?v=QGuquFiInqY)
+
 - [TouchDesigner Quick Start Guide](https://www.youtube.com/watch?v=icV5moCR87s) (threedashes, 23:59; 2020 build). Chapters: 01:44 SOP · 07:13 CHOP · 13:30 TOP · 18:17 DAT · 20:20 rendering. The best single tour of the families.
 - [03 – The Interface – TouchDesigner Beginner Course](https://www.youtube.com/watch?v=xtp1CLzWRUk) (bileam tschepe / elekktronaut, 13:03). **08:16 the network.** Part of a free [22-video beginner course](https://www.youtube.com/playlist?list=PLFrhecWXVn5862cxJgysq9PYSjLdfNiHz).
 - [01 – About TouchDesigner](https://www.youtube.com/watch?v=u2Jr060p8dY) (bileam tschepe, 6:34). **03:30 use cases, 05:58 showcase.** For inspiration, browse [derivative.ca/showcase](https://derivative.ca/showcase).
