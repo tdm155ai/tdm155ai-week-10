@@ -1,6 +1,6 @@
 ---
 title: Make a short live performance
-description: A worksheet for your group: roles, a cue sheet, a backup for every cue, and a blackout at the end.
+description: "A worksheet for your group: roles, a cue sheet, a backup for every cue, and a blackout at the end."
 order: 4
 ---
 
