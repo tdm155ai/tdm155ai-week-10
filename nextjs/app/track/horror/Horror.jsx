@@ -10,6 +10,7 @@
 //   - Record makes a video of the picture and the filtered sound, to watch right here.
 // What it looks and sounds like is in ./settings.js (the file to change). The picture is ./scene.js.
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import GhostCursor from "../../../lib/cv/react-bits/GhostCursor.jsx";
 import { loadModel, WASM_URL } from "../../../lib/cv/mediapipe.js";
@@ -481,7 +482,7 @@ export default function Horror() {
       <div className="cv-head">
         <p className="eyebrow">Track · Horror</p>
         <h1>Make it a horror movie, live.</h1>
-        <p className="cv-lede">One person speaks into the mic and the voice comes out of the speakers changed. The camera puts a mask on their face and cuts them out of the room. A ghost drifts behind them, and someone's hand in the picture moves it; pinch and it flares. The operator switches voices, fires scares, and steps through the monologue. <strong>Record</strong> saves the picture and the filtered sound as a video you can watch below. Everything runs in this tab. The file to change is <code>app/track/horror/settings.js</code>. The masks are in <code>masks.js</code> and the monologue in <code>script.js</code>.</p>
+        <p className="cv-lede">One person speaks into the mic and the voice comes out of the speakers changed. The camera puts a mask on their face and cuts them out of the room. A ghost drifts behind them, and someone's hand in the picture moves it; pinch and it flares. The operator switches voices, fires scares, and steps through the monologue. <strong>Record</strong> saves the picture and the filtered sound as a video you can watch below. Everything runs in this tab. The file to change is <code>app/track/horror/settings.js</code>. The masks are in <code>masks.js</code> and the monologue in <code>script.js</code>. <Link href="/track/horror/making-of">How it was made →</Link></p>
       </div>
 
       <div className="cv-bar">
