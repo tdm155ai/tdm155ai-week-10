@@ -7,6 +7,7 @@ import HandPoint from "./HandPoint.jsx";
 import * as shader from "./shader.js";
 import * as kaleidoscope from "./kaleidoscope.js";
 import * as particles from "./particles.js";
+import { presets } from "./shader-presets.js";
 
 // The shader pages (/launch/shader, /launch/kaleidoscope, /launch/particles): a fragment shader drawn with plain
 // WebGL (no library). Each page's shader is one file in lib/launch/ with `controls` (the sliders, one u_ uniform
@@ -74,6 +75,7 @@ export default function ShaderView({ which = "shader" }) {
   const [useHand, setUseHand] = useState(false);
   const [handSeen, setHandSeen] = useState("");
   const [fps, setFps] = useState(0);
+  const [look, setLook] = useState("smoke"); // /launch/shader only: which preset (lib/launch/shader-presets.js)
   const canvasRef = useRef(null);
   const wrapRef = useRef(null);
   const glRef = useRef(null); // { gl, program, copy, buffer, targets, size }
@@ -243,6 +245,13 @@ export default function ShaderView({ which = "shader" }) {
           <button className="ctl-btn" onClick={fullscreen}>Full screen (F)</button>
           <button className={paused ? "ctl-btn on" : "ctl-btn"} onClick={() => setPaused((p) => !p)}>{paused ? "Paused (Space)" : "Pause (Space)"}</button>
           {handMap && <button className={useHand ? "ctl-btn on" : "ctl-btn"} onClick={() => setUseHand((v) => !v)}>{useHand ? `Hand on (${handSeen || "starting"})` : "Use my hand"}</button>}
+          {which === "shader" && (
+            <label className="ctl-note">Look{" "}
+              <select className="ctl-select" value={look} onChange={(e) => { const p = presets.find((x) => x.id === e.target.value); setLook(p.id); setDraft(p.fragment); setSource(p.fragment); }}>
+                {presets.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
+              </select>
+            </label>
+          )}
           {which === "shader" && <button className={listening ? "ctl-btn on" : "ctl-btn"} onClick={listen}>{listening ? "Listening: rings follow the sound" : "Listen (mic → rings)"}</button>}
           <span className="ctl-status">{fps ? `${fps} fps` : ""}</span>
         </div>
@@ -253,7 +262,7 @@ export default function ShaderView({ which = "shader" }) {
             <h2 style={{ margin: 0 }}>The shader (GLSL): edit and Run</h2>
             <div className="ctl-row">
               <button className="ctl-btn primary" onClick={() => setSource(draft)}>Run</button>
-              <button className="ctl-btn" onClick={() => { setDraft(fileFragment); setSource(fileFragment); }}>Back to the file</button>
+              <button className="ctl-btn" onClick={() => { setLook("smoke"); setDraft(fileFragment); setSource(fileFragment); }}>Back to the file</button>
             </div>
           </div>
           <textarea className="shader-code" value={draft} spellCheck={false} onChange={(e) => setDraft(e.target.value)}
