@@ -6,7 +6,9 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-const GhostCursor = ({ className, style, trailLength = 50, inertia = 0.5, grainIntensity = 0.05, bloomStrength = 0.1, bloomRadius = 1.0, bloomThreshold = 0.025, brightness = 1, color = '#B497CF', mixBlendMode = 'screen', edgeIntensity = 0, maxDevicePixelRatio = 0.5, targetPixels, fadeDelayMs, fadeDurationMs, zIndex = 10, tracker }) => {
+// onRender(canvas), optional: called right after each frame is drawn, while the canvas can still be copied
+// (/track/horror copies it into its own picture).
+const GhostCursor = ({ className, style, trailLength = 50, inertia = 0.5, grainIntensity = 0.05, bloomStrength = 0.1, bloomRadius = 1.0, bloomThreshold = 0.025, brightness = 1, color = '#B497CF', mixBlendMode = 'screen', edgeIntensity = 0, maxDevicePixelRatio = 0.5, targetPixels, fadeDelayMs, fadeDurationMs, zIndex = 10, tracker, onRender }) => {
     const containerRef = useRef(null);
     const rendererRef = useRef(null);
     const composerRef = useRef(null);
@@ -30,8 +32,8 @@ const GhostCursor = ({ className, style, trailLength = 50, inertia = 0.5, grainI
     const fadeDelay = fadeDelayMs ?? (isTouch ? 500 : 1000);
     const fadeDuration = fadeDurationMs ?? (isTouch ? 1000 : 1500);
     // Read by the animation loop every frame, so changing them doesn't rebuild the renderer.
-    const live = useRef({ inertia, fadeDelay, fadeDuration });
-    live.current = { inertia, fadeDelay, fadeDuration };
+    const live = useRef({ inertia, fadeDelay, fadeDuration, onRender });
+    live.current = { inertia, fadeDelay, fadeDuration, onRender };
     const baseVertexShader = `
     varying vec2 vUv;
     void main() {
@@ -335,8 +337,10 @@ const GhostCursor = ({ className, style, trailLength = 50, inertia = 0.5, grainI
                 filmPassRef.current.uniforms.iTime.value = t;
             }
             // When driven by a tracker the loop never stops, so skip the expensive render while idle and faded out.
-            if (!(tracker && !pointerActiveRef.current && fadeOpacityRef.current <= 0.001))
+            if (!(tracker && !pointerActiveRef.current && fadeOpacityRef.current <= 0.001)) {
                 comp.render();
+                live.current.onRender?.(renderer.domElement);
+            }
             if (!tracker && !pointerActiveRef.current && fadeOpacityRef.current <= 0.001) {
                 runningRef.current = false;
                 rafRef.current = null;
