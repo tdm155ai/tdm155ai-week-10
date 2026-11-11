@@ -3,6 +3,7 @@ import Link from "next/link";
 // The /voice pages, as tabs.
 const tabs = [
   ["/voice", "1 · Say a word"],
+  ["/voice/words", "1b · Your trigger words"],
   ["/voice/script", "2 · Follow a script"],
   ["/voice/compare", "3 · Compare engines"],
   ["/voice/semantic", "4 · By topic (AI)"],
