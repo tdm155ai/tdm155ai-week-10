@@ -67,14 +67,24 @@ export default function MpePlayer() {
   const voices = useRef(new Map()); // "ch:note" → voice
   const trails = useRef([]); // voices that have let go, still fading on screen
   const pointers = useRef(new Map()); // pointerId → { ch, note, mode, downAt, sent }
-  const range = useRef({ lo: KEYS.low - 0.5, hi: KEYS.high + 0.5 }); // the keys across the picture (see fit below)
-  const view = useRef(range.current); // what's drawn this frame: the keys, stretched while a bend goes past them
+  // The keys across the picture: a fixed window of the Block's 24 keys. It moves only when you ask (the octave
+  // buttons, "Set from lowest key", or "Follow the Block's octave").
+  const SPAN = KEYS.high - KEYS.low;
+  const [low, setLow] = useState(KEYS.low);
+  const range = useRef({ lo: KEYS.low - 0.5, hi: KEYS.high + 0.5 });
+  const follow = useRef(false);
+  const learn = useRef(false);
+  const [following, setFollowing] = useState(false);
+  const [learning, setLearning] = useState(false);
   const settings = useRef({ mpeRange: BEND_RANGE, keyRange: KEYBOARD_BEND_RANGE, patch: "pad" });
   const lastMsg = useRef("");
   const total = useRef(0);
   const [mpeRange, setMpeRange] = useState(BEND_RANGE);
   const [keyRange, setKeyRange] = useState(KEYBOARD_BEND_RANGE);
   const [patch, setPatch] = useState("pad");
+  useEffect(() => { range.current = { lo: low - 0.5, hi: low + SPAN + 0.5 }; }, [low, SPAN]);
+  useEffect(() => { follow.current = following; }, [following]);
+  useEffect(() => { learn.current = learning; }, [learning]);
   const [volume, setVolume] = useState(0.8);
   const [sound, setSound] = useState("off"); // off | starting | on
   const [midi, setMidi] = useState({ state: "off", devices: [], error: "" });
@@ -143,7 +153,8 @@ export default function MpePlayer() {
       const v = { key, ch, note: m.number, vel: m.value / 127, on: true, patch: settings.current.patch, trail: [], audio: null, polyPress: null };
       if (engine.current) { const s = shape(v); v.audio = makeVoice(engine.current, p, mtof(s.pitch), p.cutoff * 2 ** (s.slide * p.slideOctaves), 0.3 * s.level); }
       voices.current.set(key, v);
-      fit(m.number);
+      if (learn.current) { learn.current = false; setLearning(false); setLow(m.number); }
+      else if (follow.current) fit(m.number);
     } else if (m.type === "noteoff") {
       c.notes.delete(m.number);
       release(`${ch}:${m.number}`);
@@ -163,18 +174,15 @@ export default function MpePlayer() {
     }
   }, []);
 
-  // The picture shows the Block's keys. When a note lands outside them (the octave buttons), it moves by octaves to
-  // the keys being played, and widens only if the held notes need more room.
+  // "Follow the Block's octave" (off unless ticked): a note outside the window moves it by octaves to that note.
   const fit = (n) => {
     const r = range.current;
     if (n > r.lo && n < r.hi) return;
-    const held = [...[...voices.current.values()].map((v) => v.note), n];
-    let lo = Math.round(r.lo + 0.5), hi = lo + (KEYS.high - KEYS.low);
-    while (n > hi) { lo += 12; hi += 12; } // slide the keys an octave at a time until the new note is on them
-    while (n < lo) { lo -= 12; hi -= 12; }
-    while (Math.min(...held) < lo) lo -= 12; // and stretch if notes still held are now off the edge
-    while (Math.max(...held) > hi) hi += 12;
-    range.current = { lo: lo - 0.5, hi: hi + 0.5 };
+    let lo = Math.round(r.lo + 0.5);
+    while (n > lo + SPAN) lo += 12;
+    while (n < lo) lo -= 12;
+    range.current = { lo: lo - 0.5, hi: lo + SPAN + 0.5 };
+    setLow(lo);
   };
 
   const panic = useCallback(() => {
@@ -208,7 +216,7 @@ export default function MpePlayer() {
   // harder (a pen uses its real pressure). It sends the same messages a Seaboard would, on its own channels.
   const pitchAt = (clientX) => {
     const r = canvasRef.current.getBoundingClientRect();
-    const { lo, hi } = view.current;
+    const { lo, hi } = range.current;
     return lo + ((clientX - r.left) / r.width) * (hi - lo);
   };
   const slideAt = (clientY) => {
@@ -265,11 +273,9 @@ export default function MpePlayer() {
       raf = requestAnimationFrame(draw);
       const now = performance.now();
       const W = canvas.width, H = canvas.height, dpr = W / Math.max(1, canvas.clientWidth);
-      // The keys, stretched (for this frame only) to keep a big bend in the picture.
-      let { lo, hi } = range.current;
-      for (const v of voices.current.values()) { const p = shape(v).pitch; lo = Math.min(lo, p - 1); hi = Math.max(hi, p + 1); }
-      view.current = { lo, hi };
-      const X = (pitch) => ((pitch - lo) / (hi - lo)) * W;
+      // The window never moves on its own. A note bent past its edge stays at the edge, with an arrow.
+      const { lo, hi } = range.current;
+      const X = (pitch) => ((clamp(pitch, lo, hi) - lo) / (hi - lo)) * W;
       const KEYS_TOP = H * 0.9; // the keyboard strip along the bottom
       const Y = (slide) => (1 - slide) * (H * 0.84) + H * 0.03;
 
@@ -288,7 +294,7 @@ export default function MpePlayer() {
       const held = new Map([...voices.current.values()].map((v) => [v.note, look.hue(v.ch)]));
       const keyW = W / (hi - lo);
       ctx.textAlign = "center";
-      for (let n = Math.ceil(lo - 0.5); n <= Math.floor(hi + 0.5); n++) {
+      for (let n = Math.ceil(lo); n <= Math.floor(hi); n++) {
         const x0 = X(n - 0.5), x1 = X(n + 0.5);
         const black = BLACK_KEYS.has(((n % 12) + 12) % 12);
         ctx.fillStyle = black ? "rgba(255,255,255,0.015)" : "rgba(255,255,255,0.04)";
@@ -336,6 +342,12 @@ export default function MpePlayer() {
           ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
           ctx.fillStyle = "rgba(255,255,255,0.9)";
           ctx.beginPath(); ctx.arc(x, y, (3 + v.now.press * 6) * dpr, 0, Math.PI * 2); ctx.fill();
+          const past = v.now.pitch < lo ? -1 : v.now.pitch > hi ? 1 : 0;
+          if (past) { // bent beyond the window: an arrow pointing the way it went
+            const ax = past < 0 ? 4 * dpr : W - 4 * dpr, s = 14 * dpr;
+            ctx.fillStyle = `hsla(${hue}, 100%, 75%, 0.95)`;
+            ctx.beginPath(); ctx.moveTo(ax, y); ctx.lineTo(ax - past * s, y - s * 0.7); ctx.lineTo(ax - past * s, y + s * 0.7); ctx.closePath(); ctx.fill();
+          }
           ctx.font = `${13 * dpr}px ui-monospace, monospace`;
           const bend = v.now.bendSemis;
           ctx.fillText(`${name(v.note)}${Math.abs(bend) >= 0.05 ? ` ${bend > 0 ? "+" : ""}${bend.toFixed(1)}` : ""}`, x + r * 0.35 + 6 * dpr, y - r * 0.35);
@@ -400,6 +412,13 @@ export default function MpePlayer() {
         <label className="ctl-note"><input className="ctl-input mpe-num" type="number" min="1" max="24" value={keyRange} onChange={(e) => setKeyRange(clamp(Number(e.target.value) || 2, 1, 24))} /> st (channel 1)</label>
         <label className="ctl-note">Volume <input type="range" min="0" max="1" step="0.01" value={volume} onChange={(e) => setVolume(Number(e.target.value))} /></label>
         <button className="ctl-btn" onClick={panic}>Panic (Esc)</button>
+      </div>
+      <div className="ctl-row" style={{ marginBottom: 12 }}>
+        <span className="ctl-note">Keys shown: <b>{name(low)}–{name(low + SPAN)}</b> (MIDI {low}–{low + SPAN})</span>
+        <button className="ctl-btn" onClick={() => setLow((l) => l - 12)}>− octave</button>
+        <button className="ctl-btn" onClick={() => setLow((l) => l + 12)}>+ octave</button>
+        <button className={learning ? "ctl-btn on" : "ctl-btn"} onClick={() => setLearning((v) => !v)}>{learning ? "Now play your lowest key…" : "Set from lowest key"}</button>
+        <label className="ctl-note"><input type="checkbox" checked={following} onChange={(e) => setFollowing(e.target.checked)} /> Follow the Block's octave buttons</label>
         <button className="ctl-btn" onClick={() => (document.fullscreenElement ? document.exitFullscreen() : stageRef.current?.requestFullscreen?.())}>Full screen (F)</button>
       </div>
       {!supported && <p className="ctl-note">No Web MIDI in this browser: use Chrome. The mouse still plays.</p>}

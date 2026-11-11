@@ -9,8 +9,8 @@
 //   press   = channel pressure (aftertouch)    slide = CC74 (moving your finger up and down the key)
 //   lift    = release velocity (not used here)
 
-// The keys across the picture: the Seaboard BLOCK's 24 keys in their default octave, MIDI notes 48 to 71. The octave
-// buttons on the Block shift what it sends; the picture follows (and widens if you play more than this at once).
+// The keys across the picture: the Seaboard BLOCK's 24 keys in their default octave, MIDI notes 48 to 71. The picture
+// stays put; move it with the page's − / + octave buttons, "Set from lowest key", or "Follow the Block's octave".
 export const KEYS = { low: 48, high: 71 };
 
 // How notes are named. "roli": 60 is C3, as on the Seaboard and in ROLI Dashboard (so 48–71 is C2–B3).
