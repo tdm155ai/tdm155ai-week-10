@@ -14,6 +14,7 @@ export const MODELS = {
   gesture: { file: `${BUCKET}/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task`, label: "Gesture recognizer (7 gestures + hand points)" },
   face: { file: `${BUCKET}/face_landmarker/face_landmarker/float16/1/face_landmarker.task`, label: "Face landmarker (478 points + 52 expressions)" },
   pose: { file: `${BUCKET}/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`, label: "Pose landmarker, lite (33 body points)" },
+  people: { file: `${BUCKET}/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`, label: "Pose landmarker, lite (up to 4 people)" },
 };
 
 let filesetPromise = null;
@@ -29,10 +30,11 @@ async function build(kind, delegate) {
   if (kind === "gesture") return vision.GestureRecognizer.createFromOptions(fileset, { baseOptions, runningMode, numHands: 2 });
   if (kind === "face") return vision.FaceLandmarker.createFromOptions(fileset, { baseOptions, runningMode, numFaces: 1, outputFaceBlendshapes: true });
   if (kind === "pose") return vision.PoseLandmarker.createFromOptions(fileset, { baseOptions, runningMode, numPoses: 1 });
+  if (kind === "people") return vision.PoseLandmarker.createFromOptions(fileset, { baseOptions, runningMode, numPoses: 4 });
   throw new Error(`Unknown model "${kind}"`);
 }
 
-// Load (once) and return a model: "hand", "gesture", "face", or "pose". Tries the GPU, falls back to the CPU.
+// Load (once) and return a model: "hand", "gesture", "face", "pose", or "people" (pose, up to four bodies). Tries the GPU, falls back to the CPU.
 export function loadModel(kind) {
   if (!cache.has(kind)) {
     const promise = build(kind, "GPU").catch(() => build(kind, "CPU"));

@@ -17,6 +17,15 @@ export const zones = [
   { name: "Right: ping", x: 0.8, y: 0.35, w: 0.2, h: 0.4, cue: { id: "ping", label: "Ping", kind: "sound", src: "/samples/ping.mp3" } },
 ];
 
+// BODY ZONES (/track/zones): the room, as the camera sees it, split into columns from left to right. When a person
+// steps into a column, its cue fires once; it fires again when someone new comes in (or the same person leaves and
+// comes back). Add or remove columns and they are drawn the same width. Sounds layer on the stage, so put sounds here.
+export const bodyZones = [
+  { name: "Left", cue: { id: "zone-left", label: "Left: low note", kind: "sound", src: "/samples/beep-a.mp3" } },
+  { name: "Middle", cue: { id: "zone-middle", label: "Middle: chord", kind: "sound", src: "/samples/chord.mp3" } },
+  { name: "Right", cue: { id: "zone-right", label: "Right: ping", kind: "sound", src: "/samples/ping.mp3" } },
+];
+
 // INSTRUMENTS (/track/instruments): what each one fires.
 export const instruments = {
   // A hand as a fader: the index fingertip's height (bottom 0, top 1) sets a stage control continuously.

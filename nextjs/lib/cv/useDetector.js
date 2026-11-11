@@ -1,7 +1,7 @@
 "use client";
 
 // Run a MediaPipe model on every new video frame and hand the result to `onFrame(result, video)`.
-// `kind` is "hand", "gesture", "face", or "pose" (see mediapipe.js); pass null to stop.
+// `kind` is "hand", "gesture", "face", "pose", or "people" (see mediapipe.js); pass null to stop.
 
 import { useEffect, useRef, useState } from "react";
 import { detect, loadModel, MODELS } from "./mediapipe.js";
