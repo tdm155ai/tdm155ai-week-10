@@ -5,7 +5,7 @@ description: "teamLab, Olafur Eliasson, James Turrell, and Meow Wolf. More for r
 
 *Researched with AI (Claude), November 11, 2026.*
 
-Marlon: concerts are probably more significant to you than gallery installations; galleries are here largely for reporting, and for thinking about support for other TDM groups.
+For this week, concerts matter more than gallery installations; these are here for context.
 
 - [teamLab Borderless Teaser Video](https://www.youtube.com/watch?v=LOMbrwzqW4A) (teamLab, 1:45): rooms of projection that respond to visitors and flow between rooms. Sensor triggers at museum scale.
 - [The weather project, 2003](https://www.youtube.com/watch?v=_1Vgeose43g) (Studio Olafur Eliasson, 3:28): a sun of mono-frequency lamps, haze, and a mirrored ceiling in the Tate's Turbine Hall; people lay on the floor and watched themselves.

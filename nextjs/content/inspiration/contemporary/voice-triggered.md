@@ -6,7 +6,7 @@ order: 3
 
 *Researched with AI for this class and checked on the morning of November 11, 2026 (title, channel, length, date, and embed status read from each YouTube page). **watched** means the moment was seen on screen at that timestamp; **metadata only** means the timestamp is a description chapter or a rough pointer. Credits come from the linked press or studio pages; anything not confirmed is marked **unverified**. Where a "build a tiny version" idea needs something this app doesn't do yet (a webcam layer on the stage, pitch tracking, a timeline), it's a prompt for Claude Code, not a feature.*
 
-**Best 2:** Holly Herndon's Holly+, Charli xcx's Brat words. This category is thin; see [what we couldn't find](/inspiration/contemporary/checking-notes#gaps).
+**Best 2:** Holly Herndon's Holly+, Charli xcx's Brat words. This category is thin; see [what nobody's doing yet](/inspiration/contemporary/checking-notes#gaps).
 
 ## Holly Herndon: Holly+, singing in someone else's voice
 

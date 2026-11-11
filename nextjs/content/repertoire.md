@@ -17,8 +17,8 @@ Each step has a **Hello World** (one short file, read it top to bottom, change t
 | 1 | **Soundboard** (keys, buttons) | A key press or a click | [/launch/hello](/launch/hello) | [/launch](/launch), [/launch/cue-list](/launch/cue-list) | `app/launch/hello/Hello.jsx`, then `lib/launch/buttons.js` |
 | 2 | **MIDI** (pads, keys, knobs) | A note (on/off) or a knob's value (0–127) | [/launch/midi](/launch/midi) | [/launch/xy](/launch/xy) | `lib/launch/midi-map.js` |
 | 3 | **Raw audio signal** | The sound itself: how loud, which frequencies, moment to moment; no words yet | the level meter on [/voice](/voice) (press **Check**) | [/launch/spectrogram](/launch/spectrogram); mic loudness on [/launch/shader](/launch/shader) | `lib/launch/spectrogram/SpectrogramShell.jsx` |
-| 4 | **Words** | The words someone said | [/voice/hello](/voice/hello) | [/voice](/voice), [/voice/script](/voice/script) | `app/voice/hello/Hello.jsx`, then `lib/voice/triggers.js`, `lib/voice/script.js` |
-| 5 | **Meaning** | What someone is talking about, without magic words | — | [/voice/semantic](/voice/semantic) (OpenAI key) | `lib/voice/topics.js` |
+| 4 | **Words** | The words someone said | [/voice/hello](/voice/hello) | [/voice](/voice), [/voice/words](/voice/words) (edit on the page), [/voice/script](/voice/script) | `app/voice/hello/Hello.jsx`, then `lib/voice/triggers.js`, `lib/voice/script.js` |
+| 5 | **Meaning** | What someone is talking about, without magic words | — | [/voice/semantic](/voice/semantic) (OpenRouter or OpenAI key) | `lib/voice/topics.js` |
 | 6 | **Tracking** (live video) | Where hands, fingers, faces, and bodies are | [/track/hello](/track/hello) | [/track](/track), [/track/instruments](/track/instruments), [/track/zones](/track/zones), [/track/xy](/track/xy) | `app/track/hello/Hello.jsx`, then `app/track/cues.js` |
 | 7 | **Boxes** (live video) | A drawn rectangle, a colored card, or printed markers on paper | [/draw-a-box/hello](/draw-a-box/hello) | [/draw-a-box](/draw-a-box) | `app/draw-a-box/hello/Hello.jsx`, then `app/draw-a-box/clips.js` |
 

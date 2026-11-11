@@ -5,7 +5,7 @@ description: "Taylor Swift's 2023–24 stadium tour: a long LED wall, an LED sta
 
 *Researched with AI (Claude), November 11, 2026.*
 
-**Who designed it** (Wikipedia and the OTRA credits database, opened Nov 11): **Ethan Tobman**, creative director and production designer; **Baz Halpin** (Silent House Group), production designer and lighting designer, with Silent House also credited for content and VFX; **Eric Marchwinski** (Earlybird Visual), associate lighting designer and lighting programmer. PixMob made the LED wristbands. **Moment Factory isn't credited** (Marlon's recollection; see [Moment Factory](/inspiration/examples/moment-factory)).
+**Who designed it** (Wikipedia and the OTRA credits database, opened Nov 11): **Ethan Tobman**, creative director and production designer; **Baz Halpin** (Silent House Group), production designer and lighting designer, with Silent House also credited for content and VFX; **Eric Marchwinski** (Earlybird Visual), associate lighting designer and lighting programmer. PixMob made the LED wristbands.
 
 **Why it's here:** three hours, 40-plus songs, the same show night after night: the opposite of Phish. Everything is cued, much of it to timecode; the lighting programmer's job is building that cue stack.
 

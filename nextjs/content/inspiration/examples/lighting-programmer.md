@@ -5,7 +5,7 @@ description: "Behind-the-scenes videos of lighting directors and board operators
 
 *Researched with AI (Claude), November 11, 2026. Checked from YouTube's metadata (title, channel, length) and transcripts; the videos were not watched (no visual review), so we haven't confirmed how much of each shows the console itself.*
 
-Marlon asked for a behind-the-scenes look at a lighting board and its cues in an advanced show. Start with the first one.
+A behind-the-scenes look at a lighting board and its cues in an advanced show. Start with the first one.
 
 ![youtube: Umphrey's McGee: "Der Bluten Kat" w/Jefferson Waful LD Commentary (Umphrey's McGee, 17:28)](https://www.youtube.com/watch?v=2aXqNaDIaPY)
 

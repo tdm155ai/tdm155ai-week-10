@@ -24,7 +24,6 @@ Concerts first: they are what most of you will design for. Each entry is one lin
 - [Behind the scenes of Coldplay's Music of the Spheres World Tour](https://www.youtube.com/watch?v=I7OHTA-N0yM) (Disguise, 4:23): the screens director at front of house running disguise and Notch. → [example](/inspiration/examples/coldplay)
 - [Abstract: The Art of Design | Es Devlin: Stage Design | FULL EPISODE](https://www.youtube.com/watch?v=jo4aAVjuh2o) (Netflix, 42:20, free): the stage designer behind U2, Beyoncé, and the opera house, on her process. → [example](/inspiration/examples/es-devlin)
 
-**Taylor Swift and Moment Factory (Marlon's recollection, checked):** we found no evidence that Moment Factory worked on a Taylor Swift tour. Swift isn't on the studio's concerts page or in the Eras Tour credits; the Eras Tour's creative director was Ethan Tobman, with Baz Halpin (Silent House) as production and lighting designer. Moment Factory's concert credits do include Billie Eilish, Olivia Rodrigo, Madonna, Arcade Fire, Nine Inch Nails, Childish Gambino, Muse, Ed Sheeran, and Phish at Sphere. Details on the [Moment Factory](/inspiration/examples/moment-factory) and [Eras Tour](/inspiration/examples/eras-tour) pages.
 
 ## A lighting programmer at the console
 
@@ -52,7 +51,7 @@ We didn't find a video of a Broadway programmer at an Eos during a performance.
 
 ## Galleries (more for reporting than for this class)
 
-Marlon: gallery installations matter less to most of you than concerts; these are here for context and for thinking about other TDM groups. → [one page](/inspiration/examples/galleries)
+Gallery installations, for context; concerts matter more this week. → [one page](/inspiration/examples/galleries)
 
 - [teamLab Borderless Teaser Video](https://www.youtube.com/watch?v=LOMbrwzqW4A) (teamLab, 1:45): rooms of projection that respond to visitors.
 - [The weather project, 2003](https://www.youtube.com/watch?v=_1Vgeose43g) (Studio Olafur Eliasson, 3:28): one light, a mirror ceiling, and a crowd lying on the floor of the Tate.

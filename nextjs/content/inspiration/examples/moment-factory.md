@@ -7,7 +7,6 @@ description: "The Montreal multimedia studio behind concert visuals for Billie E
 
 **Who:** a Montreal studio for immersive experiences: concert and tour visuals, projection-mapped venues, theme parks, airports. Site: [momentfactory.com](https://momentfactory.com); channel: [@momentfactory](https://www.youtube.com/@momentfactory).
 
-**Taylor Swift? Not that we could find.** Marlon remembered Moment Factory doing Taylor Swift; it's a good guess, but Swift isn't on the studio's [concerts page](https://momentfactory.com/collections/shows-concerts) (about 48 projects), a search of their site turns up nothing, and the Eras Tour credits don't name them. See [the Eras Tour](/inspiration/examples/eras-tour) for who did design it.
 
 **Concerts they did** (from their concerts page and reel): Billie Eilish (*Happier Than Ever*; *Hit Me Hard and Soft*), Phish at Sphere, Olivia Rodrigo (*GUTS*), Madonna (*MDNA*, *Rebel Heart*, the 2012 Super Bowl halftime), Arcade Fire (*Infinite Content*), Nine Inch Nails, Childish Gambino (*This Is America*), Muse (*Drones*), Ed Sheeran (*Divide*), and more.
 

@@ -70,7 +70,7 @@ Each page has the video, where to watch, the mechanic, why it's here, a tiny ver
 - [Audience and crowd as display](/inspiration/contemporary/crowd): the Audience Choir, BTS light sticks, the MSG blackout.
 - [Virtual and hybrid concerts](/inspiration/contemporary/virtual-hybrid): Gorillaz, PLAVE, MAMA's XR stages, Fortnite Festival, Flume's AR.
 - [Creators who show their rigs](/inspiration/contemporary/rigs): tekt, Tash Sultana, Marc Rebillet.
-- [What we couldn't verify](/inspiration/contemporary/checking-notes): tours with no behind-the-scenes video, leads that turned out wrong, and gaps.
+- [What nobody's doing yet](/inspiration/contemporary/checking-notes): gaps you can build into.
 
 ## Worth saying in class
 
