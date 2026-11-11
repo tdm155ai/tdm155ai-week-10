@@ -4,7 +4,7 @@ description: "What Learning Lab fellows built with Claude Code and MediaPipe thi
 order: 6
 ---
 
-The Learning Lab's fellows spent a session building with Claude Code and MediaPipe, a prompt at a time, the same way you will today. Each experiment below is one **input** wired to one **output** (see [inputs and outputs](/repertoire)). All five are playable here: [/track/fellows](/track/fellows) lists them. The folder under each is where to start reading and changing the code.
+The Learning Lab's fellows spent a session building with Claude Code and MediaPipe, a prompt at a time, the same way you will today. Each experiment below is one **input** wired to one **output** (see [inputs and outputs](/repertoire)). All five are playable here (and the MIDI studies at [/launch/mpe](/launch/mpe)): [/track/fellows](/track/fellows) lists them. The folder under each is where to start reading and changing the code.
 
 ## Hand drums (purple)
 
@@ -63,7 +63,7 @@ The splash is kept light so it stays smooth: one fluid simulation follows both h
 
 ## Also from the session
 
-- **MIDI studies (purple):** a channel monitor for a ROLI Seaboard BLOCK, an MPE controller that sends each held note on its own MIDI channel with its own pitch bend, slide, and pressure. More continuous controls per finger than a pad controller (compare [/launch/midi](/launch/midi)).
+- **MIDI studies (purple):** a channel monitor for a ROLI Seaboard BLOCK, an MPE controller that sends each held note on its own MIDI channel with its own pitch bend, slide, and pressure. More continuous controls per finger than a pad controller (compare [/launch/midi](/launch/midi)). **Play it here:** [/launch/mpe](/launch/mpe), a Seaboard player that draws every touch (or drag on it with a mouse). **Start reading:** `nextjs/lib/launch/mpe.js`.
 - **Seeing Machines:** a history of computers and AI in art installations, with recreations: a live camera cut into tiles, some blocked out in color and captioned by a vision model; an exquisite corpse; an ELIZA gallery critic; a Vera Molnar plotter grid. It isn't MediaPipe and needs a model key, so it isn't in this app. It's a good model for an installation that looks at the audience.
 
 ## Make your own

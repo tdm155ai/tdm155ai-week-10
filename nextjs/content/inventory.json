@@ -6,6 +6,11 @@
       "detail": "keys, MIDI, mic, file, pointer diagnostics"
     },
     {
+      "href": "/launch/mpe",
+      "title": "Seaboard (MPE)",
+      "detail": "bend, slide, pressure for every finger"
+    },
+    {
       "href": "/voice/words",
       "title": "Spoken words",
       "detail": "last match shown large"
@@ -147,6 +152,11 @@
           "href": "/launch/midi",
           "title": "MIDI pads and knobs",
           "detail": "MPK mini or on-screen pads"
+        },
+        {
+          "href": "/launch/mpe",
+          "title": "Seaboard (MPE)",
+          "detail": "play it and see every touch"
         },
         {
           "href": "/launch/xy",
@@ -352,6 +362,11 @@
           "href": "/track/fellows/blobs/display",
           "title": "Blobs display",
           "detail": "the second-screen window"
+        },
+        {
+          "href": "/launch/mpe",
+          "title": "MIDI studies: Seaboard",
+          "detail": "bend, slide, pressure, drawn"
         }
       ]
     },

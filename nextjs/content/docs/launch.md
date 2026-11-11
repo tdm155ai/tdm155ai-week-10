@@ -38,6 +38,18 @@ No controller? The **on-screen pads** (notes 36–51, like a 4×4 drum pad) and 
 
 **The one file to change:** `nextjs/lib/launch/midi-map.js`.
 
+### An expressive keyboard: the Seaboard (MPE)
+
+[/launch/mpe](/launch/mpe) plays a ROLI Seaboard BLOCK, an **MPE** keyboard: each held note gets its own MIDI channel, so every finger sends its own pitch bend, slide (up and down the key, CC 74), and pressure. A pad controller sends one number per hit; this sends three that keep changing while you hold.
+
+1. Press **Connect MIDI** (it also starts the sound). Pick a **Sound**: Pad, Pluck, or Bass.
+2. Play. Each held note is a glowing dot: left to right is pitch (with bend), up and down is slide, size and glow are pressure. Trails show glides and wiggles; the meters below give each channel's bend in semitones, slide, and pressure.
+3. **Bend range** is 48 semitones for MPE; set it to 2 for an ordinary keyboard on channel 1 (its mod wheel counts as slide). **Panic** (`Esc`) silences everything; `F` is full screen.
+
+No Seaboard? Drag on the picture: one note per finger or mouse, sideways bends, up and down slides, holding presses harder.
+
+**The one file to change:** `nextjs/lib/launch/mpe.js` (`BEND_RANGE`, `KEYBOARD_BEND_RANGE`, `SLIDE_CCS`, the `patches` sounds, the `look`). It grew from the purple fellow's MIDI studies ([the fellows' experiments](/fellows)).
+
 ## 3. The cue list (Go)
 
 This is how a theater runs a show, and what QLab does: every moment is a numbered cue, in order. The highlighted cue is **standing by**; the operator presses **Go** on the stage manager's call, and the next cue stands by.
