@@ -52,7 +52,7 @@ Save and the page updates.
 | `app/track/cues.js` | the zones and cues (change this) |
 | `app/track/HelloTrack.jsx` | Hello World: fingertip in zone → `fireCue` |
 | `lib/cv/instruments.js` | each instrument: result → numbers, on/off, fader value |
-| `lib/cv/trigger.js` | debounce: fire once per gesture (hold 0.2 s, re-arm after 0.5 s) |
+| `lib/cv/trigger.js` | debounce: fire once per gesture (held about 0.1–0.2 s, re-armed after about half a second; the numbers are set in `HelloTrack.jsx` and `instruments/Instruments.jsx`) |
 | `lib/cv/mediapipe.js` | loads the four models (hand, gesture, face, pose) from the CDN |
 | `lib/cv/useCamera.js` | camera picker |
 

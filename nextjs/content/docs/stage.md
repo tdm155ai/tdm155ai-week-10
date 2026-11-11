@@ -15,7 +15,7 @@ Every mechanic this week does the same thing: it **fires a cue**. A cue is one m
 3. **Click it once.** That lets it play sound and makes it full screen. `F` toggles full screen; `Esc` blacks out.
 4. Go back to the control page and fire cues. The small preview there is silent; the sound comes from the stage window.
 
-The **Panic** button on every control page blacks out the picture and fades every sound.
+The **Panic** button on every control page (**Blackout** on the tracking pages) blacks out the picture and fades every sound.
 
 ## What a cue looks like
 
