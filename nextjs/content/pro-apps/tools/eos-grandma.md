@@ -1,6 +1,6 @@
 ---
-title: ETC Eos and grandMA3
-description: The two lighting consoles that run most theater (Eos) and most concerts (grandMA3), and their free offline software. Mechanic: lighting console.
+title: "ETC Eos and grandMA3"
+description: "The two lighting consoles that run most theater (Eos) and most concerts (grandMA3), and their free offline software. Mechanic: lighting console."
 ---
 
 **What they are:** professional lighting consoles. A programmer **patches** every fixture to a DMX address, builds **looks**, records them as **cues**, and the operator plays them back with **Go**. ETC (Electronic Theatre Controls) makes the **Eos** family (Apex, Ti, Ion Xe, Element): keypad and command-line driven, built around channels and cue lists, dominant in theater and on Broadway. MA Lighting (Germany) makes **grandMA3**: built around fixtures, groups, presets, sequences, and **executors** (playback faders), dominant on concerts, tours, and TV. Mechanic: [lighting console](/pro-apps/mechanics/lighting-console).

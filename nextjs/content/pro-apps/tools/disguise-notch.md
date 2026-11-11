@@ -1,6 +1,6 @@
 ---
-title: disguise and Notch
-description: The media server behind most stadium tours (disguise) and the real-time graphics engine that runs inside it (Notch). Mechanic: media server.
+title: "disguise and Notch"
+description: "The media server behind most stadium tours (disguise) and the real-time graphics engine that runs inside it (Notch). Mechanic: media server."
 ---
 
 **What they are:** **disguise** (London) makes the media-server platform used on most stadium tours. Its software, **Designer**, holds a 3D model of the real stage (the **visualiser**), maps content onto every LED screen and projector, and plays a **timeline** cued live or by timecode. Its **RenderStream** brings in real-time engines (Notch, Unreal, TouchDesigner, Unity). **Notch** (UK) is node-graph software for real-time graphics (particles, cloners, simulations); you expose controls and export a **Block** that disguise plays and the operator drives live. Windows. Mechanic: [media server](/pro-apps/mechanics/media-server).

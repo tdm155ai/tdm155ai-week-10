@@ -1,6 +1,6 @@
 ---
-title: Galleries
-description: teamLab, Olafur Eliasson, James Turrell, and Meow Wolf. More for reporting and context than for this class.
+title: "Galleries"
+description: "teamLab, Olafur Eliasson, James Turrell, and Meow Wolf. More for reporting and context than for this class."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

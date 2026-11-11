@@ -1,6 +1,6 @@
 ---
-title: Sleep No More
-description: Punchdrunk's immersive Macbeth: the audience, masked, wanders a five-story building while scenes play in many rooms at once.
+title: "Sleep No More"
+description: "Punchdrunk's immersive Macbeth: the audience, masked, wanders a five-story building while scenes play in many rooms at once."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

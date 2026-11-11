@@ -1,6 +1,6 @@
 ---
-title: Millumin
-description: Show control and video mapping built for theater and dance, on the Mac. Mechanics: cue list, projection mapping.
+title: "Millumin"
+description: "Show control and video mapping built for theater and dance, on the Mac. Mechanics: cue list, projection mapping."
 ---
 
 **What it is:** a show-control and media-server app made for **theater, dance**, video mapping, and installation. A cue-based **dashboard** (layers × columns) plus **timelines** for keyframed animation, with mapping and warping, and MIDI, OSC, and DMX control. Of everything on this list, it's the closest to what runs video in a theater booth. **macOS only** ("There is no version for Windows or Linux"). Maker: the website doesn't name the company on the pages we read (not verified). Mechanics: [cue list](/pro-apps/mechanics/cue-list), [projection mapping](/pro-apps/mechanics/projection-mapping).

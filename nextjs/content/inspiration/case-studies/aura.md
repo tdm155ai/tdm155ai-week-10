@@ -1,6 +1,6 @@
 ---
 title: "Case study: AURA"
-description: Moment Factory's projection-mapped show in Montreal's Notre-Dame Basilica. Architecture as the screen.
+description: "Moment Factory's projection-mapped show in Montreal's Notre-Dame Basilica. Architecture as the screen."
 ---
 
 *Written with AI (Claude), November 11, 2026.* See [the example page](/inspiration/examples/aura) for videos.

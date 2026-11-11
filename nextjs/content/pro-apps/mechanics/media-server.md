@@ -1,6 +1,6 @@
 ---
-title: Media server
-description: Play many synced, high-resolution video outputs, laid out on a 3D model of the real stage. The big-concert tier.
+title: "Media server"
+description: "Play many synced, high-resolution video outputs, laid out on a 3D model of the real stage. The big-concert tier."
 ---
 
 **The maneuver:** a stadium show has LED walls, floors, and projections, all different shapes and resolutions. A media server holds a 3D model of the real stage (the **visualizer**), maps content onto every surface, and plays it in sync with the music (often from **timecode**, so video, lights, and pyrotechnics hit the same frame every night). Real-time engines like Notch generate graphics live, reacting to cameras or music.

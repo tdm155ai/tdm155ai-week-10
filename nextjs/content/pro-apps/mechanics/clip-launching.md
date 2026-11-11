@@ -1,6 +1,6 @@
 ---
-title: Clip launching
-description: A grid of clips you fire live, in time with the music. How VJs and electronic musicians perform.
+title: "Clip launching"
+description: "A grid of clips you fire live, in time with the music. How VJs and electronic musicians perform."
 ---
 
 **The maneuver:** a grid. Each cell holds a clip (a loop of video, a bar of drums). Columns or rows group clips that belong together; fire a whole column and every layer switches at once. Launches snap to the beat, so even a late press lands on time. Unlike a cue list, there is no fixed order: you improvise.

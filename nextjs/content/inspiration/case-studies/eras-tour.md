@@ -1,6 +1,6 @@
 ---
 title: "Case study: The Eras Tour"
-description: A fixed three-hour stadium show, cued to the music every night. The tools, the mechanics, and a small version you could build.
+description: "A fixed three-hour stadium show, cued to the music every night. The tools, the mechanics, and a small version you could build."
 ---
 
 *Written with AI (Claude), November 11, 2026.* See [the example page](/inspiration/examples/eras-tour) for videos.

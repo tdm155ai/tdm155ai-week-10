@@ -1,6 +1,6 @@
 ---
 title: "Case study: The audience as the display"
-description: Coldplay's and Taylor Swift's LED wristbands: one cue fired at 50,000 people.
+description: "Coldplay's and Taylor Swift's LED wristbands: one cue fired at 50,000 people."
 ---
 
 *Written with AI (Claude), November 11, 2026.* See [Coldplay](/inspiration/examples/coldplay) for videos.

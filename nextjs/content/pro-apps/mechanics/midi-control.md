@@ -1,6 +1,6 @@
 ---
-title: MIDI control
-description: Pads, keys, and dials as a cheap control surface for anything in the browser.
+title: "MIDI control"
+description: "Pads, keys, and dials as a cheap control surface for anything in the browser."
 ---
 
 **The maneuver:** a MIDI controller sends tiny messages: "pad 36 pressed, velocity 100", "dial 3 moved to 64". Every pro app above lets you **MIDI-map** them: touch a control on screen, touch the pad, and they're linked. A $100 controller becomes a lighting board, a clip launcher, or a Go button.

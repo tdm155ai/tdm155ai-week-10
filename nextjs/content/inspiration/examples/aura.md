@@ -1,6 +1,6 @@
 ---
-title: AURA
-description: Moment Factory's projection-mapped light show inside Montreal's Notre-Dame Basilica.
+title: "AURA"
+description: "Moment Factory's projection-mapped light show inside Montreal's Notre-Dame Basilica."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

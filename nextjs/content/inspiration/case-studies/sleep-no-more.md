@@ -1,6 +1,6 @@
 ---
 title: "Case study: Sleep No More"
-description: Punchdrunk's immersive Macbeth: many rooms, one show clock, and an audience that moves.
+description: "Punchdrunk's immersive Macbeth: many rooms, one show clock, and an audience that moves."
 ---
 
 *Written with AI (Claude), November 11, 2026.* See [the example page](/inspiration/examples/sleep-no-more).

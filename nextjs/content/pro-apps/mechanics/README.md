@@ -1,6 +1,6 @@
 ---
-title: Mechanics
-description: The handful of maneuvers every show app is built from, and how to build each one yourself.
+title: "Mechanics"
+description: "The handful of maneuvers every show app is built from, and how to build each one yourself."
 ---
 
 Every professional show app is a particular arrangement of a few mechanics. Learn the mechanic, and the app becomes one implementation of it among many, including the one you build today with Claude Code.

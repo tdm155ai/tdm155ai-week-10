@@ -1,6 +1,6 @@
 ---
-title: Isadora
-description: TroikaTronix's patching-and-cueing app built for theater and dance. Mechanics: node graph, cue list, sensor triggers.
+title: "Isadora"
+description: "TroikaTronix's patching-and-cueing app built for theater and dance. Mechanics: node graph, cue list, sensor triggers."
 ---
 
 **What it is:** a node-based media server and cueing tool made for theater, dance, and installation. You build **scenes** out of **actors** wired together, then step through the scenes like cues. It sits between QLab (scenes + space bar) and TouchDesigner (patching), and it's built for interactive, sensor-driven performance. Made by TroikaTronix (created by Mark Coniglio). Mac and Windows; one license runs on both. Mechanics: [node graph](/pro-apps/mechanics/node-graph), [cue list](/pro-apps/mechanics/cue-list), [sensor triggers](/pro-apps/mechanics/sensor-triggers).

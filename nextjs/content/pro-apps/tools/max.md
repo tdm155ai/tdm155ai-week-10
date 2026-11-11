@@ -1,6 +1,6 @@
 ---
-title: Max/MSP
-description: Cycling '74's visual programming environment for music, sound, and video: objects wired with patch cords. Mechanic: node graph.
+title: "Max/MSP"
+description: "Cycling '74's visual programming environment for music, sound, and video: objects wired with patch cords. Mechanic: node graph."
 ---
 
 **What it is:** a visual programming environment. You place **objects** in a **patcher** and connect them with **patch cords**; MSP handles audio and Jitter handles video. The grandparent of the node-graph apps, and the tool of choice in experimental music and sound art. Made by Cycling '74 (owned by Ableton); macOS and Windows; current version Max 9. **Max for Live** runs Max devices inside Ableton Live (bundled with Live Suite). Mechanic: [node graph](/pro-apps/mechanics/node-graph).

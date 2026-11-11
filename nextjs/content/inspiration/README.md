@@ -1,6 +1,6 @@
 ---
-title: Inspiration
-description: Concerts, shows, theater, and a few galleries, to define what we're working on today. Links only, checked November 11, 2026.
+title: "Inspiration"
+description: "Concerts, shows, theater, and a few galleries, to define what we're working on today. Links only, checked November 11, 2026."
 ---
 
 *This section was researched and written with AI (Claude) on the morning of November 11, 2026. Every link was checked that morning against YouTube's own title, channel, and length, or by opening the page. Anything not from the artist's, studio's, or venue's own channel is marked third-party.*

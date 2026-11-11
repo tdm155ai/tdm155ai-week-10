@@ -1,6 +1,6 @@
 ---
 title: "Case study: Phish at Sphere"
-description: Visuals improvised live, in a game engine, with a band that never plays the same show twice.
+description: "Visuals improvised live, in a game engine, with a band that never plays the same show twice."
 ---
 
 *Written with AI (Claude), November 11, 2026.* See [the example page](/inspiration/examples/phish-at-sphere) for videos.

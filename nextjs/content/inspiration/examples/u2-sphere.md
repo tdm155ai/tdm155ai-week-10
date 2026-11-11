@@ -1,6 +1,6 @@
 ---
-title: U2 at Sphere
-description: The residency that opened the Las Vegas Sphere: a 16K wraparound screen as the set.
+title: "U2 at Sphere"
+description: "The residency that opened the Las Vegas Sphere: a 16K wraparound screen as the set."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

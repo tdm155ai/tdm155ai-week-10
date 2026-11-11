@@ -1,6 +1,6 @@
 ---
-title: Es Devlin
-description: The stage designer behind tours for U2, Beyoncé, and The Weeknd, and opera and theater sets: sculpture, light, and projection.
+title: "Es Devlin"
+description: "The stage designer behind tours for U2, Beyoncé, and The Weeknd, and opera and theater sets: sculpture, light, and projection."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

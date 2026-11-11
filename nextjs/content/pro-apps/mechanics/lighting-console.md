@@ -1,6 +1,6 @@
 ---
-title: Lighting console
-description: Record looks (levels, colors, positions) as cues and play them back. The light board, and the protocol called DMX.
+title: "Lighting console"
+description: "Record looks (levels, colors, positions) as cues and play them back. The light board, and the protocol called DMX."
 ---
 
 **The maneuver:** a lighting programmer patches every fixture to an address, builds a "look" by setting levels and colors, records it as a cue, and builds the next. In performance the board operator presses Go and the console crossfades from one look to the next over the cue's time. Moving lights, color, and effects are all just more numbers in the look.

@@ -1,6 +1,6 @@
 ---
-title: Resolume
-description: VJ software from the Netherlands: a grid of video clips triggered live, in time with the music, mapped onto screens. Mechanics: clip launching, projection mapping.
+title: "Resolume"
+description: "VJ software from the Netherlands: a grid of video clips triggered live, in time with the music, mapped onto screens. Mechanics: clip launching, projection mapping."
 ---
 
 **What it is:** live video ("VJ") software. Video loops, stills, cameras and generators sit in a grid; you trigger them live, stack them with blend modes and effects, sync them to the BPM, and send the result to projectors or LED walls. **Avenue** is the performance edition; **Arena** adds projection mapping, edge blending, and DMX. Mac and Windows. Mechanics: [clip launching](/pro-apps/mechanics/clip-launching), [projection mapping](/pro-apps/mechanics/projection-mapping).

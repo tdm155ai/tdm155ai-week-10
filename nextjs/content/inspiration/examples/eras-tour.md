@@ -1,6 +1,6 @@
 ---
-title: The Eras Tour
-description: Taylor Swift's 2023–24 stadium tour: a long LED wall, an LED stage floor, lifts, and 50,000 synchronized wristbands.
+title: "The Eras Tour"
+description: "Taylor Swift's 2023–24 stadium tour: a long LED wall, an LED stage floor, lifts, and 50,000 synchronized wristbands."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

@@ -1,6 +1,6 @@
 ---
-title: Ableton Live
-description: Music software whose Session view is a grid of clips launched live, in time; widely used for theater sound and live looping. Mechanic: clip launching.
+title: "Ableton Live"
+description: "Music software whose Session view is a grid of clips launched live, in time; widely used for theater sound and live looping. Mechanic: clip launching."
 ---
 
 **What it is:** music software from Ableton (Berlin), Mac and Windows. Its **Session view** is a grid of loops and one-shots you launch live, the direct ancestor of Resolume's clip grid; the **Arrangement view** is a traditional timeline. In theater it runs sound cues and live loops. Current version Live 12 (Live 13 announced for early 2027). Mechanics: [clip launching](/pro-apps/mechanics/clip-launching), [MIDI control](/pro-apps/mechanics/midi-control).

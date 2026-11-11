@@ -1,6 +1,6 @@
 ---
-title: The Met's Ring
-description: Robert Lepage's production of Wagner's Ring cycle at the Metropolitan Opera, built around a 45-ton "machine" of rotating planks used as a projection surface.
+title: "The Met's Ring"
+description: "Robert Lepage's production of Wagner's Ring cycle at the Metropolitan Opera, built around a 45-ton \"machine\" of rotating planks used as a projection surface."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

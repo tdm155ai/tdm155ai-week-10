@@ -1,6 +1,6 @@
 ---
-title: Node graph
-description: Wire small boxes together so data flows from inputs (camera, mic, MIDI) to outputs (picture, sound, light).
+title: "Node graph"
+description: "Wire small boxes together so data flows from inputs (camera, mic, MIDI) to outputs (picture, sound, light)."
 ---
 
 **The maneuver:** instead of writing code top to bottom, you place boxes (operators, actors, objects, nodes) on a canvas and draw wires between them. A camera box feeds a blur box feeds the output. Change a number on any box and the result changes live. It's programming you can see.

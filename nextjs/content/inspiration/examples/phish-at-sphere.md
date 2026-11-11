@@ -1,6 +1,6 @@
 ---
-title: Phish at Sphere
-description: Moment Factory's live, game-engine visuals on the Las Vegas Sphere's LED dome, different every night because the band improvises.
+title: "Phish at Sphere"
+description: "Moment Factory's live, game-engine visuals on the Las Vegas Sphere's LED dome, different every night because the band improvises."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

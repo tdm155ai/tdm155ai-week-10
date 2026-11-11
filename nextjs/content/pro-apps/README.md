@@ -1,6 +1,6 @@
 ---
-title: Pro apps
-description: The professional show apps used in theater, concerts, and installations, what each one's maneuver is, and which ones you could build yourself with Claude Code.
+title: "Pro apps"
+description: "The professional show apps used in theater, concerts, and installations, what each one's maneuver is, and which ones you could build yourself with Claude Code."
 ---
 
 TDM students often run shows in QLab. Lighting designers program ETC Eos or grandMA. VJs play Resolume; installation artists patch TouchDesigner or Isadora; stadium tours run on disguise. Each of these is a particular arrangement of a few **mechanics**. Today's question: which of those mechanics can you build yourself, in a browser, with Claude Code, and where do the pro tools still win?

@@ -1,6 +1,6 @@
 ---
-title: QLab
-description: Figure 53's cue-list app for theater sound, video, and lighting. The one TDM students already use. Mechanic: cue list.
+title: "QLab"
+description: "Figure 53's cue-list app for theater sound, video, and lighting. The one TDM students already use. Mechanic: cue list."
 ---
 
 **What it is:** QLab is "sound, video, and lighting control for macOS" (Figure 53's words). A show is a **cue list**; the operator presses **GO** (the space bar) and the next cue fires. It is the standard playback tool in theater sound departments. **Mac only.** Mechanic: [cue list](/pro-apps/mechanics/cue-list).

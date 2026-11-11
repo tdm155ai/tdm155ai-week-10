@@ -1,6 +1,6 @@
 ---
-title: Cue list
-description: Line up everything that happens, then press Go. The backbone of theater sound, video, and lighting.
+title: "Cue list"
+description: "Line up everything that happens, then press Go. The backbone of theater sound, video, and lighting."
 ---
 
 **The maneuver:** a numbered list of cues, each one a thing that happens (a sound starts, a video fades up, the lights change). An operator watches the show and presses **Go** at the right moment; the playhead fires the next cue and moves down one. That's it, and it runs most theater in the world.

@@ -1,6 +1,6 @@
 ---
-title: Lighting programmers at work
-description: Behind-the-scenes videos of lighting directors and board operators firing cues, from a jam band to a stadium tour to a theater.
+title: "Lighting programmers at work"
+description: "Behind-the-scenes videos of lighting directors and board operators firing cues, from a jam band to a stadium tour to a theater."
 ---
 
 *Researched with AI (Claude), November 11, 2026. Checked from YouTube's metadata (title, channel, length) and transcripts; the videos were not watched (no visual review), so we haven't confirmed how much of each shows the console itself.*

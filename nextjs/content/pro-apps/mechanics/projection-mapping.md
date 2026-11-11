@@ -1,6 +1,6 @@
 ---
-title: Projection mapping
-description: Warp the picture so it lands on a real object (a wall, a box, a set piece) instead of a flat screen.
+title: "Projection mapping"
+description: "Warp the picture so it lands on a real object (a wall, a box, a set piece) instead of a flat screen."
 ---
 
 **The maneuver:** the projector throws a rectangle; the world is not a rectangle. Mapping software lets you grab the corners of the picture and drag them until they sit on the edges of the real surface, cut away what shouldn't be lit with masks, and give each surface its own content.

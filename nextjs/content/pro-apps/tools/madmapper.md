@@ -1,6 +1,6 @@
 ---
-title: MadMapper
-description: Projection-mapping (and LED-mapping) software: draw a surface, warp it onto the real object, assign media. Mechanic: projection mapping.
+title: "MadMapper"
+description: "Projection-mapping (and LED-mapping) software: draw a surface, warp it onto the real object, assign media. Mechanic: projection mapping."
 ---
 
 **What it is:** projection-mapping and LED/DMX light-mapping software, a collaboration between the French installation studio 1024 architecture and the Swiss developers GarageCube. You draw surfaces that match real objects, warp them until they line up, and give each its own media; it also has cues, a timeline, lasers, and 3D calibration. Mac and Windows; current version MadMapper 6. Mechanic: [projection mapping](/pro-apps/mechanics/projection-mapping).

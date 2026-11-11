@@ -1,6 +1,6 @@
 ---
-title: Vivid Sydney
-description: The annual festival that projection-maps the sails of the Sydney Opera House.
+title: "Vivid Sydney"
+description: "The annual festival that projection-maps the sails of the Sydney Opera House."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

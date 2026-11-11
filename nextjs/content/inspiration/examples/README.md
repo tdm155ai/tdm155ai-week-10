@@ -1,6 +1,6 @@
 ---
-title: Examples
-description: One page per show, studio, or artist from the inspiration list.
+title: "Examples"
+description: "One page per show, studio, or artist from the inspiration list."
 ---
 
 *Researched and written with AI (Claude), November 11, 2026; links, titles, channels, and credits checked that morning. The background on the theater, opera, and gallery pages (dates, how the pieces work) is from Claude's general knowledge and wasn't re-checked today.*

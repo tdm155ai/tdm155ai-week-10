@@ -1,6 +1,6 @@
 ---
-title: Coldplay, Music of the Spheres
-description: A stadium tour run on disguise and Notch, with the crowd's LED wristbands as part of the light show.
+title: "Coldplay, Music of the Spheres"
+description: "A stadium tour run on disguise and Notch, with the crowd's LED wristbands as part of the light show."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

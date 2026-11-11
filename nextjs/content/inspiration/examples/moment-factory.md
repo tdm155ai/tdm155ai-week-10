@@ -1,6 +1,6 @@
 ---
-title: Moment Factory
-description: The Montreal multimedia studio behind concert visuals for Billie Eilish, Madonna, Arcade Fire, Nine Inch Nails, and Phish at Sphere.
+title: "Moment Factory"
+description: "The Montreal multimedia studio behind concert visuals for Billie Eilish, Madonna, Arcade Fire, Nine Inch Nails, and Phish at Sphere."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

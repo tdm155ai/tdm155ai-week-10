@@ -1,6 +1,6 @@
 ---
-title: TouchDesigner
-description: Derivative's node-based environment for real-time visuals, installations, and projection. Mechanic: node graph.
+title: "TouchDesigner"
+description: "Derivative's node-based environment for real-time visuals, installations, and projection. Mechanic: node graph."
 ---
 
 **What it is:** a visual programming environment where you wire **operators** into a live **network** that renders in real time: audio-reactive visuals, projection mapping, sensor-driven installations. Made by Derivative (Toronto). Windows and macOS (Apple Silicon recommended; some operators, such as Kinect and Face Track, are Windows/Nvidia only). Mechanic: [node graph](/pro-apps/mechanics/node-graph).

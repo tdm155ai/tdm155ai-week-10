@@ -1,6 +1,6 @@
 ---
-title: Build it yourself
-description: The industry-standard app on the left; the browser libraries and strategies you'd use to build the same maneuver with Claude Code on the right.
+title: "Build it yourself"
+description: "The industry-standard app on the left; the browser libraries and strategies you'd use to build the same maneuver with Claude Code on the right."
 ---
 
 Read across a row: what the pros use, then what you'd reach for to build your own version in a browser with Claude Code. "Ask Claude for" is a phrase you can paste as the start of a prompt. Everything here is free and runs in Chrome; some rows need a tiny Node server, and they say so.

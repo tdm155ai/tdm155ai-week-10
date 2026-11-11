@@ -1,6 +1,6 @@
 ---
-title: Tools
-description: One page per professional app: what it is, what it costs, its maneuver step by step, videos to watch, and a prompt to build the maneuver yourself.
+title: "Tools"
+description: "One page per professional app: what it is, what it costs, its maneuver step by step, videos to watch, and a prompt to build the maneuver yourself."
 ---
 
 Each page has the same parts: **what it is** (and what it costs, checked November 11, 2026), **the maneuver** unpacked step by step, **videos** with what to watch for and when, and **a prompt** you can paste into Claude Code to build a version of the maneuver in about 20 minutes, firing cues on this app's stage.

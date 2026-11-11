@@ -1,6 +1,6 @@
 ---
-title: Einstein on the Beach
-description: Robert Wilson and Philip Glass's 1976 opera, where light and time are building materials.
+title: "Einstein on the Beach"
+description: "Robert Wilson and Philip Glass's 1976 opera, where light and time are building materials."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*

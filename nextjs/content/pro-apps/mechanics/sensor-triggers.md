@@ -1,6 +1,6 @@
 ---
-title: Sensor triggers
-description: The performer fires the cue, not an operator: a spoken word, a raised hand, a box drawn on paper.
+title: "Sensor triggers"
+description: "The performer fires the cue, not an operator: a spoken word, a raised hand, a box drawn on paper."
 ---
 
 **The maneuver:** replace the person pressing Go with something that watches or listens. A camera tracks a dancer and the projection follows her; a word in the script triggers a sound; a sensor on the set fires a light. This is the territory of interactive installation and experimental theater, and the part where browser tools are strongest today.

@@ -1,6 +1,6 @@
 ---
-title: Laterna Magika
-description: Josef Svoboda's 1958 theater of live performers stepping in and out of projected film, still running in Prague.
+title: "Laterna Magika"
+description: "Josef Svoboda's 1958 theater of live performers stepping in and out of projected film, still running in Prague."
 ---
 
 *Researched with AI (Claude), November 11, 2026.*
