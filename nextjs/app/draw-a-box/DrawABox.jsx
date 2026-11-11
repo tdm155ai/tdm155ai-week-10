@@ -209,7 +209,7 @@ export default function DrawABox() {
       <div className="cv-head">
         <p className="eyebrow">Draw a box</p>
         <h1>Draw a box, say a word.</h1>
-        <p className="cv-lede">Point the overhead camera at a big sheet of paper and draw a rectangle in thick dark marker. OpenCV finds the biggest four-sided shape; the clip is warped onto its corners. Say a clip&apos;s word (after <strong>Listen</strong>), click it, or press its number. Lines flaky under the lights? Set <strong>Box from</strong> to printed markers and <Link href="/draw-a-box/markers">print four markers</Link> for the corners. Change the words and clips in <code>app/draw-a-box/clips.js</code>. How-to: <Link href="/docs/draw-a-box">docs/draw-a-box</Link>.</p>
+        <p className="cv-lede">Point the overhead camera at a big sheet of paper and draw a rectangle in thick dark marker. OpenCV finds the biggest four-sided shape; the clip is warped onto its corners. Say a clip&apos;s word (after <strong>Listen</strong>), click it, or press its number. Lines flaky under the lights? Set <strong>Box from</strong> to printed markers and <Link href="/draw-a-box/markers">print four markers</Link> for the corners. Change the words and clips in <code>app/draw-a-box/clips.js</code>. The finding part in one short file you can read top to bottom: <Link href="/draw-a-box/hello">/draw-a-box/hello</Link>. How-to: <Link href="/docs/draw-a-box">docs/draw-a-box</Link>.</p>
       </div>
       <CameraBar camera={camera} mirror={mirror} setMirror={setMirror}>
         <button type="button" onClick={toggleListening} className={listening ? "" : "cv-quiet"}>{listening ? "Listening… (stop)" : "Listen"}</button>
