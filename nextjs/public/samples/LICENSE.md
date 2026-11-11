@@ -6,3 +6,4 @@ Every file here was made for this repo on 2026-11-11 (ffmpeg's built-in generato
 - `loop-house.wav`: an 8-bar EDM loop (124 BPM, A minor), synthesized from sine, saw, and noise by `nextjs/lib/launch/loop.js` (`node lib/launch/make-loop.mjs`); no samples used.
 - Video (8 s, 640×360, silent, loops): `fractal.mp4` (Mandelbrot zoom), `gradient.mp4` (drifting color), `life.mp4` (Game of Life).
 - Images: `dawn.jpg`, `fractal.jpg`, `moon.svg`, `sun.svg`, `rose.svg`.
+- `spectrogram/`: **not made here.** Chrome Music Lab Spectrogram assets (shaders, sounds, icons, o3djs), Copyright 2016 Google Inc., Apache License 2.0, via the port `ll-26-27/spectrogram-next`; see `nextjs/lib/launch/spectrogram/README.md`.

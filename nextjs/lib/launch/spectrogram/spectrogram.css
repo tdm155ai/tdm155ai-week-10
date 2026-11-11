@@ -1,0 +1,402 @@
+/* The Chrome Music Lab spectrogram's styles (Copyright 2016 Google Inc., Apache License 2.0), from the Next.js port
+   ll-26-27/spectrogram-next (src/app/*.scss), compiled once with Sass and nested under .spectrogram-page so they don't
+   reach the rest of this site; rem became px (the original sets the root font size to 62.5%, so 1rem = 10px). */
+.spectrogram-page { position: fixed; inset: 0; z-index: 50; overflow: hidden; color: #000; background-color: #141414; font-family: 'Roboto', system-ui, sans-serif; font-size: 10px; }
+.spectrogram-credit { position: fixed; top: 10px; left: 12px; z-index: 300; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; max-width: calc(100% - 24px); padding: 6px 10px; border-radius: 6px; background: rgba(0,0,0,.6); color: #bbb; font: 12px/1.4 system-ui, sans-serif; }
+.spectrogram-credit a { color: #eee; text-decoration: underline; }
+.spectrogram-page html, .spectrogram-page body, .spectrogram-page div, .spectrogram-page span, .spectrogram-page applet, .spectrogram-page object, .spectrogram-page iframe, .spectrogram-page h1, .spectrogram-page h2, .spectrogram-page h3, .spectrogram-page h4, .spectrogram-page h5, .spectrogram-page h6, .spectrogram-page p, .spectrogram-page blockquote, .spectrogram-page pre, .spectrogram-page a, .spectrogram-page abbr, .spectrogram-page acronym, .spectrogram-page address, .spectrogram-page big, .spectrogram-page cite, .spectrogram-page code, .spectrogram-page del, .spectrogram-page dfn, .spectrogram-page em, .spectrogram-page img, .spectrogram-page ins, .spectrogram-page kbd, .spectrogram-page q, .spectrogram-page s, .spectrogram-page samp, .spectrogram-page small, .spectrogram-page strike, .spectrogram-page strong, .spectrogram-page sub, .spectrogram-page sup, .spectrogram-page tt, .spectrogram-page var, .spectrogram-page b, .spectrogram-page u, .spectrogram-page i, .spectrogram-page center, .spectrogram-page dl, .spectrogram-page dt, .spectrogram-page dd, .spectrogram-page ol, .spectrogram-page ul, .spectrogram-page li, .spectrogram-page fieldset, .spectrogram-page form, .spectrogram-page label, .spectrogram-page legend, .spectrogram-page table, .spectrogram-page caption, .spectrogram-page tbody, .spectrogram-page tfoot, .spectrogram-page thead, .spectrogram-page tr, .spectrogram-page th, .spectrogram-page td, .spectrogram-page article, .spectrogram-page aside, .spectrogram-page canvas, .spectrogram-page details, .spectrogram-page embed, .spectrogram-page figure, .spectrogram-page figcaption, .spectrogram-page footer, .spectrogram-page header, .spectrogram-page hgroup, .spectrogram-page menu, .spectrogram-page nav, .spectrogram-page output, .spectrogram-page ruby, .spectrogram-page section, .spectrogram-page summary, .spectrogram-page time, .spectrogram-page mark, .spectrogram-page audio, .spectrogram-page video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+.spectrogram-page article, .spectrogram-page aside, .spectrogram-page details, .spectrogram-page figcaption, .spectrogram-page figure, .spectrogram-page footer, .spectrogram-page header, .spectrogram-page hgroup, .spectrogram-page menu, .spectrogram-page nav, .spectrogram-page section {
+  display: block;
+}
+.spectrogram-page body {
+  line-height: 1;
+}
+.spectrogram-page ol, .spectrogram-page ul {
+  list-style: none;
+}
+.spectrogram-page blockquote, .spectrogram-page q {
+  quotes: none;
+}
+.spectrogram-page blockquote:before, .spectrogram-page blockquote:after {
+  content: "";
+  content: none;
+}
+.spectrogram-page q:before, .spectrogram-page q:after {
+  content: "";
+  content: none;
+}
+.spectrogram-page table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+@keyframes sonar-animation {
+  0% {
+    width: 60px;
+    height: 60px;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+@keyframes sprite {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: -2010px;
+  }
+}
+.spectrogram-page .music-box__hand-animation-sprite {
+  display: block;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-image: url(/samples/spectrogram/images/finger_anim.png);
+  width: 201px;
+  height: 201px;
+  background-size: 2211px;
+  animation: sprite 0.6s steps(10) infinite;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.spectrogram-page .spinner {
+  animation: rotation 1.4s linear infinite;
+  stroke: #fff;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+.spectrogram-page .circle {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: turn 1.4s ease-in-out infinite;
+}
+@keyframes turn {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
+}
+.spectrogram-page .icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 78%;
+  height: 78%;
+  background-color: currentColor;
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.spectrogram-page .icon-808 {
+  -webkit-mask-image: url("/samples/spectrogram/icons/808.svg");
+  mask-image: url("/samples/spectrogram/icons/808.svg");
+}
+.spectrogram-page .icon-bird {
+  -webkit-mask-image: url("/samples/spectrogram/icons/bird.svg");
+  mask-image: url("/samples/spectrogram/icons/bird.svg");
+}
+.spectrogram-page .icon-computer {
+  -webkit-mask-image: url("/samples/spectrogram/icons/computer.svg");
+  mask-image: url("/samples/spectrogram/icons/computer.svg");
+}
+.spectrogram-page .icon-draw {
+  -webkit-mask-image: url("/samples/spectrogram/icons/draw.svg");
+  mask-image: url("/samples/spectrogram/icons/draw.svg");
+}
+.spectrogram-page .icon-flute {
+  -webkit-mask-image: url("/samples/spectrogram/icons/flute.svg");
+  mask-image: url("/samples/spectrogram/icons/flute.svg");
+}
+.spectrogram-page .icon-guy {
+  -webkit-mask-image: url("/samples/spectrogram/icons/guy.svg");
+  mask-image: url("/samples/spectrogram/icons/guy.svg");
+}
+.spectrogram-page .icon-harp {
+  -webkit-mask-image: url("/samples/spectrogram/icons/harp.svg");
+  mask-image: url("/samples/spectrogram/icons/harp.svg");
+}
+.spectrogram-page .icon-mic {
+  -webkit-mask-image: url("/samples/spectrogram/icons/mic.svg");
+  mask-image: url("/samples/spectrogram/icons/mic.svg");
+}
+.spectrogram-page .icon-trombone {
+  -webkit-mask-image: url("/samples/spectrogram/icons/trombone.svg");
+  mask-image: url("/samples/spectrogram/icons/trombone.svg");
+}
+.spectrogram-page .icon-wine {
+  -webkit-mask-image: url("/samples/spectrogram/icons/wine.svg");
+  mask-image: url("/samples/spectrogram/icons/wine.svg");
+}
+.spectrogram-page .icon-wave {
+  -webkit-mask-image: url("/samples/spectrogram/icons/wave.svg");
+  mask-image: url("/samples/spectrogram/icons/wave.svg");
+}
+.spectrogram-page .music-box__modal__icon.icon-mic {
+  width: 70px;
+  height: 70px;
+}
+.spectrogram-page .icon-photo {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.spectrogram-page .icon-photo.icon-adele {
+  background-image: url("/media/spectrogram/adele.jpg");
+}
+.spectrogram-page .icon-photo.icon-billie {
+  background-image: url("/media/spectrogram/billie.jpg");
+}
+.spectrogram-page html {
+  font-size: 62.5%;
+}
+.spectrogram-page body, .spectrogram-page html {
+  width: 100%;
+  height: 100%;
+  color: #000;
+  font-family: "Roboto", sans-serif;
+  background-color: #141414;
+}
+.spectrogram-page #iosButton {
+  display: block;
+  position: fixed;
+  z-index: 5000;
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+}
+.spectrogram-page #iosButton.hide {
+  display: none;
+}
+.spectrogram-page .music-box__buttons {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  background-color: #111;
+  padding: 13px 20px;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.spectrogram-page .music-box__buttons__button {
+  background-color: #333333;
+  color: #EEEEEE;
+  width: min(100px, (100vw - 40px) / 14 - 10px);
+  height: min(100px, (100vw - 40px) / 14 - 10px);
+  flex: 0 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.spectrogram-page .music-box__buttons__button.selected {
+  background-color: #3BC16F;
+}
+.spectrogram-page .music-box__buttons__button:active, .spectrogram-page .music-box__buttons__button:visited {
+  background-color: #333333;
+}
+.spectrogram-page .music-box__buttons__button img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  pointer-events: none;
+  display: none;
+}
+.spectrogram-page canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - calc(min(100px, (100vw - 40px) / 14 - 10px) + 26px));
+}
+.spectrogram-page #legend {
+  display: none;
+}
+.spectrogram-page .music-box__tool-tip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: white;
+  background-color: #fe632d;
+  padding: 20px;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.spectrogram-page .music-box__modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spectrogram-page .music-box__modal__message {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  padding: 30px;
+  border-radius: 2px;
+}
+.spectrogram-page .music-box__modal__message svg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.spectrogram-page .music-box__modal__message img {
+  width: 10vw;
+  height: 10vw;
+  transform: rotate(0deg);
+  animation: rotate 0.7s linear infinite;
+}
+.spectrogram-page .music-box__modal__message__text {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 200;
+  text-align: center;
+  margin-bottom: 35px;
+  text-transform: capitalize;
+}
+.spectrogram-page .music-box__modal__message__explainer {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 200;
+  text-align: center;
+  margin-top: 35px;
+}
+.spectrogram-page .music-box__modal__icon {
+  color: #fff;
+  font-size: 70px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -46%);
+}
+.spectrogram-page .music-box__modal__record-rings {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 1px solid #3BC16F;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 300px;
+  animation-name: sonar-animation;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+  opacity: 0;
+}
+.spectrogram-page .music-box__modal__record-rings:nth-child(1) {
+  animation-delay: 0s;
+}
+.spectrogram-page .music-box__modal__record-rings:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.spectrogram-page .music-box__modal__record-rings:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.spectrogram-page .music-box__modal__record-rings:nth-child(4) {
+  animation-delay: 0.9s;
+}
+.spectrogram-page .music-box__modal__record-rings:nth-child(5) {
+  animation-delay: 1.2s;
+}
+.spectrogram-page #fileDrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 0.2s;
+}
+.spectrogram-page #fileDrop.active {
+  opacity: 1;
+  z-index: 100;
+}
+.spectrogram-page #fileDrop.pointer-events {
+  pointer-events: auto;
+}
+.spectrogram-page .file-overlay {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  width: calc(100% - 80px);
+  height: calc(100% - 80px);
+  border: 1px dashed #fff;
+}
+.spectrogram-page .file-overlay-description {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #fff;
+  transform: translate(-50%, -50%);
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+}
