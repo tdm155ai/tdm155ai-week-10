@@ -6,3 +6,4 @@ Both clips were generated for this repo on 2026-11-11 with ffmpeg and ImageMagic
 - `title.mp4`: ffmpeg's `gradients` source with a "DRAW A BOX" title card drawn in ImageMagick, 640×360, 6 s.
 
 /draw-a-box also uses `gradient.mp4`, `fractal.mp4`, and `life.mp4` from `/samples/` (see `public/samples/LICENSE.md`).
+- `gifs/bars.gif`, `gifs/title.gif`, `gifs/gradient.gif`, `gifs/fractal.gif`, `gifs/life.gif`: GIFs made on 2026-11-11 with ffmpeg from `bars.mp4`, `title.mp4`, and the `/samples/` clips above (CC0, like their sources).
