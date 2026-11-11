@@ -10,6 +10,8 @@ Every piece today is an **input** (something the computer notices) wired to an *
 
 ## The sequence
 
+**Check an input first:** [/launch/inputs](/launch/inputs) shows the raw numbers from keys, MIDI, the mic (level, frequency bands, pitch), a sound file, and the pointer.
+
 Each step has a **Hello World** (one short file, read it top to bottom, change the settings at the top) and a fuller version for the performance.
 
 | # | Input | What the computer notices | Hello World | Fuller version | File to change |
@@ -44,7 +46,7 @@ Everything goes to the [stage](/stage) through `fireCue` (do something once) or 
 - **Audio effects:** a filter sweep, resonance, echo (`setParam` `filter`, `resonance`, `echo`, `echoTime`; play with them on [/launch/xy](/launch/xy)).
 - **Text:** words on the screen.
 - **Pictures and video:** an image, a clip, a color wash, blackout. A video can be scrubbed, sped up, or paused (`setParam` `scrub`, `speed`, `play`).
-- **Graphics:** [/launch/shader](/launch/shader), a fragment shader (a small program the GPU runs for every pixel) you play with sliders, the mouse, the mic's loudness, MIDI knobs, or the XY pad, with its code editable on the page (change `lib/launch/shader.js`). And [/track/three](/track/three), a Three.js 3D wave field you play with sliders, the mouse, or your hand (change `app/track/three/scene.js`).
+- **Graphics:** [/launch/shader](/launch/shader) (five looks: smoke, plasma, aurora, tunnel, liquid), a fragment shader (a small program the GPU runs for every pixel) you play with sliders, the mouse, the mic's loudness, MIDI knobs, or the XY pad, with its code editable on the page (change `lib/launch/shader.js`). And [/track/three](/track/three), a Three.js 3D wave field you play with sliders, the mouse, or your hand (change `app/track/three/scene.js`).
 - **Audio as picture:** [/launch/spectrogram](/launch/spectrogram) draws sound as frequency over time.
 
 ## Then combine them

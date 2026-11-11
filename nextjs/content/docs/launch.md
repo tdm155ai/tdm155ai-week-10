@@ -4,6 +4,8 @@ description: Fire cues with on-screen buttons, your keyboard, a MIDI pad control
 order: 2
 ---
 
+**Is it working?** [/launch/inputs](/launch/inputs) shows every input's raw numbers, no stage needed: **keys** (the key and its code, held keys), **MIDI** (device, note or CC, channel, value 0–127), the **microphone** (level in dB, eight frequency bands, waveform, loudest pitch in Hz), **a sound file** played through the same meters, and the **pointer** (x, y, pressure). Start there when something doesn't respond.
+
 **Open:** [/launch/hello](/launch/hello) (Hello World), then [/launch](/launch), [/launch/midi](/launch/midi), [/launch/cue-list](/launch/cue-list), [/launch/xy](/launch/xy), [/launch/shader](/launch/shader), and [/launch/spectrogram](/launch/spectrogram). Use Chrome. Open the [stage](/docs/stage) first.
 
 ## 0. Hello World: one key, one cue
@@ -60,6 +62,7 @@ The list is `nextjs/lib/launch/cue-list.json`, a cue list for reading Sonnet 18.
 
 - **Sliders:** Speed, Scale (zoom), Warp, Color, Rings, Brightness. Each one is a `u_` value (a *uniform*) the shader reads.
 - **Other inputs:** the pointer over the picture (`u_mouse`); **Listen** makes the mic's loudness (`u_level`) brighten the rings; the stage controls move the sliders, so MIDI knobs on [/launch/midi](/launch/midi) (speed, hue, brightness) and the XY pad's filter on [/launch/xy](/launch/xy) or [/track/xy](/track/xy) (Warp) play it too. A panel on the page lists the chain: inputs → parameters → pixels.
+- **Look:** five shaders on the same sliders, pointer, and mic: **Smoke** (the default), **Plasma**, **Aurora**, **Tunnel** (the pointer steers), **Liquid** (a blob follows the pointer). They live in `nextjs/lib/launch/shader-presets.js`: copy one, change it, add it to the list.
 - **Edit it on the page:** change the GLSL and press **Run** (or ⌘/Ctrl+Enter). A mistake shows the compiler's error and keeps drawing the last good shader; **Back to the file** undoes your edits. `F` full screen, `Space` pause.
 
 **The one file to change:** `nextjs/lib/launch/shader.js`: `controls` (the sliders, and which stage control moves each) and `fragment` (the GLSL, commented line by line).
