@@ -1,0 +1,42 @@
+.ls { padding: 32px var(--gutter) 80px; }
+.ls-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 28px; }
+.ls-head h1 { margin: 12px 0 0; font-size: clamp(40px, 6vw, 76px); font-weight: 800; letter-spacing: -.055em; line-height: 1; }
+.ls-head .eyebrow a:hover { color: var(--accent); }
+.ls-deck { max-width: 680px; margin: 16px 0 0; color: var(--muted); font-size: 17px; line-height: 1.5; }
+.ls button { padding: 12px 20px; border: 1px solid var(--line); border-radius: 999px; background: var(--wash); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+.ls button:hover { border-color: var(--accent); }
+.ls .ls-go { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.ls-grid { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start; }
+@media (max-width: 960px) { .ls-grid { grid-template-columns: 1fr; } }
+.ls-stage { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #0b0c0b; }
+.ls-stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); opacity: .75; }
+.ls-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ls-stage[data-mode="spot"] canvas { cursor: crosshair; }
+.ls-idle { position: absolute; inset: auto 0 0 0; margin: 0; padding: 18px; color: var(--muted); font-size: 14px; }
+.ls-panel { display: flex; flex-direction: column; gap: 14px; font-size: 14px; }
+.ls-panel fieldset { margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; gap: 8px; }
+.ls-panel legend, .ls-panel h2 { padding: 0 4px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.ls-panel h2 { margin: 0 0 10px; padding: 0; }
+.ls-field { display: grid; gap: 6px; color: var(--muted); }
+.ls-field select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--wash); color: var(--ink); font: inherit; }
+.ls-field input[type="range"] { accent-color: var(--accent); }
+.ls-check { color: var(--muted); }
+.ls-mix, .ls-speakers { padding: 14px; border: 1px solid var(--line); border-radius: 10px; }
+.ls-row { display: grid; grid-template-columns: 10px 120px 1fr; align-items: center; gap: 10px; margin: 8px 0; }
+.ls-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); transition: opacity .4s; }
+.ls-name small { display: block; color: var(--muted); font-size: 11px; }
+.ls-meter { position: relative; height: 8px; border-radius: 4px; background: var(--hover); overflow: hidden; }
+.ls-meter > span { position: absolute; inset: 0 auto 0 0; background: var(--ink); transition: width .3s; }
+.ls-meter > i { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(236, 236, 230, .7); }
+.ls-stats { margin: 12px 0 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ls-room { position: relative; height: 150px; margin: 8px 18px 18px; border: 1px dashed var(--line); border-radius: 6px; }
+.ls-room span { position: absolute; transform: translate(-50%, -50%); padding: 6px 9px; border-radius: 6px; background: var(--accent); color: var(--accent-ink); font-size: 12px; font-weight: 700; transition: opacity .3s; }
+.ls-room em { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); color: var(--muted); font-size: 11px; font-style: normal; }
+.ls-note { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.ls-status { margin: 0; padding-left: 18px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+dl.ls-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+dl.ls-stats div { display: flex; flex-direction: column; gap: 2px; }
+dl.ls-stats dt { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+dl.ls-stats dd { margin: 0; color: var(--ink); font-size: 15px; font-weight: 600; }
+.ls-row { grid-template-columns: 10px 150px 1fr; }
+.ls-field select, .ls-field input[type="range"] { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; } /* week 10: keep long camera names inside the panel */

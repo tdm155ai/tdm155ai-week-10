@@ -7,6 +7,7 @@ const tabs = [
   ["/launch/cue-list", "3 · Cue list (Go)"],
   ["/launch/xy", "4 · XY pad (filter)"],
   ["/launch/hand", "4b · Hand launch"],
+  ["/launch/live-score", "4c · Live score"],
   ["/launch/shader", "5 · Shader"],
   ["/launch/kaleidoscope", "5b · Kaleidoscope"],
   ["/launch/particles", "5c · Particles"],
