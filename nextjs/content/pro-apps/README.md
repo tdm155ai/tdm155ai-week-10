@@ -33,7 +33,7 @@ Prices and free versions were checked on the makers' sites on November 11, 2026.
 
 Go down the table and argue it. A few prompts:
 
-- **QLab is the easiest to rebuild and the hardest to replace.** A browser cue list takes twenty minutes. A stage manager trusting it for eight shows a week takes years: reliability, sample-accurate timing, 16 audio outputs, and a whole profession that already knows it. What would your version need before you'd run a real show on it?
+- **QLab is the easiest to rebuild and the hardest to replace.** A browser cue list takes twenty minutes. A stage manager trusting it for eight shows a week takes years: reliability, precise timing, many audio outputs (with a license), and a whole profession that already knows it. What would your version need before you'd run a real show on it?
 - **Where you beat the pros:** triggers. A sonnet's words, a hand above the head, a box drawn on paper. Isadora and TouchDesigner can do this, but a browser with MediaPipe and a transcription model, wired by Claude, gets you there fastest, and shaped exactly to your piece.
 - **Where the pros clearly win:** lighting consoles (DMX hardware, hundreds of fixtures, safety), media servers (synced 4K outputs, timecode, backup servers), and anything show-critical. Same lesson as the LED strips in the corner: Claude's multiplier is biggest in the browser and smallest where hardware is involved.
 - **The professional answer is often both:** QLab runs the show, and your app sends it a MIDI or OSC message when the dancer raises her hand. Every app on this list listens to MIDI.

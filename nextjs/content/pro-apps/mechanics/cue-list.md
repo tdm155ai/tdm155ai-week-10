@@ -24,6 +24,6 @@ description: Line up everything that happens, then press Go. The backbone of the
 - Auto-continue: after firing, if `cue.continue === "auto"`, fire the next one; for auto-follow, wait for the media's `ended` event.
 - Space bar as Go: a `keydown` listener. Guard against key repeat (`event.repeat`), or a held key fires the whole show.
 
-**Where the pro tool wins:** QLab is tested in thousands of theaters, plays dozens of audio outputs with sample-accurate timing, talks to lighting and sound desks over MIDI and OSC, and doesn't crash at 8 pm. Your browser cue list is perfect for a class performance and a rehearsal sketch; for a run of a show, stage managers trust QLab.
+**Where the pro tool wins:** QLab is tested in thousands of theaters, plays many audio outputs with precise timing (licensed), talks to lighting and sound desks over MIDI and OSC, and doesn't crash at 8 pm. Your browser cue list is perfect for a class performance and a rehearsal sketch; for a run of a show, stage managers trust QLab.
 
 **Try it:** [/launch](/launch). The tool page: [QLab](/pro-apps/tools/qlab).
