@@ -7,7 +7,7 @@
 //
 // `active`: false renders nothing and opens no camera, so set it true from a click (the browser asks for the camera then).
 // `playing`: true shows "Dance!!". `stopToken`: add 1 each time the music stops; every change shows "STOP".
-// It fills its parent (give the parent a size and position: relative). The picture is mirrored, like a mirror.
+// `scale`: 1 = about half the face's width (at least 48 px); 1.5 is bigger. It fills its parent (give the parent a size and position: relative). The picture is mirrored, like a mirror.
 // Nothing is recorded or stored: frames go from the camera to MediaPipe's face model in this tab and nowhere else.
 // The page that uses it owns the sound, the words and the layout; this owns the camera and the text on the face.
 
@@ -24,19 +24,19 @@ const LOST_MS = 600; // hide the text when the face has been gone this long
 const CSS = `
 .dance-cam { position: absolute; inset: 0; overflow: hidden; background: #000; }
 .dance-cam video { position: absolute; inset: 0; width: 100%; height: 100%; transform: scaleX(-1); }
-.dance-cam-anchor { position: absolute; left: 0; top: 0; transition: opacity .3s; will-change: transform; pointer-events: none; }
+.dance-cam-anchor { position: absolute; left: 0; top: 0; z-index: 3; /* above an effect layered over the camera */ transition: opacity .3s; will-change: transform; pointer-events: none; }
 .dance-cam-word { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; font-weight: 900; line-height: 1; letter-spacing: .02em; }
-.dance-cam-dance { animation: dance-cam-flash 1.2s ease-in-out infinite; text-shadow: 0 0 .12em rgba(0, 0, 0, .55); }
-.dance-cam-stop { font-size: 1.25em; text-shadow: 0 0 .12em rgba(255, 255, 255, .85); }
+.dance-cam-dance { animation: dance-cam-flash 1.2s ease-in-out infinite; -webkit-text-stroke: .07em #000; paint-order: stroke fill; text-shadow: 0 0 .08em #000, 0 0 .2em rgba(0, 0, 0, .8); }
+.dance-cam-stop { font-size: 1.15em; -webkit-text-stroke: .06em #fff; paint-order: stroke fill; text-shadow: 0 0 .08em #fff, 0 0 .22em rgba(255, 255, 255, .9); }
 .dance-cam-status { position: absolute; left: 12px; bottom: 10px; margin: 0; font-size: 13px; color: #fff; text-shadow: 0 1px 2px #000; }
-@keyframes dance-cam-flash { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
+@keyframes dance-cam-flash { 0%, 100% { opacity: 1; } 50% { opacity: .6; } }
 `;
 
 export default function DanceCamera({ active = false, ...props }) {
   return active ? <Feed {...props} /> : null;
 }
 
-function Feed({ playing = false, stopToken = 0, danceText = "Dance!!", stopText = "STOP", danceColor = "#ff2d95", stopColor = "#000000", stopHoldMs = 3000, fadeMs = 1000, fit = "cover", showStatus = true, onStatus }) {
+function Feed({ playing = false, stopToken = 0, danceText = "Dance!!", stopText = "STOP", danceColor = "#ff2d95", stopColor = "#000000", stopHoldMs = 3000, fadeMs = 1000, fit = "cover", scale = 1, showStatus = true, onStatus }) {
   const camera = useCamera({ storageKey: "cv-camera-track" });
   const boxRef = useRef(null);
   const anchorRef = useRef(null);
@@ -69,8 +69,8 @@ function Feed({ playing = false, stopToken = 0, danceText = "Dance!!", stopText 
 
     // Where the video's picture sits inside the box (object-fit cover or contain), so a landmark lands on the face.
     const w = box.clientWidth, h = box.clientHeight;
-    const scale = (fit === "contain" ? Math.min : Math.max)(w / video.videoWidth, h / video.videoHeight);
-    const shownW = video.videoWidth * scale, shownH = video.videoHeight * scale;
+    const shown = (fit === "contain" ? Math.min : Math.max)(w / video.videoWidth, h / video.videoHeight);
+    const shownW = video.videoWidth * shown, shownH = video.videoHeight * shown;
     const left = (w - shownW) / 2, top = (h - shownH) / 2;
     const at = (i) => ({ x: left + (1 - face[i].x) * shownW, y: top + face[i].y * shownH }); // mirrored
 
@@ -85,9 +85,16 @@ function Feed({ playing = false, stopToken = 0, danceText = "Dance!!", stopText 
     smooth.current = s
       ? { x: s.x + (target.x - s.x) * SMOOTH, y: s.y + (target.y - s.y) * SMOOTH, size: s.size + (target.size - s.size) * SMOOTH, angle: s.angle + (target.angle - s.angle) * SMOOTH }
       : target;
-    const { x, y, size, angle } = smooth.current;
+    const { size, angle } = smooth.current;
+    // Big enough to read from across the room (`scale` makes it bigger or smaller), and kept inside the picture.
+    const fontSize = Math.max(48, size * 0.5) * scale;
+    anchor.style.fontSize = `${fontSize}px`;
+    const word = anchor.firstElementChild;
+    const halfW = Math.min(w / 2, (word ? word.offsetWidth : fontSize * 3) / 2 + 8);
+    const halfH = Math.min(h / 2, fontSize * 0.7);
+    const x = Math.min(Math.max(smooth.current.x, halfW), w - halfW);
+    const y = Math.min(Math.max(smooth.current.y, halfH), h - halfH);
     anchor.style.transform = `translate(${x}px, ${y}px) rotate(${angle}rad)`;
-    anchor.style.fontSize = `${Math.max(14, size * 0.24)}px`;
     anchor.style.opacity = "1";
   });
 
