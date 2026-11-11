@@ -145,3 +145,13 @@
 .words-table tr.words-hit td { background: color-mix(in srgb, var(--ok) 14%, transparent); }
 .words-last { margin: 0; font-size: 26px; line-height: 1.3; }
 .words-last small { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
+
+.diag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 18px; align-items: start; }
+.diag-grid .ctl-panel + .ctl-panel { margin-top: 0; }
+.diag-big { margin: 6px 0 10px; font-size: clamp(22px, 3vw, 34px); font-weight: 800; letter-spacing: -.03em; }
+.diag-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin: 6px 0; color: var(--muted); font-size: 13px; font-family: ui-monospace, monospace; }
+.diag-row b { color: var(--ink); font-weight: 600; }
+.diag-scope { display: block; width: 100%; height: 180px; margin-top: 10px; border: 1px solid var(--line); border-radius: 6px; background: #0b0c0b; }
+.diag-pad { position: relative; height: 160px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); touch-action: none; cursor: crosshair; overflow: hidden; }
+.diag-dot { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); pointer-events: none; transition: transform .08s; }
+.diag-grid .ctl-select { max-width: 100%; min-width: 0; flex: 1 1 200px; }
