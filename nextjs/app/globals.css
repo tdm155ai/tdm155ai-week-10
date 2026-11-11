@@ -334,7 +334,7 @@ body:has(.print-root) { background: #ffffff; color-scheme: light; }
 
 .inventory-shell { width: min(100%, 1280px); }
 .landing-doors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; gap: 16px; margin-top: 42px; }
-.landing-doors .folder-tool { min-height: 150px; justify-content: center; }
+.landing-doors .folder-tool { display: flex; flex-direction: column; align-items: stretch; min-height: 150px; justify-content: flex-start; gap: 24px; padding: 24px; text-align: left; }
 .landing-doors .folder-tool-title { display: flex; justify-content: space-between; align-items: start; gap: 12px; width: 100%; font-size: clamp(22px, 2vw, 28px); }
 .landing-doors .folder-tool-title > span:last-child { flex-shrink: 0; }
 @media (max-width: 800px) { .landing-doors { grid-template-columns: 1fr; } .landing-doors .folder-tool { min-height: 110px; } }
