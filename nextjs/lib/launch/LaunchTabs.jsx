@@ -1,10 +1,11 @@
 import Link from "next/link";
 
-// The three /launch pages, as tabs.
+// The /launch pages, as tabs.
 const tabs = [
   ["/launch", "1 · Buttons and keys"],
   ["/launch/midi", "2 · MIDI controller"],
   ["/launch/cue-list", "3 · Cue list (Go)"],
+  ["/launch/xy", "4 · XY pad (filter)"],
   ["/launch/hello", "In one file"],
   ["/docs/launch", "How-to"],
 ];
