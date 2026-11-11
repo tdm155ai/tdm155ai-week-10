@@ -48,11 +48,12 @@
 .cv-log li span { display: block; color: var(--muted); font-size: 12px; }
 .cv-muted { color: var(--muted); font-size: 14px; }
 
-/* /draw-a-box: the full-screen view for the projector or a stream. */
-.box-full { position: fixed; inset: 0; z-index: 50; background: #000; cursor: none; }
-.box-full .cv-stagebox { height: 100%; aspect-ratio: auto; border-radius: 0; }
-.box-full .box-exit { position: fixed; top: 12px; right: 12px; z-index: 51; opacity: 0; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(0,0,0,.6); color: var(--ink); font: inherit; cursor: pointer; transition: opacity .2s; }
-.box-full:hover .box-exit { opacity: 1; cursor: pointer; }
+/* /draw-a-box */
+.cv-stagebox .box-clip { inset: auto; left: 0; top: 0; width: 640px; height: 360px; object-fit: fill; transform-origin: 0 0; opacity: 0; transition: opacity .25s; }
+.box-stage.is-camera-hidden > video:first-child { opacity: 0; }
+.box-stage:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; cursor: none; }
+.box-debug { width: 100%; border-radius: 6px; background: #000; }
+.cv-bar input[type="range"] { width: 110px; accent-color: var(--accent); }
 .box-clips { display: flex; flex-wrap: wrap; gap: 8px; }
 .box-clips button { padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; }
 .box-clips button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
