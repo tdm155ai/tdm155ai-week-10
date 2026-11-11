@@ -12,6 +12,7 @@ import { BEND_RANGE, KEYBOARD_BEND_RANGE, KEYS, NOTE_NAMES, SLIDE_CCS, look, pat
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const mtof = (m) => 440 * 2 ** ((m - 69) / 12);
+const SLIDE_TOP = 0.1, SLIDE_BOTTOM = 0.8; // the band of the picture that slide moves through (keys strip below)
 const BLACK_KEYS = new Set([1, 3, 6, 8, 10]);
 // Note names as the Seaboard and ROLI Dashboard print them (60 = C3), or the usual way (60 = C4): see mpe.js.
 const name = (n) => noteName(NOTE_NAMES === "roli" ? n - 12 : n);
@@ -72,9 +73,9 @@ export default function MpePlayer() {
   const SPAN = KEYS.high - KEYS.low;
   const [low, setLow] = useState(KEYS.low);
   const range = useRef({ lo: KEYS.low - 0.5, hi: KEYS.high + 0.5 });
-  const follow = useRef(false);
+  const follow = useRef(true);
   const learn = useRef(false);
-  const [following, setFollowing] = useState(false);
+  const [following, setFollowing] = useState(true);
   const [learning, setLearning] = useState(false);
   const settings = useRef({ mpeRange: BEND_RANGE, keyRange: KEYBOARD_BEND_RANGE, patch: "pad" });
   const lastMsg = useRef("");
@@ -178,9 +179,10 @@ export default function MpePlayer() {
   const fit = (n) => {
     const r = range.current;
     if (n > r.lo && n < r.hi) return;
+    // By note number only (bends never move it): snap to the octaves, starting on a C, that hold the new note.
     let lo = Math.round(r.lo + 0.5);
-    while (n > lo + SPAN) lo += 12;
-    while (n < lo) lo -= 12;
+    if (n < lo) lo = 12 * Math.floor(n / 12);
+    else lo = 12 * Math.floor(n / 12) - (SPAN + 1 - 12);
     range.current = { lo: lo - 0.5, hi: lo + SPAN + 0.5 };
     setLow(lo);
   };
@@ -221,7 +223,7 @@ export default function MpePlayer() {
   };
   const slideAt = (clientY) => {
     const r = canvasRef.current.getBoundingClientRect();
-    return clamp(Math.round((1 - (clientY - r.top - r.height * 0.03) / (r.height * 0.84)) * 127), 0, 127);
+    return clamp(Math.round((1 - (clientY - r.top - r.height * SLIDE_TOP) / (r.height * (SLIDE_BOTTOM - SLIDE_TOP))) * 127), 0, 127);
   };
   const freeChannel = () => {
     const busy = new Set([...pointers.current.values()].map((p) => p.ch));
@@ -277,7 +279,7 @@ export default function MpePlayer() {
       const { lo, hi } = range.current;
       const X = (pitch) => ((clamp(pitch, lo, hi) - lo) / (hi - lo)) * W;
       const KEYS_TOP = H * 0.9; // the keyboard strip along the bottom
-      const Y = (slide) => (1 - slide) * (H * 0.84) + H * 0.03;
+      const Y = (slide) => H * (SLIDE_TOP + (1 - slide) * (SLIDE_BOTTOM - SLIDE_TOP)); // slide 127 to 0, with room above and below
 
       // Held mouse buttons press harder the longer you hold (a Seaboard key you lean into).
       for (const p of pointers.current.values()) {
@@ -310,7 +312,12 @@ export default function MpePlayer() {
       ctx.textAlign = "start";
       ctx.fillStyle = "rgba(255,255,255,0.3)";
       ctx.font = `${11 * dpr}px ui-monospace, monospace`;
-      ctx.fillText("slide ↑", 8 * dpr, 16 * dpr);
+      for (const [v, label] of [[1, "slide 127"], [0.5, "64"], [0, "0"]]) { // where the slide's top, middle and bottom are
+        ctx.fillStyle = "rgba(255,255,255,0.1)";
+        ctx.fillRect(0, Y(v), W, dpr);
+        ctx.fillStyle = "rgba(255,255,255,0.35)";
+        ctx.fillText(label, W - 70 * dpr, Y(v) - 5 * dpr);
+      }
 
       // Trails, then the notes themselves.
       ctx.globalCompositeOperation = "lighter";
