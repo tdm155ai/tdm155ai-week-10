@@ -34,6 +34,7 @@ The physical stations are **MediaPipe**, **button launching**, and **printing bu
 - **[Inspiration](/inspiration):** concert and theater clips, [examples](/inspiration/examples), and [case studies](/inspiration/case-studies) that break a show into maneuvers.
 - **[Pro apps](/pro-apps):** QLab, TouchDesigner, Isadora, and more: what they do and what a small browser version could do.
 - **[Build it yourself](/pro-apps/build-it-yourself):** professional app → browser libraries and an approach to building the maneuver.
+- **[Prompts for Claude Code](/prompts):** paste-in prompts for each mechanic and for your group's piece, each naming the file it changes.
 - **[All guides](/docs):** setup, the small file to change, and prompts to extend each mechanic.
 
 ## Further voice experiments
