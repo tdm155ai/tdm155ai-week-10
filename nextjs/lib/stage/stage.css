@@ -1,0 +1,12 @@
+/* The stage: black, full window, for the projector. Imported by Stage.jsx's users (app/stage, app/launch, app/voice). */
+.stage { position: fixed; inset: 0; background: #000; overflow: hidden; color: #fff; cursor: none; }
+.stage-preview { position: relative; inset: auto; width: 100%; aspect-ratio: 16 / 9; border: 1px solid var(--line, #333); border-radius: 6px; cursor: default; }
+.stage-picture { position: absolute; inset: 0; transition: opacity .08s linear, filter .08s linear; }
+.stage-layer { position: absolute; inset: 0; }
+.stage-fill { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stage-text { display: flex; align-items: center; justify-content: center; padding: 6vw; text-align: center; font-weight: 800; letter-spacing: -.04em; line-height: 1.05; text-wrap: balance; }
+.stage-preview .stage-text { font-size: 2.2em !important; padding: 1em; }
+.stage-start { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 40px; border: 0; background: #000; color: #ddd; font: inherit; cursor: pointer; text-align: center; }
+.stage-start strong { font-size: clamp(24px, 4vw, 48px); letter-spacing: -.03em; }
+.stage-start span { max-width: 560px; color: #888; font-size: 15px; line-height: 1.5; }
+.stage-preview-label { position: absolute; left: 8px; bottom: 6px; z-index: 2; padding: 2px 8px; border-radius: 4px; background: rgba(0, 0, 0, .65); color: #bbb; font-size: 11px; font-family: ui-monospace, monospace; }
