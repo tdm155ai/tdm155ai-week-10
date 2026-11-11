@@ -8,11 +8,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useCamera } from "../../lib/cv/useCamera.js";
 import { findBox, freeMats, loadOpenCV, makeStabilizer, orderCorners, quadTransform } from "../../lib/cv/opencv.js";
+import { boxFromMarkers, findMarkers } from "../../lib/cv/aruco.js";
 import { speechSupported, startListening, triggerWatcher } from "../../lib/voice/speech.js";
 import { CameraBar, Readout, Status } from "../../lib/cv/ui.jsx";
 import { clearWord, clips } from "./clips.js";
 
 const WORK_WIDTH = 640; // OpenCV looks at a 640-pixel-wide copy of each frame: fast enough, sharp enough.
+const MARKER_WIDTH = 1280; // printed markers are small from up high, so they get a sharper copy.
 
 export default function DrawABox() {
   const camera = useCamera({ storageKey: "cv-camera-box" });
@@ -23,6 +25,7 @@ export default function DrawABox() {
   const debugRef = useRef(null);
   const settingsRef = useRef({});
   const [cvState, setCvState] = useState({ tone: "muted", text: "Loading OpenCV.js (about 11 MB, first time only)…" });
+  const [source, setSource] = useState("drawn"); // "drawn": a box in marker; "markers": four printed ArUco markers
   const [mirror, setMirror] = useState(false);
   const [outline, setOutline] = useState(true);
   const [cameraHidden, setCameraHidden] = useState(false);
@@ -36,7 +39,7 @@ export default function DrawABox() {
   const [heard, setHeard] = useState("");
   const [voiceState, setVoiceState] = useState({ tone: "muted", text: "" });
   const [fullscreen, setFullscreen] = useState(false);
-  settingsRef.current = { mirror, outline, locked, showDebug, offset, minArea };
+  settingsRef.current = { source, mirror, outline, locked, showDebug, offset, minArea };
 
   // Load OpenCV, then look at frames ~20 times a second.
   useEffect(() => {
@@ -48,6 +51,7 @@ export default function DrawABox() {
     const stabilize = makeStabilizer();
     let quad = null;
     let found = false;
+    let markerNote = "";
     let cvRef = null;
 
     const tick = (now) => {
@@ -59,8 +63,8 @@ export default function DrawABox() {
       const s = settingsRef.current;
       const vw = video.videoWidth;
       const vh = video.videoHeight;
-      const k = WORK_WIDTH / vw;
-      const pw = WORK_WIDTH;
+      const k = Math.min(1, (s.source === "markers" ? MARKER_WIDTH : WORK_WIDTH) / vw);
+      const pw = Math.round(vw * k);
       const ph = Math.round(vh * k);
 
       if (now - lastRun > 50 && !s.locked) {
@@ -69,10 +73,18 @@ export default function DrawABox() {
         if (work.width !== pw || work.height !== ph) { work.width = pw; work.height = ph; }
         work.getContext("2d", { willReadFrequently: true }).drawImage(video, 0, 0, pw, ph);
         try {
-          const result = findBox(cvRef, work, mats, { offset: s.offset, minArea: s.minArea / 100 });
+          let result;
+          if (s.source === "markers") {
+            const markers = findMarkers(cvRef, work, mats);
+            result = boxFromMarkers(markers);
+            const ids = markers.map((m) => m.id).sort((a, b) => a - b);
+            markerNote = `${ids.length ? ids.join(", ") : "none"}${result?.guessed ? ` (guessing ${result.guessed})` : ""}`;
+          } else {
+            result = findBox(cvRef, work, mats, { offset: s.offset, minArea: s.minArea / 100 });
+          }
           found = !!result;
           quad = stabilize(result?.quad || null, pw);
-          if (s.showDebug && debugRef.current) cvRef.imshow(debugRef.current, mats.bin);
+          if (s.showDebug && debugRef.current) cvRef.imshow(debugRef.current, s.source === "markers" ? mats.markerGray : mats.bin);
         } catch (error) {
           setCvState({ tone: "error", text: `OpenCV error: ${error.message || error}` });
         }
@@ -122,6 +134,7 @@ export default function DrawABox() {
         lastRows = now;
         setRows([
           ["box found this frame", found ? "yes" : "no", found],
+          ...(s.source === "markers" ? [["markers seen (need 3 of 0–3)", markerNote || "none"]] : []),
           ["box on screen", quad ? (s.locked ? "locked" : "yes") : "no", !!quad],
           ...(quad ? quad.map((p, i) => [["top-left", "top-right", "bottom-right", "bottom-left"][i], `${Math.round(p.x)}, ${Math.round(p.y)}`]) : []),
           ["work frame", `${pw}×${ph}`],
@@ -132,7 +145,7 @@ export default function DrawABox() {
     loadOpenCV().then((cv) => {
       if (stopped) return;
       cvRef = cv;
-      setCvState({ tone: "ok", text: "OpenCV ready: looking for the biggest box." });
+      setCvState({ tone: "ok", text: "OpenCV ready." });
       raf = requestAnimationFrame(tick);
     }).catch((error) => setCvState({ tone: "error", text: `Couldn't load OpenCV.js: ${error.message}. Check the Wi-Fi.` }));
 
@@ -196,7 +209,7 @@ export default function DrawABox() {
       <div className="cv-head">
         <p className="eyebrow">Draw a box</p>
         <h1>Draw a box, say a word.</h1>
-        <p className="cv-lede">Point the overhead camera at a big sheet of paper and draw a rectangle in thick dark marker. OpenCV finds the biggest four-sided shape; the clip is warped onto its corners. Say a clip&apos;s word (after <strong>Listen</strong>), click it, or press its number. Change the words and clips in <code>app/draw-a-box/clips.js</code>. How-to: <Link href="/docs/draw-a-box">docs/draw-a-box</Link>.</p>
+        <p className="cv-lede">Point the overhead camera at a big sheet of paper and draw a rectangle in thick dark marker. OpenCV finds the biggest four-sided shape; the clip is warped onto its corners. Say a clip&apos;s word (after <strong>Listen</strong>), click it, or press its number. Lines flaky under the lights? Set <strong>Box from</strong> to printed markers and <Link href="/draw-a-box/markers">print four markers</Link> for the corners. Change the words and clips in <code>app/draw-a-box/clips.js</code>. How-to: <Link href="/docs/draw-a-box">docs/draw-a-box</Link>.</p>
       </div>
       <CameraBar camera={camera} mirror={mirror} setMirror={setMirror}>
         <button type="button" onClick={toggleListening} className={listening ? "" : "cv-quiet"}>{listening ? "Listening… (stop)" : "Listen"}</button>
@@ -207,8 +220,15 @@ export default function DrawABox() {
         <label className="cv-check"><input type="checkbox" checked={outline} onChange={(e) => setOutline(e.target.checked)} /> Outline</label>
         <label className="cv-check"><input type="checkbox" checked={cameraHidden} onChange={(e) => setCameraHidden(e.target.checked)} /> Hide the camera</label>
         <label className="cv-check"><input type="checkbox" checked={showDebug} onChange={(e) => setShowDebug(e.target.checked)} /> Show what OpenCV sees</label>
-        <label><span>Ink sensitivity</span><input type="range" min="2" max="40" value={offset} onChange={(e) => setOffset(Number(e.target.value))} /> {offset}</label>
-        <label><span>Smallest box</span><input type="range" min="1" max="30" value={minArea} onChange={(e) => setMinArea(Number(e.target.value))} /> {minArea}%</label>
+        <label><span>Box from</span>
+          <select value={source} onChange={(e) => setSource(e.target.value)}>
+            <option value="drawn">lines drawn in marker</option>
+            <option value="markers">printed markers (0–3)</option>
+          </select>
+        </label>
+        {source === "markers" && <Link href="/draw-a-box/markers" target="_blank">Print the markers</Link>}
+        {source === "drawn" && <><label><span>Ink sensitivity</span><input type="range" min="2" max="40" value={offset} onChange={(e) => setOffset(Number(e.target.value))} /> {offset}</label>
+        <label><span>Smallest box</span><input type="range" min="1" max="30" value={minArea} onChange={(e) => setMinArea(Number(e.target.value))} /> {minArea}%</label></>}
       </div>
       <Status items={[camera.status, cvState, voiceState]} />
       <div className="cv-grid">

@@ -3,7 +3,7 @@
 .cv-page { padding: 28px var(--gutter) 80px; }
 .cv-head h1 { margin: 10px 0 0; font-size: clamp(34px, 5vw, 64px); font-weight: 800; letter-spacing: -.05em; line-height: 1.05; }
 .cv-lede { max-width: 860px; margin: 16px 0 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
-.cv-lede a, .cv-side a { color: var(--accent); }
+.cv-lede a, .cv-side a, .cv-bar a { color: var(--accent); }
 .cv-page code { padding: .08em .35em; border: 1px solid var(--line); border-radius: 4px; background: var(--code); font-family: ui-monospace, monospace; font-size: .88em; color: var(--ink); }
 
 .cv-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 24px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--wash); font-size: 14px; }
@@ -58,3 +58,17 @@
 .box-clips button { padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; }
 .box-clips button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
 .box-heard { min-height: 1.4em; font-family: ui-monospace, monospace; font-size: 13px; color: var(--muted); }
+
+/* /draw-a-box/markers: one big marker per printed page */
+.markers-print { padding: 8px 16px; border: 1px solid var(--accent); border-radius: 999px; background: var(--accent); color: var(--accent-ink); font: inherit; font-weight: 700; cursor: pointer; }
+.markers-page a { color: var(--accent); }
+.marker-sheet { display: flex; flex-direction: column; align-items: center; margin: 40px 0; }
+.marker-sheet img { width: min(100%, 6.5in); height: auto; image-rendering: pixelated; border: 1px dashed var(--line); }
+.marker-sheet p { margin: 10px 0 0; font-size: 20px; }
+@media print {
+  @page { size: letter; margin: 0.5in; }
+  .markers-intro { display: none; }
+  .print-main.markers-page { max-width: none; padding: 0; }
+  .marker-sheet { margin: 0; break-after: page; height: 9.8in; justify-content: center; }
+  .marker-sheet img { width: 7in; border: none; }
+}
