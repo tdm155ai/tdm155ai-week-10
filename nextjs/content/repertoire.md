@@ -16,7 +16,7 @@ Each step has a **Hello World** (one short file, read it top to bottom, change t
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Soundboard** (keys, buttons) | A key press or a click | [/launch/hello](/launch/hello) | [/launch](/launch), [/launch/cue-list](/launch/cue-list) | `app/launch/hello/Hello.jsx`, then `lib/launch/buttons.js` |
 | 2 | **MIDI** (pads, keys, knobs) | A note (on/off) or a knob's value (0–127) | [/launch/midi](/launch/midi) | [/launch/xy](/launch/xy) | `lib/launch/midi-map.js` |
-| 3 | **Raw audio signal** | How loud the mic is, moment to moment: no words yet | the level meter on [/voice](/voice) (press **Check**) | not built yet (see below) | — |
+| 3 | **Raw audio signal** | The sound itself: how loud, which frequencies, moment to moment; no words yet | the level meter on [/voice](/voice) (press **Check**) | [/launch/spectrogram](/launch/spectrogram); mic loudness on [/launch/shader](/launch/shader) | `lib/launch/spectrogram/SpectrogramShell.jsx` |
 | 4 | **Words** | The words someone said | [/voice/hello](/voice/hello) | [/voice](/voice), [/voice/script](/voice/script) | `app/voice/hello/Hello.jsx`, then `lib/voice/triggers.js`, `lib/voice/script.js` |
 | 5 | **Meaning** | What someone is talking about, without magic words | — | [/voice/semantic](/voice/semantic) (OpenAI key) | `lib/voice/topics.js` |
 | 6 | **Tracking** (live video) | Where hands, fingers, faces, and bodies are | [/track/hello](/track/hello) | [/track](/track), [/track/instruments](/track/instruments), [/track/zones](/track/zones), [/track/xy](/track/xy) | `app/track/hello/Hello.jsx`, then `app/track/cues.js` |
@@ -26,7 +26,7 @@ All paths start in `nextjs/`. Each step has a guide: [launch](/docs/launch), [vo
 
 **Raw audio, words, and meaning are three different levels** of the same microphone. Raw audio is the signal itself: loudness and pitch, which a clap or a hum can drive, with no understanding. Words need a speech recognizer (Chrome's, free, or OpenAI's). Meaning needs a language model reading the words. Each level is slower and less certain than the one before, and can do more.
 
-**Raw audio isn't a page yet.** The level meter on the voice pages shows the signal. A forkable spectrogram example is planned. To build one now, ask Claude Code: *"Make a page where a clap (the mic getting loud fast) fires a stage cue, with a threshold slider and a meter. Use `lib/voice/mic.js` for the mic and `fireCue` from `lib/stage/stage.js`."*
+**Raw audio, seen:** [/launch/spectrogram](/launch/spectrogram) is the Chrome Music Lab Spectrogram (Google Creative Lab, Apache 2.0), from the Lab's fork [ll-26-27/spectrogram-next](https://github.com/ll-26-27/spectrogram-next). Press the mic and sing, whistle, or clap: frequency over time, in 3D. Or play its instrument sounds, draw on it, or drag in a file. To add a sound button, copy a `music-box__buttons__button` block in `nextjs/lib/launch/spectrogram/SpectrogramShell.jsx` and point `data-src` at `/samples/...` or `/media/...`. It shows the signal but fires no cues. To make raw audio a trigger, ask Claude Code: *"Make a page where a clap (the mic getting loud fast) fires a stage cue, with a threshold slider and a meter. Use `lib/voice/mic.js` for the mic and `fireCue` from `lib/stage/stage.js`."*
 
 ## Inputs, by kind
 
@@ -44,7 +44,8 @@ Everything goes to the [stage](/stage) through `fireCue` (do something once) or 
 - **Audio effects:** a filter sweep, resonance, echo (`setParam` `filter`, `resonance`, `echo`, `echoTime`; play with them on [/launch/xy](/launch/xy)).
 - **Text:** words on the screen.
 - **Pictures and video:** an image, a clip, a color wash, blackout. A video can be scrubbed, sped up, or paused (`setParam` `scrub`, `speed`, `play`).
-- **Graphics:** [/track/three](/track/three), a Three.js 3D wave field you play with sliders, the mouse, or your hand (change `app/track/three/scene.js`). A shader example is on its way.
+- **Graphics:** [/launch/shader](/launch/shader), a fragment shader (a small program the GPU runs for every pixel) you play with sliders, the mouse, the mic's loudness, MIDI knobs, or the XY pad, with its code editable on the page (change `lib/launch/shader.js`). And [/track/three](/track/three), a Three.js 3D wave field you play with sliders, the mouse, or your hand (change `app/track/three/scene.js`).
+- **Audio as picture:** [/launch/spectrogram](/launch/spectrogram) draws sound as frequency over time.
 
 ## Then combine them
 

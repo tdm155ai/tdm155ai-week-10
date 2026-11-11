@@ -1,10 +1,10 @@
 ---
 title: Launch (buttons, keys, MIDI, cue list)
-description: Fire cues with on-screen buttons, your keyboard, a MIDI pad controller, or a Go button running down a cue list.
+description: Fire cues with on-screen buttons, your keyboard, a MIDI pad controller, or a Go button running down a cue list; sweep effects on an XY pad; play a shader; see sound in a spectrogram.
 order: 2
 ---
 
-**Open:** [/launch/hello](/launch/hello) (Hello World), then [/launch](/launch), [/launch/midi](/launch/midi), [/launch/cue-list](/launch/cue-list), and [/launch/xy](/launch/xy). Use Chrome. Open the [stage](/docs/stage) first.
+**Open:** [/launch/hello](/launch/hello) (Hello World), then [/launch](/launch), [/launch/midi](/launch/midi), [/launch/cue-list](/launch/cue-list), [/launch/xy](/launch/xy), [/launch/shader](/launch/shader), and [/launch/spectrogram](/launch/spectrogram). Use Chrome. Open the [stage](/docs/stage) first.
 
 ## 0. Hello World: one key, one cue
 
@@ -54,6 +54,24 @@ The list is `nextjs/lib/launch/cue-list.json`, a cue list for reading Sonnet 18.
 
 **The one file to change:** `nextjs/lib/launch/loop.js` (tempo, chords, the 16-step patterns).
 
+## 5. A shader (graphics)
+
+[/launch/shader](/launch/shader) is an animated **fragment shader**: a small program, in a language called GLSL, that the graphics card runs once for every pixel, every frame. Here it draws warped noise in a rotating rainbow, with rings spreading from the pointer.
+
+- **Sliders:** Speed, Scale (zoom), Warp, Color, Rings, Brightness. Each one is a `u_` value (a *uniform*) the shader reads.
+- **Other inputs:** the pointer over the picture (`u_mouse`); **Listen** makes the mic's loudness (`u_level`) brighten the rings; the stage controls move the sliders, so MIDI knobs on [/launch/midi](/launch/midi) (speed, hue, brightness) and the XY pad's filter on [/launch/xy](/launch/xy) or [/track/xy](/track/xy) (Warp) play it too. A panel on the page lists the chain: inputs → parameters → pixels.
+- **Edit it on the page:** change the GLSL and press **Run** (or ⌘/Ctrl+Enter). A mistake shows the compiler's error and keeps drawing the last good shader; **Back to the file** undoes your edits. `F` full screen, `Space` pause.
+
+**The one file to change:** `nextjs/lib/launch/shader.js`: `controls` (the sliders, and which stage control moves each) and `fragment` (the GLSL, commented line by line).
+
+## 6. The spectrogram (raw audio)
+
+[/launch/spectrogram](/launch/spectrogram) is the **Chrome Music Lab Spectrogram** by Google Creative Lab (Apache 2.0), brought in from the Lab's Next.js fork, [ll-26-27/spectrogram-next](https://github.com/ll-26-27/spectrogram-next). It draws sound as **frequency over time**, in 3D. Press the mic and sing, whistle, or clap; play its instrument sounds; draw on it; or drag a sound file onto the page. It's the **raw audio signal** level from [inputs and outputs](/repertoire), before any words.
+
+To add a sound button, copy one of the `music-box__buttons__button` blocks and point `data-src` at a file in `nextjs/public/samples/` or your `_media/` (`/media/...`). What came from where, and what was changed, is in `nextjs/lib/launch/spectrogram/README.md`.
+
+**The one file to change:** `nextjs/lib/launch/spectrogram/SpectrogramShell.jsx`.
+
 ## Ask Claude Code
 
 > On /launch/cue-list, add a "pre-wait" and an "auto-continue" option to cues in `nextjs/lib/launch/cue-list.json`, the way QLab does: a cue can wait a few seconds before it fires, and can fire the next cue by itself when it's done. Show both in the list.
@@ -61,3 +79,7 @@ The list is `nextjs/lib/launch/cue-list.json`, a cue list for reading Sonnet 18.
 > In `nextjs/lib/launch/MidiBoard.jsx`, make the piano keys of my MIDI keyboard play notes through the stage (a simple Web Audio synth), while the pads keep firing cues.
 
 > Make /launch/cue-list advance when a MIDI pad is hit, so a performer can run the show from a drum pad on the floor.
+
+> In `nextjs/lib/launch/shader.js`, make it black and white with one accent color, and add a slider for how many rings.
+
+> Make a page where a clap (the mic getting loud fast) fires a stage cue, with a threshold slider and a meter. Use `lib/voice/mic.js` for the mic and `fireCue` from `lib/stage/stage.js`.

@@ -9,7 +9,7 @@ Every guide follows the same pattern: what the page does, **the one file to chan
 | Guide | Open | The file to change |
 | --- | --- | --- |
 | [The stage](/docs/stage) | [/stage](/stage) | your media in `_media/`, served at `/media/...` |
-| [Launch: buttons, keys, MIDI, cue list, XY pad](/docs/launch) | [/launch/hello](/launch/hello), [/launch](/launch) | `nextjs/app/launch/hello/Hello.jsx`, then `nextjs/lib/launch/buttons.js`, `midi-map.js`, `cue-list.json`, `loop.js` |
+| [Launch: buttons, keys, MIDI, cue list, XY pad](/docs/launch) | [/launch/hello](/launch/hello), [/launch](/launch) | `nextjs/app/launch/hello/Hello.jsx`, then `nextjs/lib/launch/buttons.js`, `midi-map.js`, `cue-list.json`, `loop.js`, `shader.js`, `spectrogram/SpectrogramShell.jsx` |
 | [Voice cues](/docs/voice) | [/voice/hello](/voice/hello), [/voice](/voice) | `nextjs/app/voice/hello/Hello.jsx`, then `nextjs/lib/voice/triggers.js`, `script.js`, `topics.js` |
 | [Track (MediaPipe)](/docs/track) | [/track/hello](/track/hello), [/track](/track) | `nextjs/app/track/hello/Hello.jsx`, then `nextjs/app/track/cues.js`; `three/scene.js` for 3D |
 | [Draw a box](/docs/draw-a-box) | [/draw-a-box/hello](/draw-a-box/hello), [/draw-a-box](/draw-a-box) | `nextjs/app/draw-a-box/hello/Hello.jsx`, then `nextjs/app/draw-a-box/clips.js` |
