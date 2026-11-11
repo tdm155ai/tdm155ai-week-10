@@ -18,7 +18,7 @@ Run this repo locally and open **http://localhost:3000 in Chrome**. The [repo se
 
 **See it in the room:** open [Stage ↗](/stage) in a separate window, click it once to enable sound, then return to a controller tab to fire cues. Keep both windows in the same Chrome profile on the same computer. Drag the stage to the projector when you're ready. [Stage setup and blackout](/docs/stage).
 
-Camera and mic ask for permission. Web Speech and the first vision-model download need internet. Stop the listener or camera when you finish that experiment. These four starts use no model API key; the optional OpenAI voice experiments use your repo-root `.env` and incur API charges.
+Camera and mic ask for permission. Web Speech and the first vision-model download need internet. Stop the listener or camera when you finish that experiment. These four starts use no model API key; the optional voice experiments that call a model need an OpenAI or OpenRouter key and incur API charges.
 
 ## Then make a short live performance
 
@@ -42,4 +42,4 @@ The physical stations are **MediaPipe**, **button launching**, and **printing bu
 
 ## Further voice experiments
 
-After the first four starts, [compare speech engines](/voice/compare) or [let topics trigger cues](/voice/semantic). These use OpenAI and need a key in the repo-root `.env`. Keep the basic word trigger and manual cue controls available for your performance.
+After the first four starts, [compare speech engines](/voice/compare) or [let topics trigger cues](/voice/semantic). Comparing engines uses OpenAI and needs a key in the repo-root `.env`; topic cues go through OpenRouter and need `OPENROUTER_API_KEY` in `nextjs/.env.local`. Keep the basic word trigger and manual cue controls available for your performance.
