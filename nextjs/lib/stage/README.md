@@ -31,7 +31,7 @@ Pictures (video, image, text, color) replace one another with a cross-fade (`fad
 
 ## Other calls
 
-- `setParam(name, value)`, value 0–1: `master` (volume of all sounds), `opacity`, `brightness` (of the picture), `hue` (rotates its colors). For the video on top: `scrub` (its position, 0 = start, 1 = end; pauses on that frame), `speed` (0 = ¼×, 0.5 = normal, 1 = 4×; plays), `play` (1 plays, 0 pauses).
+- `setParam(name, value)`, value 0–1: `master` (volume of all sounds), `opacity`, `brightness` (of the picture), `hue` (rotates its colors). For the video on top: `scrub` (its position, 0 = start, 1 = end; pauses on that frame), `speed` (0 = ¼×, 0.5 = normal, 1 = 4×; plays), `play` (1 plays, 0 pauses). Effects on every stage sound (`lib/stage/fx.js`; the XY pad at `/launch/xy` plays them): `filter` (0.5 = off, below = low-pass sweep, above = high-pass), `resonance`, `echo` (amount), `echoTime` (40 ms to 1 s).
 - `onStage(callback)`: hear everything on the bus (cues, params, the stage's `status` replies); returns an unsubscribe function. `pingStage()` asks an open stage to answer with `{ type: "status" }`.
 - `<Stage preview />` from `lib/stage/Stage.jsx` (with `import "../../lib/stage/stage.css"`): a small, silent copy of the stage to put on a control page.
 
