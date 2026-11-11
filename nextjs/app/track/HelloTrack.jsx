@@ -60,7 +60,7 @@ export default function HelloTrack() {
         <div>
           <p className="eyebrow">Track · Hello World</p>
           <h1>Raise a hand, fire a cue.</h1>
-          <p className="cv-lede">MediaPipe finds 21 points on each hand. Put your index fingertip in a zone and its cue fires on the stage, once; take your hand out to re-arm. Change the zones and cues in <code>app/track/cues.js</code>. The same idea in one short file you can read top to bottom: <Link href="/track/hello">/track/hello</Link>. Next: <Link href="/track/instruments">instruments</Link> (fader, pinch, gestures, mouth, arms up). How-to: <Link href="/docs/track">docs/track</Link>.</p>
+          <p className="cv-lede">MediaPipe finds 21 points on each hand. Put your index fingertip in a zone and its cue fires on the stage, once; take your hand out to re-arm. Change the zones and cues in <code>app/track/cues.js</code>. The same idea in one short file you can read top to bottom: <Link href="/track/hello">/track/hello</Link>. Next: <Link href="/track/instruments">instruments</Link> (fader, pinch, gestures, mouth, arms up, scrub a video) and the <Link href="/track/xy">XY pad</Link> (your hand sweeps a filter over a loop). How-to: <Link href="/docs/track">docs/track</Link>.</p>
         </div>
       </div>
       <CameraBar camera={camera} mirror={mirror} setMirror={setMirror} />
