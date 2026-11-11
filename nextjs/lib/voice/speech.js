@@ -6,17 +6,26 @@
 // Each phrase you say becomes one result with an index; its text grows and changes while you speak (final: false)
 // and settles once you pause (final: true). Chrome ends recognition after a silence; this restarts it automatically,
 // and `session` goes up by one each time (result indexes start over).
+//
+// Optional: `track`, a mic's audio track (from lib/voice/mic.js), to listen to that mic instead of the Mac's default
+// input (newer Chrome; older Chrome ignores it). If the network drops, restarts back off (up to 5 s) instead of
+// looping; onState reports "dropped (network), retrying in 2s". The returned stop function also has .restart(),
+// for a watchdog that sees talking on the meter but no words arriving, and .restarts, a count.
 
 export function speechSupported() {
   return typeof window !== "undefined" && !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 }
 
-export function startListening({ lang = "en-US", onResult, onState, onError } = {}) {
+export function startListening({ lang = "en-US", track = null, onResult, onState, onError } = {}) {
   const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!Recognition) { onError?.(new Error("This browser has no speech recognition: use Chrome.")); return () => {}; }
   let wanted = true;
   let session = 0;
   let rec = null;
+  let failures = 0; // errors in a row without a result: each one doubles the wait before restarting
+  let lastError = "";
+  let useTrack = !!track;
+  let timer = null;
 
   const begin = () => {
     rec = new Recognition();
@@ -28,6 +37,7 @@ export function startListening({ lang = "en-US", onResult, onState, onError } = 
     const mine = session;
     rec.onstart = () => onState?.("listening");
     rec.onresult = (event) => {
+      failures = 0; lastError = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const r = event.results[i];
         onResult?.({ index: i, text: r[0].transcript, final: r.isFinal, confidence: r[0].confidence, session: mine, at: performance.now() });
@@ -35,18 +45,33 @@ export function startListening({ lang = "en-US", onResult, onState, onError } = 
     };
     rec.onerror = (e) => {
       if (e.error === "no-speech" || e.error === "aborted") return;
+      if (e.error === "audio-capture" && useTrack) { useTrack = false; onError?.(new Error("speech: couldn't use the chosen mic; listening to the Mac's default input")); return; }
       if (e.error === "not-allowed" || e.error === "service-not-allowed") wanted = false;
+      failures += 1; lastError = e.error;
       onError?.(new Error(`speech: ${e.error}${e.message ? ` (${e.message})` : ""}`));
     };
     rec.onend = () => {
-      if (wanted) { onState?.("restarting"); setTimeout(() => wanted && begin(), 100); }
-      else onState?.("stopped");
+      if (!wanted) { onState?.("stopped"); return; }
+      const wait = failures ? Math.min(5000, 250 * 2 ** failures) : 100;
+      onState?.(failures ? `dropped (${lastError}), retrying in ${Math.round(wait / 100) / 10}s` : "restarting");
+      clearTimeout(timer);
+      timer = setTimeout(() => { if (wanted) { stop.restarts += 1; begin(); } }, wait);
     };
-    try { rec.start(); } catch (err) { onError?.(err); }
+    try {
+      if (useTrack && track?.readyState === "live") rec.start(track);
+      else rec.start();
+    } catch (err) {
+      if (useTrack) { useTrack = false; try { rec.start(); return; } catch (again) { err = again; } }
+      onError?.(err);
+    }
   };
 
+  const stop = () => { wanted = false; clearTimeout(timer); try { rec?.stop(); } catch {} };
+  stop.restarts = 0;
+  // Throw away the current recognizer and start a fresh one (onend does the restarting).
+  stop.restart = () => { if (!wanted) return; try { rec?.abort(); } catch {} };
   begin();
-  return () => { wanted = false; try { rec?.stop(); } catch {} };
+  return stop;
 }
 
 // Lowercase words without punctuation (apostrophes kept): "Shall I compare thee, to a SUMMER'S day?" →

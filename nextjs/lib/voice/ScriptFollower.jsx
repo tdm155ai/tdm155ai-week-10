@@ -8,7 +8,9 @@ import { buttons } from "../launch/buttons.js";
 import { follow, parseScript } from "./follow.js";
 import { cues as scriptCues, text as scriptText, title as scriptTitle } from "./script.js";
 import { startOpenAILive } from "./openai-live.js";
-import { speechSupported, startListening, words } from "./speech.js";
+import { speechSupported, words } from "./speech.js";
+import { startWebSpeech, useMic } from "./mic.js";
+import MicPicker from "./MicPicker.jsx";
 
 // /voice/script: read a text aloud; the page follows along (like surtitles) and fires each cue as you reach its
 // word. The text and cues are in lib/voice/script.js; you can paste another text on the page.
@@ -28,6 +30,7 @@ export default function ScriptFollower() {
   const [draft, setDraft] = useState("");
   const [pos, setPos] = useState(0);
   const [state, setState] = useState("off");
+  const mic = useMic();
   const [error, setError] = useState("");
   const [heard, setHeard] = useState("");
   const [log, setLog] = useState([]);
@@ -144,10 +147,10 @@ export default function ScriptFollower() {
   const start = async () => {
     setError("");
     bases.current = new Map();
-    if (engine === "webspeech") { stopRef.current = startListening({ onResult, onState: setState, onError: (e) => setError(e.message) }); return; }
+    if (engine === "webspeech") { setState("starting"); stopRef.current = await startWebSpeech(mic, { onResult, onState: setState, onError: (e) => setError(e.message) }); return; }
     try {
       setState("connecting");
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      const stream = await mic.open();
       const cueWords = scriptRef.current.list.filter((w) => w.cues).map((w) => w.text.replace(/[^\p{L}'-]+/gu, ""));
       const live = await startOpenAILive({
         stream, delay: "minimal", keywords: cueWords,
@@ -155,8 +158,8 @@ export default function ScriptFollower() {
         onResult, onState: (s) => setState(s === "closed" || s === "stopped" ? "off" : s), onError: (e) => setError(e.message),
       });
       liveRef.current = live;
-      stopRef.current = () => { live.stop(); stream.getTracks().forEach((t) => t.stop()); liveRef.current = null; };
-    } catch (e) { setError(e.message); setState("off"); }
+      stopRef.current = () => { live.stop(); mic.close(); liveRef.current = null; };
+    } catch (e) { setError(e.message); setState("off"); mic.close(); }
   };
   const stop = () => { stopRef.current?.(); stopRef.current = null; setState("off"); };
   const stopSim = () => { clearInterval(simRef.current); simRef.current = null; setSimulating(false); };
@@ -200,7 +203,7 @@ export default function ScriptFollower() {
   const saveDraft = () => { setSource(draft); setEditing(false); try { localStorage.setItem(STORE, draft); } catch {} reset(); };
   const backToFile = () => { setSource(scriptText); try { localStorage.removeItem(STORE); } catch {} reset(); };
 
-  const listening = ["listening", "restarting", "connecting", "getting a token"].includes(state);
+  const listening = !["off", "stopped", "closed"].includes(state);
   const at = Math.max(0, pos - 1);
   const lineIndex = Math.max(0, script.lines.findIndex((line) => line.some((w) => w.index === at)));
   const current = script.lines[lineIndex] || [];
@@ -223,6 +226,7 @@ export default function ScriptFollower() {
             <button className="ctl-btn" onClick={goNext} title="Space">Go: next cue by hand</button>
             <button className="ctl-btn" onClick={reset}>Back to the top</button>
           </div>
+          <div style={{ marginTop: 12 }}><MicPicker mic={mic} disabled={listening} webSpeech={engine === "webspeech"} /></div>
           {error && <p className="ctl-note" style={{ color: "var(--error)" }}>{error}</p>}
           <div className="surtitle">
             <p className="sur-now">{current.map((w) => <span key={w.index} className={w.index < pos ? "read" : ""}>{w.text} </span>)}</p>

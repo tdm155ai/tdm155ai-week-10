@@ -102,3 +102,7 @@
 .cue-mark.skipped { background: transparent; outline: 1px dashed #c98a2b; color: #c98a2b; text-decoration: line-through; }
 .recovery { color: #e0a64a !important; }
 .ctl-log li.skipped-entry { color: #c98a2b; }
+
+.mic-picker { margin: 0 0 12px; }
+.mic-meter { height: 6px; margin-top: 8px; border-radius: 3px; background: var(--hover); overflow: hidden; }
+.mic-meter span { display: block; height: 100%; width: 0; background: var(--ok); transition: width .06s linear; }

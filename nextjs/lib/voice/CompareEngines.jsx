@@ -5,6 +5,8 @@ import { fireCue } from "../stage/stage.js";
 import StageBar from "../stage/StageBar.jsx";
 import { startOpenAILive } from "./openai-live.js";
 import { speechSupported, startListening, triggerWatcher } from "./speech.js";
+import { useMic } from "./mic.js";
+import MicPicker from "./MicPicker.jsx";
 import { triggers } from "./triggers.js";
 
 // /voice/compare: two listeners on the same voice, side by side: Chrome's Web Speech (free, no key) and OpenAI's
@@ -45,6 +47,7 @@ export default function CompareEngines() {
   const wsStop = useRef(null);
   const oa = useRef(null);
   const media = useRef(null); // { stream, audio, ctx }
+  const mic = useMic();
 
   useEffect(() => { modeRef.current = mode; }, [mode]);
   useEffect(() => setSupported(speechSupported()), []);
@@ -67,8 +70,10 @@ export default function CompareEngines() {
 
   const start = async () => {
     setErrors([]);
-    // Web Speech listens to the default microphone on its own.
-    if (speechSupported()) wsStop.current = startListening({ onResult: (r) => { wsWatch(r); addWs(r); }, onState: setWsState, onError: err });
+    // Both listen to the chosen mic: OpenAI gets the stream, Web Speech its track (older Chrome: the default input).
+    let micStream = null;
+    try { micStream = await mic.open(); } catch (e) { err(e); }
+    if (speechSupported()) wsStop.current = startListening({ track: micStream?.getAudioTracks()[0] || null, onResult: (r) => { wsWatch(r); addWs(r); }, onState: setWsState, onError: err });
     try {
       let stream;
       if (source === "file" && fileUrl) {
@@ -82,7 +87,8 @@ export default function CompareEngines() {
         stream = dest.stream;
         media.current = { stream, audio, ctx };
       } else {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+        if (!micStream) throw new Error("No microphone: pick one above and allow it in Chrome.");
+        stream = micStream;
         media.current = { stream };
       }
       oa.current = await startOpenAILive({
@@ -102,13 +108,13 @@ export default function CompareEngines() {
     oa.current?.stop(); oa.current = null;
     const m = media.current;
     if (m) { m.stream?.getTracks().forEach((tr) => tr.stop()); m.audio?.pause(); m.ctx?.close(); media.current = null; }
+    mic.close();
     setOaState("off");
   };
   useEffect(() => () => stop(), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const clear = () => { occurrences.current = []; setRows([]); clearWs(); clearOa(); };
-  const active = ["getting a token", "connecting", "listening", "restarting"];
-  const running = active.includes(wsState) || active.includes(oaState) || !!oa.current;
+  const running = !["off", "stopped", "closed"].includes(wsState) || !["off", "stopped", "closed"].includes(oaState) || !!oa.current;
   const ms = (a, b) => (a != null && b != null ? Math.round(a - b) : null);
 
   return (
@@ -141,6 +147,7 @@ export default function CompareEngines() {
           <button className="ctl-btn" onClick={clear}>Clear</button>
           <span className="ctl-status">level <span className="level"><span style={{ width: `${Math.min(100, level * 600)}%` }} /></span></span>
         </div>
+        <div style={{ marginTop: 12 }}><MicPicker mic={mic} disabled={running} webSpeech /></div>
         {!supported && <p className="ctl-note">No Web Speech in this browser (use Chrome); OpenAI still works.</p>}
         {errors.map((e, i) => <p key={i} className="ctl-note" style={{ color: "var(--error)" }}>{e}</p>)}
         <div style={{ marginTop: 12 }}><StageBar /></div>

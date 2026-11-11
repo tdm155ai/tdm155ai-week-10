@@ -4,7 +4,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fireCue } from "../stage/stage.js";
 import Stage from "../stage/Stage.jsx";
 import StageBar from "../stage/StageBar.jsx";
-import { speechSupported, startListening, triggerWatcher } from "./speech.js";
+import { startWebSpeech, useMic } from "./mic.js";
+import MicPicker from "./MicPicker.jsx";
+import { speechSupported, triggerWatcher } from "./speech.js";
 import { triggers } from "./triggers.js";
 
 // /voice, the Hello World: say a word from lib/voice/triggers.js and its cue fires. Shows the live transcript (grey
@@ -18,6 +20,7 @@ export default function VoiceWords() {
   const [supported, setSupported] = useState(true);
   const stopRef = useRef(null);
   const typedIndex = useRef(0);
+  const mic = useMic();
 
   useEffect(() => setSupported(speechSupported()), []);
 
@@ -38,9 +41,10 @@ export default function VoiceWords() {
     });
   }, [watch]);
 
-  const start = () => {
+  const start = async () => {
     setError("");
-    stopRef.current = startListening({ onResult, onState: setState, onError: (e) => setError(e.message) });
+    setState("starting");
+    stopRef.current = await startWebSpeech(mic, { onResult, onState: setState, onError: (e) => setError(e.message) });
   };
   const stop = () => { stopRef.current?.(); stopRef.current = null; setState("off"); };
   useEffect(() => () => stopRef.current?.(), []);
@@ -54,7 +58,7 @@ export default function VoiceWords() {
     setTyped("");
   };
 
-  const listening = state === "listening" || state === "restarting";
+  const listening = !["off", "stopped"].includes(state);
   return (
     <div className="ctl-grid">
       <div>
@@ -64,8 +68,9 @@ export default function VoiceWords() {
             {!listening
               ? <button className="ctl-btn primary" onClick={start} disabled={!supported}>Start listening</button>
               : <button className="ctl-btn on" onClick={stop}>Stop listening</button>}
-            <span className={listening ? "ctl-status ok" : "ctl-status"}>{listening ? "● listening" : state === "stopped" || state === "off" ? "○ off" : state}</span>
+            <span className={listening ? "ctl-status ok" : "ctl-status"}>{state === "listening" ? "● listening" : listening ? `● ${state}` : "○ off"}</span>
           </div>
+          <div style={{ marginTop: 12 }}><MicPicker mic={mic} disabled={listening} webSpeech /></div>
           {!supported && <p className="ctl-note">No speech recognition in this browser. Use Chrome.</p>}
           {error && <p className="ctl-note" style={{ color: "var(--error)" }}>{error}</p>}
           <div className="transcript" aria-live="polite">

@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { fireCue } from "../stage/stage.js";
 import Stage from "../stage/Stage.jsx";
 import StageBar from "../stage/StageBar.jsx";
-import { speechSupported, startListening, words } from "./speech.js";
+import { speechSupported, words } from "./speech.js";
+import { startWebSpeech, useMic } from "./mic.js";
+import MicPicker from "./MicPicker.jsx";
 import { topics } from "./topics.js";
 
 // /voice/semantic: two lanes. The slow lane: at each pause, the last few sentences go to a small AI model
@@ -24,6 +26,7 @@ const LECTURE = [
 
 export default function SemanticCues() {
   const [state, setState] = useState("off");
+  const mic = useMic();
   const [error, setError] = useState("");
   const [transcript, setTranscript] = useState([]); // [{ key, text, final }]
   const [decisions, setDecisions] = useState([]);
@@ -99,7 +102,7 @@ export default function SemanticCues() {
     if (r.final) decide();
   }, [decide, show]);
 
-  const start = () => { setError(""); stopRef.current = startListening({ onResult, onState: setState, onError: (e) => setError(e.message) }); };
+  const start = async () => { setError(""); setState("starting"); stopRef.current = await startWebSpeech(mic, { onResult, onState: setState, onError: (e) => setError(e.message) }); };
   const stop = () => { stopRef.current?.(); stopRef.current = null; setState("off"); };
   const stopLecture = () => { clearInterval(lectureRef.current); lectureRef.current = null; setLecturing(false); };
   useEffect(() => () => { stopRef.current?.(); clearInterval(lectureRef.current); }, []);
@@ -127,7 +130,7 @@ export default function SemanticCues() {
     setTyped("");
   };
 
-  const listening = state === "listening" || state === "restarting";
+  const listening = !["off", "stopped"].includes(state);
   return (
     <div className="ctl-grid">
       <div>
@@ -142,6 +145,7 @@ export default function SemanticCues() {
             </label>
             <span className={thinking ? "ctl-status ok" : "ctl-status"}>{thinking ? "● the model is thinking" : "○"}</span>
           </div>
+          <div style={{ marginTop: 12 }}><MicPicker mic={mic} disabled={listening} webSpeech /></div>
           {error && <p className="ctl-note" style={{ color: "var(--error)" }}>{error}</p>}
           <div className="transcript" aria-live="polite">
             {transcript.length ? transcript.map((l) => <p key={l.key} className={l.final ? "" : "interim"}>{l.text}</p>) : <p className="interim">Talk about anything. Wander between the topics; you don't have to name them.</p>}
