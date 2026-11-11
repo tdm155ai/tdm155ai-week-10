@@ -31,8 +31,16 @@ export default function Instruments() {
   const [log, addLog] = useCueLog();
   const triggersRef = useRef(makeTriggers({ holdMs: 200, rearmMs: 500 }));
   const throttleRef = useRef(makeThrottle());
+  const scrubRef = useRef({ at: 0, value: -1 });
   const lastRows = useRef(0);
   const instrument = INSTRUMENTS[name];
+
+  // The video instrument needs a video on the stage: put its clip up when it's picked (and on the button).
+  function startVideo() {
+    if (!config.video?.cue) return;
+    fireCue(config.video.cue);
+    addLog(config.video.cue, "Scrub a video: clip on the stage");
+  }
 
   const { state, fps } = useDetector(camera.videoRef, instrument.model, (result, video) => {
     const ctx = clear(canvasRef.current, video);
@@ -41,6 +49,7 @@ export default function Instruments() {
 
     for (const [key, active] of Object.entries(out.on)) {
       const { fired } = triggersRef.current(`${name}:${key}`, active);
+      if (name === "video") { if (fired) setParam("play", 1); continue; } // a pinch lets the video play
       const cue = cueFor(name, key);
       if (fired && cue) { fireCue(cue); addLog(cue, `${instrument.label}: ${key}`); }
     }
@@ -48,6 +57,12 @@ export default function Instruments() {
     if (name === "gestures") for (const key of Object.keys(config.gestures || {})) if (!out.on[key]) triggersRef.current(`${name}:${key}`, false);
 
     if (name === "fader" && out.value !== null && throttleRef.current(out.value)) setParam(config.fader?.param || "brightness", out.value);
+    if (name === "video" && out.scrub != null) {
+      // Send the position when it moves, and again every 0.4 s when it doesn't (a stage still loading the clip misses the first).
+      const last = scrubRef.current;
+      const now = performance.now();
+      if (now - last.at > 80 && (Math.abs(out.scrub - last.value) >= 0.005 || now - last.at > 400)) { last.at = now; last.value = out.scrub; setParam("scrub", out.scrub); }
+    }
 
     const now = performance.now();
     if (now - lastRows.current > 100) { lastRows.current = now; setRows(out.readout); if (name === "fader") setFader(out.value); }
@@ -58,15 +73,17 @@ export default function Instruments() {
       <div className="cv-head">
         <p className="eyebrow">Track · Instruments</p>
         <h1>Your body is the controller.</h1>
-        <p className="cv-lede">Five small instruments made with MediaPipe. Each shows the numbers the model sees and fires a cue once per gesture. Change what they fire in <code>app/track/cues.js</code>; change how they work in <code>lib/cv/instruments.js</code>. Start at <Link href="/track">Hello World</Link>; how-to in <Link href="/docs/track">docs/track</Link>.</p>
+        <p className="cv-lede">Six small instruments made with MediaPipe. Each shows the numbers the model sees and fires a cue once per gesture. Change what they fire in <code>app/track/cues.js</code>; change how they work in <code>lib/cv/instruments.js</code>. Start at <Link href="/track">Hello World</Link>; how-to in <Link href="/docs/track">docs/track</Link>.</p>
       </div>
       <div className="cv-tabs" role="group" aria-label="Instrument">
         {Object.entries(INSTRUMENTS).map(([key, item]) => (
-          <button key={key} type="button" aria-pressed={key === name} onClick={() => { setName(key); setRows([]); }}>{item.label}</button>
+          <button key={key} type="button" aria-pressed={key === name} onClick={() => { setName(key); setRows([]); if (key === "video") startVideo(); }}>{item.label}</button>
         ))}
       </div>
       <p className="cv-explain">{instrument.explain}</p>
-      <CameraBar camera={camera} mirror={mirror} setMirror={setMirror} />
+      <CameraBar camera={camera} mirror={mirror} setMirror={setMirror}>
+        {name === "video" && <button type="button" className="cv-quiet" onClick={startVideo}>Put the clip on the stage</button>}
+      </CameraBar>
       <Status items={[camera.status, state, fps ? { tone: "muted", text: `${fps} fps` } : null]} />
       <div className="cv-grid">
         <div className={`cv-stagebox ${mirror ? "is-mirrored" : ""}`}>

@@ -100,6 +100,27 @@ export const INSTRUMENTS = {
     },
   },
 
+  video: {
+    label: "Scrub a video",
+    model: "hand",
+    explain: "Your hand is the playhead. Move your index fingertip left and right: the stage video jumps to that point and holds the frame (left edge = start, right edge = end). Pinch thumb and index together and it plays on from there; open your fingers to grab it again. The clip is in cues.js.",
+    read(result, mirror, ctx) {
+      const hands = (result.landmarks || []).map((p) => view(p, mirror));
+      const p = hands[0];
+      const { width: W, height: H } = ctx.canvas;
+      ctx.fillStyle = "rgba(255,255,255,.12)";
+      ctx.fillRect(W * 0.1, H - 60, W * 0.8, 24);
+      if (!p) return { on: { pinch: false }, scrub: null, readout: [["hand seen", "no"]] };
+      skeleton(ctx, p, HAND_CONNECTIONS);
+      const pinched = dist(p[4], p[8]) / Math.max(dist(p[0], p[9]), 1e-6) < 0.25;
+      const scrub = clamp01((p[8].x - 0.1) / 0.8); // the middle 80% of the picture spans the whole clip
+      ctx.fillStyle = pinched ? "#7fc787" : "#ff6b57";
+      ctx.fillRect(W * 0.1 + scrub * W * 0.8 - 6, H - 72, 12, 48);
+      label(ctx, pinched ? "playing" : `scrub ${fmt(scrub)}`, W * 0.1 + scrub * W * 0.8 - 40, H - 84, { size: 22 });
+      return { on: { pinch: pinched }, scrub: pinched ? null : scrub, readout: [["hand seen", "yes"], ["fingertip x", fmt(p[8].x)], ["position in the clip", fmt(scrub), !pinched], ["pinch (plays)", pinched ? "yes" : "no", pinched]] };
+    },
+  },
+
   arms: {
     label: "Arms up",
     model: "pose",

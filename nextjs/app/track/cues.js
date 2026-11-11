@@ -42,4 +42,8 @@ export const instruments = {
 
   // Both wrists above your nose.
   arms: { cue: { id: "arms", label: "Arms up: dawn", kind: "image", src: "/samples/dawn.jpg" } },
+
+  // Your hand scrubs a video: the clip goes on the stage when you pick this instrument, your index fingertip's
+  // left-right position is the position in the clip, and a pinch lets it play on from there.
+  video: { cue: { id: "scrub-clip", label: "Video to scrub", kind: "video", src: "/samples/life.mp4", options: { loop: true } } },
 };
