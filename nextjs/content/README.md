@@ -20,7 +20,7 @@ Camera and mic ask for permission. Web Speech and the first vision-model downloa
 
 ## Then make a short live performance
 
-In a group, combine **keys, buttons, or MIDI** with **voice-triggered cues**. Choose a reader or performer, a cue operator, and an audience's position in the room. Build a short sequence you can rehearse, including a manual backup and a blackout.
+Use the [group worksheet](/perform): roles, a cue sheet, rehearsal checklist. In a group, combine **keys, buttons, or MIDI** with **voice-triggered cues**. Choose a reader or performer, a cue operator, and an audience's position in the room. Build a short sequence you can rehearse, including a manual backup and a blackout.
 
 - **[Follow a sonnet](/voice/script):** cues marked into a script, with a simulated reader and a manual Go button. Change `nextjs/lib/voice/script.js`.
 - **[Run a cue list](/launch/cue-list):** a numbered sequence with Go, back, skip, and panic. Change `nextjs/lib/launch/cue-list.json`.
