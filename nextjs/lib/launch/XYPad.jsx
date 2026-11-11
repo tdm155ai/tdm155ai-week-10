@@ -40,6 +40,10 @@ export default function XYPad({ control: initialControl = "mouse" }) {
   const [outputs, setOutputs] = useState([]);
   const [sink, setSink] = useState("");
   const [touching, setTouching] = useState(false);
+  const [pattern, setPattern] = useState(PATTERN); // the steps, editable on the page; starts from lib/launch/loop.js
+  const patternRef = useRef(PATTERN);
+  const redrawTimer = useRef(null);
+  const [copied, setCopied] = useState(false);
   const [midi, setMidi] = useState("");
   const midiStop = useRef(null);
   const audio = useRef(null); // { ctx, fx, master, gains, sources, el, t0, loop }
@@ -98,20 +102,8 @@ export default function XYPad({ control: initialControl = "mouse" }) {
     await a.ctx.resume();
     stop();
     if (source === "loop") {
-      const loop = renderLoop({ rate: a.ctx.sampleRate }); // about a tenth of a second
-      a.loop = loop;
       a.t0 = a.ctx.currentTime + 0.08;
-      for (const part of PARTS) {
-        const buffer = a.ctx.createBuffer(1, loop.length, loop.rate);
-        buffer.copyToChannel(loop.tracks[part], 0);
-        const src = a.ctx.createBufferSource();
-        src.buffer = buffer; src.loop = true;
-        const gain = a.ctx.createGain();
-        gain.gain.value = onRef.current[part] ? loop.scale : 0;
-        src.connect(gain).connect(part === "kick" && dryKick ? a.master : a.fx.input);
-        src.start(a.t0);
-        a.gains[part] = gain; a.sources.push(src);
-      }
+      startStems(renderLoop({ rate: a.ctx.sampleRate, pattern: patternRef.current }), a.t0, 0); // about a tenth of a second
     } else {
       const el = new Audio(source);
       el.loop = true;
@@ -120,6 +112,50 @@ export default function XYPad({ control: initialControl = "mouse" }) {
       await el.play();
     }
     setPlaying(true);
+  };
+
+  // Start one looping source per part at `when`, `offset` seconds into the loop, and stop the old ones at that moment,
+  // so a new version of the loop takes over without a gap and without losing the beat.
+  const startStems = (loop, when, offset) => {
+    const a = audio.current;
+    const old = a.sources;
+    a.loop = loop; a.sources = []; a.gains = {};
+    for (const part of PARTS) {
+      const buffer = a.ctx.createBuffer(1, loop.length, loop.rate);
+      buffer.copyToChannel(loop.tracks[part], 0);
+      const src = a.ctx.createBufferSource();
+      src.buffer = buffer; src.loop = true;
+      const gain = a.ctx.createGain();
+      gain.gain.value = onRef.current[part] ? loop.scale : 0;
+      src.connect(gain).connect(part === "kick" && dryKick ? a.master : a.fx.input);
+      src.start(when, offset);
+      a.gains[part] = gain; a.sources.push(src);
+    }
+    old.forEach((src) => { try { src.stop(when); } catch {} });
+  };
+
+  // Click a step: change the pattern, render the loop again, and swap it in at the same point in the bar.
+  const toggleStep = (part, step) => {
+    const row = patternRef.current[part];
+    const next = { ...patternRef.current, [part]: row.slice(0, step) + (row[step] === "x" ? "." : "x") + row.slice(step + 1) };
+    applyPattern(next);
+  };
+  const applyPattern = (next) => {
+    patternRef.current = next; setPattern(next); setCopied(false);
+    clearTimeout(redrawTimer.current);
+    redrawTimer.current = setTimeout(() => {
+      const a = audio.current;
+      if (!a?.loop || !a.sources.length) return;
+      const loop = renderLoop({ rate: a.ctx.sampleRate, pattern: patternRef.current });
+      const when = a.ctx.currentTime + 0.05;
+      startStems(loop, when, ((when - a.t0) % loop.seconds + loop.seconds) % loop.seconds);
+    }, 120);
+  };
+  const resetPattern = () => applyPattern(PATTERN);
+  const copyPattern = () => {
+    const width = Math.max(...PARTS.map((p) => p.length));
+    const code = `export const PATTERN = {\n${PARTS.map((p) => `  ${(p + ":").padEnd(width + 1)} "${patternRef.current[p]}",`).join("\n")}\n};\n`;
+    navigator.clipboard?.writeText(code).then(() => setCopied(true)).catch(() => {});
   };
 
   // Switching a part on or off: a quick fade, in time with everything else.
@@ -261,12 +297,16 @@ export default function XYPad({ control: initialControl = "mouse" }) {
             {PARTS.map((part, i) => (
               <div key={part} className="xy-part">
                 <button className={on[part] ? "ctl-btn on" : "ctl-btn"} onClick={() => toggle(part)}><span className="pad-key">{i + 1}</span> {LABELS[part] || part}</button>
-                <span className="xy-steps">{[...PATTERN[part]].map((c, s) => <i key={s} className={`${c === "x" ? "hit" : ""}${s === stepNow ? " now" : ""}${on[part] ? "" : " muted"}`} />)}</span>
+                <span className="xy-steps">{[...pattern[part]].map((c, s) => <i key={s} role="button" title={`step ${s + 1}`} onClick={() => toggleStep(part, s)} className={`${c === "x" ? "hit" : ""}${s === stepNow ? " now" : ""}${on[part] ? "" : " muted"}`} />)}</span>
               </div>
             ))}
           </div>
           <label className="ctl-note"><input type="checkbox" checked={dryKick} onChange={(e) => { setDryKick(e.target.checked); if (playing) setTimeout(play, 0); }} /> Keep the kick out of the filter (what DJs and producers often do)</label>
-          <p className="ctl-note">Change the beat in <code>nextjs/lib/launch/loop.js</code>: tempo, chords, and a 16-step pattern per part.</p>
+          <div className="ctl-row" style={{ margin: "8px 0" }}>
+            <button className="ctl-btn" onClick={copyPattern}>{copied ? "Copied: paste over PATTERN in loop.js" : "Copy pattern as code"}</button>
+            <button className="ctl-btn" onClick={resetPattern}>Reset to the file</button>
+          </div>
+          <p className="ctl-note">Click a step to add or remove a hit; the loop changes on the next beat. To keep it, copy the pattern and paste it over <code>PATTERN</code> in <code>nextjs/lib/launch/loop.js</code> (tempo and chords are there too).</p>
         </div>
       </div>
     </div>
