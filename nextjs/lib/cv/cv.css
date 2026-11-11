@@ -77,3 +77,12 @@
 .hello-title { margin: 10px 0 0; font-size: clamp(26px, 3.4vw, 44px); font-weight: 800; letter-spacing: -.04em; line-height: 1.1; }
 .cv-stagebox.is-mirrored.hello-box canvas { transform: scaleX(-1); }
 .hello-box { margin-top: 20px; }
+
+/* /track/three */
+.three-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 16px; align-items: start; }
+.three-grid.with-hand { grid-template-columns: minmax(0, 1fr) 280px; }
+@media (max-width: 900px) { .three-grid.with-hand { grid-template-columns: 1fr; } }
+.three-holder { width: 100%; aspect-ratio: 16 / 9; max-height: 76vh; border-radius: 10px; overflow: hidden; background: #07080a; touch-action: none; }
+.three-holder:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; }
+.three-holder canvas { display: block; width: 100%; height: 100%; }
+.three-cam { aspect-ratio: 4 / 3; }
