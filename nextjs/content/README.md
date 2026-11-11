@@ -33,6 +33,7 @@ The physical stations are **MediaPipe**, **button launching**, and **printing bu
 
 ## Look at the shows and tools
 
+- **[The fellows' experiments](/fellows):** hand drums, finger sounds, a gesture camera, a five-person air band, and shader trails, built with Claude Code this week: each one's input, output, and file to change.
 - **[Inspiration](/inspiration):** concert and theater clips, [examples](/inspiration/examples), and [case studies](/inspiration/case-studies) that break a show into maneuvers.
 - **[Pro apps](/pro-apps):** QLab, TouchDesigner, Isadora, and more: what they do and what a small browser version could do.
 - **[Build it yourself](/pro-apps/build-it-yourself):** professional app → browser libraries and an approach to building the maneuver.

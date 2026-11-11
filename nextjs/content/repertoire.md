@@ -48,4 +48,4 @@ Everything goes to the [stage](/stage) through `fireCue` (do something once) or 
 
 ## Then combine them
 
-A useful pattern: one input that **fires** (a word, a pad, a raised hand) and one that **steers** (a knob, a hand's height, the loudness). For example, the word "storm" starts the wind; a hand's height sweeps the filter on it. Plan your group's piece with [the worksheet](/perform), and find prompts for each step in [Prompts for Claude Code](/prompts).
+A useful pattern: one input that **fires** (a word, a pad, a raised hand) and one that **steers** (a knob, a hand's height, the loudness). For example, the word "storm" starts the wind; a hand's height sweeps the filter on it. For combinations the Lab's fellows built this week (drums, finger pads, a gesture camera, a five-person air band), see [the fellows' experiments](/fellows). Plan your group's piece with [the worksheet](/perform), and find prompts for each step in [Prompts for Claude Code](/prompts).
