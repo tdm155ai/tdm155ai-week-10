@@ -62,6 +62,15 @@ export default function SemanticCues() {
 
   const recent = () => [...textRef.current.values()].join(" ").split(/\s+/).slice(-60).join(" ");
 
+  // Which provider and model answer (app/voice/decide/route.js: OpenRouter if its key is set, else OpenAI).
+  const [engine, setEngine] = useState({ provider: "", model: "", models: [] });
+  const [model, setModel] = useState("");
+  const modelRef = useRef("");
+  useEffect(() => { modelRef.current = model; }, [model]);
+  useEffect(() => {
+    fetch("/voice/decide").then((r) => r.json()).then((d) => { setEngine(d); setModel(d.model || ""); }).catch(() => {});
+  }, []);
+
   const decide = useCallback(async () => {
     if (busy.current) { pending.current = true; return; }
     busy.current = true; setThinking(true);
@@ -69,7 +78,7 @@ export default function SemanticCues() {
       const res = await fetch("/voice/decide", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transcript: recent(), topics: topics.map(({ id, about }) => ({ id, about })), current: currentRef.current }),
+        body: JSON.stringify({ transcript: recent(), topics: topics.map(({ id, about }) => ({ id, about })), current: currentRef.current, model: modelRef.current || undefined }),
       });
       const d = await res.json();
       if (!res.ok) throw new Error(d.error || `decide: ${res.status}`);
@@ -175,10 +184,18 @@ export default function SemanticCues() {
         </div>
         <div className="ctl-panel">
           <h2>The model's calls</h2>
+          <p className="ctl-note" style={{ marginTop: 0 }}>
+            {engine.provider === "openrouter" ? <>Via <b>OpenRouter</b>:{" "}
+              <select className="ctl-select" value={model} onChange={(e) => setModel(e.target.value)}>
+                {engine.models.map((m) => <option key={m.id} value={m.id}>{m.id}</option>)}
+              </select>{" "}{engine.models.find((m) => m.id === model)?.note}</>
+              : engine.provider === "openai" ? <>Via <b>OpenAI</b>: {engine.model}</>
+              : engine.provider === "none" ? "No model key on this machine (OPENROUTER_API_KEY or OPENAI_API_KEY)." : "…"}
+          </p>
           <ul className="ctl-log">
             {decisions.map((d, i) => d.fired
               ? <li key={i}>{d.t} <b>→ {d.cue} on stage</b> ({d.how})</li>
-              : <li key={i}>{d.t} {d.cue === "none" ? "no topic" : <b>{d.cue}</b>} {Math.round((d.confidence || 0) * 100)}%{d.arm && d.arm !== "none" ? ` · arm ${d.arm}` : ""} · {d.ms} ms · {d.reason}</li>)}
+              : <li key={i}>{d.t} {d.cue === "none" ? "no topic" : <b>{d.cue}</b>} {Math.round((d.confidence || 0) * 100)}%{d.arm && d.arm !== "none" ? ` · arm ${d.arm}` : ""} · {d.ms} ms · {d.reason} <span className="ctl-status">({d.model})</span></li>)}
             {!decisions.length && <li>Each pause in your speech asks the model once.</li>}
           </ul>
         </div>
