@@ -1,10 +1,10 @@
-// Script following (lib/voice/follow.js): the reader's place survives misheard words, a skipped word, a dropped
+// Run: node --test lib/voice/follow.test.mjs (from nextjs/). Script following (lib/voice/follow.js): the reader's place survives misheard words, a skipped word, a dropped
 // stretch, and a skipped line, and a jump reports which words (and so which cues) were skipped.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { follow, parseScript } from "../lib/voice/follow.js";
-import { words } from "../lib/voice/speech.js";
-import { text } from "../lib/voice/script.js";
+import { follow, parseScript } from "./follow.js";
+import { words } from "./speech.js";
+import { text } from "./script.js";
 
 const { list } = parseScript(text);
 const at = (word, after = 0) => list.findIndex((w, i) => i >= after && w.norm === word);
