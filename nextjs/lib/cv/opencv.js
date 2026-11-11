@@ -142,3 +142,32 @@ export function quadTransform(w, h, [tl, tr, br, bl]) {
   const t = mul(d, adj(s)).map((v, _, arr) => v / arr[8]);
   return `matrix3d(${[t[0], t[3], 0, t[6], t[1], t[4], 0, t[7], 0, 0, 1, 0, t[2], t[5], 0, t[8]].join(",")})`;
 }
+
+// The average color inside a box (its middle 60%, so the edges and the drawn line don't count), from a canvas's
+// pixels. Returns { r, g, b, hue (0–360), saturation (0–1), value (0–1) }.
+export function boxColor(image, [tl, tr, br, bl], steps = 14) {
+  const { data, width } = image;
+  let r = 0, g = 0, b = 0, n = 0;
+  for (let i = 0; i < steps; i++) for (let j = 0; j < steps; j++) {
+    const u = 0.2 + (0.6 * i) / (steps - 1);
+    const v = 0.2 + (0.6 * j) / (steps - 1);
+    const x = Math.round((1 - v) * ((1 - u) * tl.x + u * tr.x) + v * ((1 - u) * bl.x + u * br.x));
+    const y = Math.round((1 - v) * ((1 - u) * tl.y + u * tr.y) + v * ((1 - u) * bl.y + u * br.y));
+    const k = (y * width + x) * 4;
+    if (k < 0 || k >= data.length) continue;
+    r += data[k]; g += data[k + 1]; b += data[k + 2]; n += 1;
+  }
+  if (!n) return null;
+  r /= n * 255; g /= n * 255; b /= n * 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+  let hue = 0;
+  if (d) hue = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return { r, g, b, hue: (hue * 60 + 360) % 360, saturation: max ? d / max : 0, value: max };
+}
+
+// The nearest card color by hue, or null for a grey, white, or black card.
+export function nearestCard(color, cards, { minSaturation = 0.3, minValue = 0.2 } = {}) {
+  if (!color || color.saturation < minSaturation || color.value < minValue) return null;
+  const gap = (a, b) => Math.min(Math.abs(a - b), 360 - Math.abs(a - b));
+  return cards.reduce((best, card) => (!best || gap(color.hue, card.hue) < gap(color.hue, best.hue) ? card : best), null);
+}

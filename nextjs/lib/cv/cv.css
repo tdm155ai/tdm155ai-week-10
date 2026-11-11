@@ -49,7 +49,7 @@
 .cv-muted { color: var(--muted); font-size: 14px; }
 
 /* /draw-a-box */
-.cv-stagebox .box-clip { inset: auto; left: 0; top: 0; width: 640px; height: 360px; object-fit: fill; transform-origin: 0 0; opacity: 0; transition: opacity .25s; }
+.cv-stagebox .box-clip { position: absolute; inset: auto; left: 0; top: 0; width: 640px; height: 360px; object-fit: fill; transform-origin: 0 0; opacity: 0; transition: opacity .25s; }
 .box-stage.is-camera-hidden > video:first-child { opacity: 0; }
 .box-stage:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; cursor: none; }
 .box-debug { width: 100%; border-radius: 6px; background: #000; }
