@@ -11,6 +11,7 @@ import { clear } from "../../../lib/cv/draw.js";
 import { INSTRUMENTS } from "../../../lib/cv/instruments.js";
 import { makeThrottle, makeTriggers } from "../../../lib/cv/trigger.js";
 import { fireCue, setParam } from "../../../lib/cv/stage.js";
+import Stage from "../../../lib/stage/Stage.jsx";
 import { CameraBar, CueLog, Readout, Status, useCueLog } from "../../../lib/cv/ui.jsx";
 import { instruments as config } from "../cues.js";
 
@@ -81,6 +82,10 @@ export default function Instruments() {
               <div className="cv-meter"><span style={{ width: `${Math.round((fader ?? 0) * 100)}%` }} /></div>
             </div>
           )}
+          <div>
+            <p className="eyebrow">Stage preview (silent)</p>
+            <Stage preview />
+          </div>
           <CueLog log={log} />
         </aside>
       </div>

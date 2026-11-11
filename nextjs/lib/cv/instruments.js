@@ -111,10 +111,11 @@ export const INSTRUMENTS = {
       const nose = body[0];
       const left = nose.y - body[15].y; // positive = wrist above nose
       const right = nose.y - body[16].y;
-      const up = left > 0 && right > 0;
+      const seen = Math.min(body[15].visibility ?? 1, body[16].visibility ?? 1); // wrists out of frame are guesses
+      const up = left > 0 && right > 0 && seen > 0.5;
       return {
         on: { up },
-        readout: [["body seen", "yes"], ["wrist 1 above nose", fmt(left), left > 0], ["wrist 2 above nose", fmt(right), right > 0], ["both up", up ? "YES" : "no", up]],
+        readout: [["body seen", "yes"], ["wrists visible", fmt(seen), seen > 0.5], ["wrist 1 above nose", fmt(left), left > 0], ["wrist 2 above nose", fmt(right), right > 0], ["both up", up ? "YES" : "no", up]],
       };
     },
   },

@@ -1,5 +1,6 @@
 import { SiteHeader } from "../components/Chrome.jsx";
 import HelloTrack from "./HelloTrack.jsx";
+import "../../lib/stage/stage.css";
 import "../../lib/cv/cv.css";
 
 export const metadata = { title: "Track: Hello World" };

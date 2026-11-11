@@ -10,6 +10,7 @@ import { useDetector } from "../../lib/cv/useDetector.js";
 import { clear, HAND_CONNECTIONS, label, skeleton, view, zone } from "../../lib/cv/draw.js";
 import { makeTriggers } from "../../lib/cv/trigger.js";
 import { fireCue } from "../../lib/cv/stage.js";
+import Stage from "../../lib/stage/Stage.jsx";
 import { CameraBar, CueLog, Readout, Status, fmt, useCueLog } from "../../lib/cv/ui.jsx";
 import { zones } from "./cues.js";
 
@@ -72,6 +73,10 @@ export default function HelloTrack() {
         <aside className="cv-side">
           <p className="eyebrow">What the model sees</p>
           <Readout rows={rows} />
+          <div>
+            <p className="eyebrow">Stage preview (silent)</p>
+            <Stage preview />
+          </div>
           <CueLog log={log} />
         </aside>
       </div>
