@@ -88,6 +88,11 @@
       "detail": "five looks: smoke to liquid"
     },
     {
+      "href": "/voice/shaders",
+      "title": "Voice + shaders",
+      "detail": "“hit it” plays the dance loop, “splash” bursts fluid, “stop” goes black"
+    },
+    {
       "href": "/launch/kaleidoscope",
       "title": "Kaleidoscope",
       "detail": "mirrored fractal"
@@ -183,6 +188,11 @@
           "href": "/voice/words",
           "title": "Your trigger words",
           "detail": "edit your own word → cue list"
+        },
+        {
+          "href": "/voice/shaders",
+          "title": "Voice + shaders",
+          "detail": "say hit it, splash, stop; no key"
         },
         {
           "href": "/voice/script",
@@ -281,6 +291,11 @@
           "href": "/track/effects/splash",
           "title": "Splash",
           "detail": "fluid you stir by hand"
+        },
+        {
+          "href": "/voice/shaders",
+          "title": "Voice + shaders",
+          "detail": "fluid and camera, played by voice"
         },
         {
           "href": "/track/effects/ghost",
