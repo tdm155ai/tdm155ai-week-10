@@ -35,7 +35,7 @@ export default function Hello() {
       // 2. The hand model: its runtime and model file come from the internet the first time.
       const files = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.2.2/wasm");
       const hands = await HandLandmarker.createFromOptions(files, {
-        baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task" },
+        baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task", delegate: "GPU" },
         runningMode: "VIDEO",
         numHands: 1,
       });
