@@ -2,8 +2,8 @@ import "@fontsource-variable/inter";
 import "./globals.css";
 
 export const metadata = {
-  title: { default: "Installations · TDM 155AI week 10", template: "%s · TDM 155AI week 10" },
-  description: "TDM 155AI week 10: Installations. Launching media with buttons, keys, MIDI, voice and lyric cues, and computer vision, for a live performance in the studio.",
+  title: { default: "Installations and Live Events · TDM 155AI week 10", template: "%s · TDM 155AI week 10" },
+  description: "Start with buttons, keys, MIDI, a spoken word, and a raised hand. Combine cues on a shared stage for a short live performance. TDM 155AI, November 11, 2026.",
 };
 
 export const viewport = {
