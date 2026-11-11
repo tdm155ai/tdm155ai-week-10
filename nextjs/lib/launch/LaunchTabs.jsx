@@ -6,6 +6,7 @@ const tabs = [
   ["/launch/midi", "2 · MIDI controller"],
   ["/launch/cue-list", "3 · Cue list (Go)"],
   ["/launch/xy", "4 · XY pad (filter)"],
+  ["/launch/shader", "5 · Shader (graphics)"],
   ["/launch/hello", "In one file"],
   ["/docs/launch", "How-to"],
 ];
