@@ -1,5 +1,6 @@
 ---
 title: Draw a box
+order: 5
 description: Draw a rectangle on paper under the overhead camera, say a word, and a video plays inside it.
 ---
 

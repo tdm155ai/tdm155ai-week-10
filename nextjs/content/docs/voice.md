@@ -45,7 +45,7 @@ Rough winds [[wind]] do shake the darling buds of May,
 
 Put cues on words that are clearly said and clearly recognized (nouns, stressed words), not on "thee" or "and".
 
-The menu next to **Start listening** picks the engine: **Web Speech** (free) or **OpenAI** (uses the class key; the cue words and the text are sent along as hints, so it tends to get them right).
+The menu next to **Start listening** picks the engine: **Web Speech** (free) or **OpenAI** (needs an OpenAI key in the repo-root `.env`, and costs a little per minute; the cue words and the text are sent along as hints, so it tends to get them right).
 
 ## 3. Compare engines
 
