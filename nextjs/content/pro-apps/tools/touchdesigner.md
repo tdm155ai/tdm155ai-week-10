@@ -19,6 +19,10 @@ description: "Derivative's node-based environment for real-time visuals, install
 
 ## Watch
 
+**What it can look like:** [self, 2023 (TouchDesigner + Kinect)](https://www.youtube.com/watch?v=OndaS-HD7dc) (kristaps kazaks, 2:44, posted January 2, 2024). A live point cloud from a depth camera, played like an instrument. The creator's description: "250k points in real-time from Kinect camera into TouchDesigner controlled with midi and audio via custom setup." The browser cousins here: hands as points on [/track](/track), particles on [/launch/particles](/launch/particles), MIDI knobs on [/launch/midi](/launch/midi).
+
+![youtube: self, 2023 (TouchDesigner + Kinect) (kristaps kazaks, 2:44)](https://www.youtube.com/watch?v=OndaS-HD7dc)
+
 - [TouchDesigner Quick Start Guide](https://www.youtube.com/watch?v=icV5moCR87s) (threedashes, 23:59; 2020 build). Chapters: 01:44 SOP · 07:13 CHOP · 13:30 TOP · 18:17 DAT · 20:20 rendering. The best single tour of the families.
 - [03 – The Interface – TouchDesigner Beginner Course](https://www.youtube.com/watch?v=xtp1CLzWRUk) (bileam tschepe / elekktronaut, 13:03). **08:16 the network.** Part of a free [22-video beginner course](https://www.youtube.com/playlist?list=PLFrhecWXVn5862cxJgysq9PYSjLdfNiHz).
 - [01 – About TouchDesigner](https://www.youtube.com/watch?v=u2Jr060p8dY) (bileam tschepe, 6:34). **03:30 use cases, 05:58 showcase.** For inspiration, browse [derivative.ca/showcase](https://derivative.ca/showcase).

@@ -28,6 +28,17 @@ order: 4
 - **Build a tiny version:** [/track](/track). Pose landmarks drive a projected avatar.
 - **Credits and sources:** The description says it was developed during "a MODINA.eu residency at Budapest's Trafó."
 
+## kristaps kazaks: a body as 250,000 points (Kinect + TouchDesigner)
+
+- **Video:** [self, 2023 (TouchDesigner + Kinect)](https://www.youtube.com/watch?v=OndaS-HD7dc) (kristaps kazaks, 2:44, posted 2024-01-02; creator)
+- **Watch at:** metadata only
+- **Mechanic:** sensors (a depth camera), generative graphics, MIDI and audio control
+- **Why it's here:** the depth camera's points become the picture itself, not a trigger: the point cloud is the output.
+- **Build a tiny version:** [/launch/particles](/launch/particles) moved by your palm, or the 21 hand points on [/track](/track); a webcam has no depth, so MediaPipe's points stand in for the Kinect's.
+- **Credits and sources:** the creator's description: "250k points in real-time from Kinect camera into TouchDesigner controlled with midi and audio via custom setup." Music: Caribou, "Can't Do Without You" (Tale of Us & Mano le Tough remix). The patch itself isn't shown or explained.
+
+![youtube: self, 2023 (TouchDesigner + Kinect) (kristaps kazaks, 2:44)](https://www.youtube.com/watch?v=OndaS-HD7dc)
+
 ## MediaPipe face tracking in TouchDesigner
 
 - **Video:** [MediaPipe Face Tracking in TouchDesigner](https://www.youtube.com/watch?v=2A16TuIpBVI) (The Interactive & Immersive HQ, 23:18, 2026-04-27; educator)
