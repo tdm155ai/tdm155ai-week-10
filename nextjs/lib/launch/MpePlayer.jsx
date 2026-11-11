@@ -8,11 +8,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { connectMidi, midiSupported, noteName } from "./midi.js";
-import { BEND_RANGE, KEYBOARD_BEND_RANGE, SLIDE_CCS, look, patches } from "./mpe.js";
+import { BEND_RANGE, KEYBOARD_BEND_RANGE, KEYS, NOTE_NAMES, SLIDE_CCS, look, patches } from "./mpe.js";
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const mtof = (m) => 440 * 2 ** ((m - 69) / 12);
 const BLACK_KEYS = new Set([1, 3, 6, 8, 10]);
+// Note names as the Seaboard and ROLI Dashboard print them (60 = C3), or the usual way (60 = C4): see mpe.js.
+const name = (n) => noteName(NOTE_NAMES === "roli" ? n - 12 : n);
 const freshChannel = () => ({ bend: 0, slide: 0.5, press: 0, pressSeen: false, msgs: 0, notes: new Set() });
 
 // Sound: Tone.js, loaded on the first click (browsers only allow sound after one). Each note is its own voice.
@@ -65,7 +67,8 @@ export default function MpePlayer() {
   const voices = useRef(new Map()); // "ch:note" → voice
   const trails = useRef([]); // voices that have let go, still fading on screen
   const pointers = useRef(new Map()); // pointerId → { ch, note, mode, downAt, sent }
-  const range = useRef({ lo: 47.5, hi: 72.5 }); // the notes across the picture; widens to fit what's played
+  const range = useRef({ lo: KEYS.low - 0.5, hi: KEYS.high + 0.5 }); // the keys across the picture (see fit below)
+  const view = useRef(range.current); // what's drawn this frame: the keys, stretched while a bend goes past them
   const settings = useRef({ mpeRange: BEND_RANGE, keyRange: KEYBOARD_BEND_RANGE, patch: "pad" });
   const lastMsg = useRef("");
   const total = useRef(0);
@@ -140,9 +143,7 @@ export default function MpePlayer() {
       const v = { key, ch, note: m.number, vel: m.value / 127, on: true, patch: settings.current.patch, trail: [], audio: null, polyPress: null };
       if (engine.current) { const s = shape(v); v.audio = makeVoice(engine.current, p, mtof(s.pitch), p.cutoff * 2 ** (s.slide * p.slideOctaves), 0.3 * s.level); }
       voices.current.set(key, v);
-      const r = range.current;
-      if (m.number < r.lo + 1) r.lo = m.number - 3.5;
-      if (m.number > r.hi - 1) r.hi = m.number + 3.5;
+      fit(m.number);
     } else if (m.type === "noteoff") {
       c.notes.delete(m.number);
       release(`${ch}:${m.number}`);
@@ -161,6 +162,20 @@ export default function MpePlayer() {
       if (m.number === 120 || m.number === 123) for (const v of onChannel()) { c.notes.delete(v.note); release(v.key); }
     }
   }, []);
+
+  // The picture shows the Block's keys. When a note lands outside them (the octave buttons), it moves by octaves to
+  // the keys being played, and widens only if the held notes need more room.
+  const fit = (n) => {
+    const r = range.current;
+    if (n > r.lo && n < r.hi) return;
+    const held = [...[...voices.current.values()].map((v) => v.note), n];
+    let lo = Math.round(r.lo + 0.5), hi = lo + (KEYS.high - KEYS.low);
+    while (n > hi) { lo += 12; hi += 12; } // slide the keys an octave at a time until the new note is on them
+    while (n < lo) { lo -= 12; hi -= 12; }
+    while (Math.min(...held) < lo) lo -= 12; // and stretch if notes still held are now off the edge
+    while (Math.max(...held) > hi) hi += 12;
+    range.current = { lo: lo - 0.5, hi: hi + 0.5 };
+  };
 
   const panic = useCallback(() => {
     for (const key of [...voices.current.keys()]) release(key, true);
@@ -193,12 +208,12 @@ export default function MpePlayer() {
   // harder (a pen uses its real pressure). It sends the same messages a Seaboard would, on its own channels.
   const pitchAt = (clientX) => {
     const r = canvasRef.current.getBoundingClientRect();
-    const { lo, hi } = range.current;
+    const { lo, hi } = view.current;
     return lo + ((clientX - r.left) / r.width) * (hi - lo);
   };
   const slideAt = (clientY) => {
     const r = canvasRef.current.getBoundingClientRect();
-    return clamp(Math.round((1 - (clientY - r.top) / r.height) * 127), 0, 127);
+    return clamp(Math.round((1 - (clientY - r.top - r.height * 0.03) / (r.height * 0.84)) * 127), 0, 127);
   };
   const freeChannel = () => {
     const busy = new Set([...pointers.current.values()].map((p) => p.ch));
@@ -250,9 +265,13 @@ export default function MpePlayer() {
       raf = requestAnimationFrame(draw);
       const now = performance.now();
       const W = canvas.width, H = canvas.height, dpr = W / Math.max(1, canvas.clientWidth);
-      const { lo, hi } = range.current;
+      // The keys, stretched (for this frame only) to keep a big bend in the picture.
+      let { lo, hi } = range.current;
+      for (const v of voices.current.values()) { const p = shape(v).pitch; lo = Math.min(lo, p - 1); hi = Math.max(hi, p + 1); }
+      view.current = { lo, hi };
       const X = (pitch) => ((pitch - lo) / (hi - lo)) * W;
-      const Y = (slide) => (1 - slide) * (H * 0.86) + H * 0.04;
+      const KEYS_TOP = H * 0.9; // the keyboard strip along the bottom
+      const Y = (slide) => (1 - slide) * (H * 0.84) + H * 0.03;
 
       // Held mouse buttons press harder the longer you hold (a Seaboard key you lean into).
       for (const p of pointers.current.values()) {
@@ -264,17 +283,25 @@ export default function MpePlayer() {
       ctx.globalCompositeOperation = "source-over";
       ctx.fillStyle = look.background;
       ctx.fillRect(0, 0, W, H);
-      // The keyboard: a faint column per semitone (darker for the black keys), a label on every C.
+      // The keyboard: a faint column per key above, and a strip of keys along the bottom with their names, lit
+      // where a note is held, so a bend reads as moving between keys (a wiggle around one, a glide across several).
+      const held = new Map([...voices.current.values()].map((v) => [v.note, look.hue(v.ch)]));
+      const keyW = W / (hi - lo);
+      ctx.textAlign = "center";
       for (let n = Math.ceil(lo - 0.5); n <= Math.floor(hi + 0.5); n++) {
         const x0 = X(n - 0.5), x1 = X(n + 0.5);
-        ctx.fillStyle = BLACK_KEYS.has(((n % 12) + 12) % 12) ? "rgba(255,255,255,0.015)" : "rgba(255,255,255,0.04)";
-        ctx.fillRect(x0 + dpr, 0, x1 - x0 - 2 * dpr, H);
-        if (n % 12 === 0) {
-          ctx.fillStyle = "rgba(255,255,255,0.35)";
-          ctx.font = `${12 * dpr}px ui-monospace, monospace`;
-          ctx.fillText(noteName(n), x0 + 4 * dpr, H - 8 * dpr);
+        const black = BLACK_KEYS.has(((n % 12) + 12) % 12);
+        ctx.fillStyle = black ? "rgba(255,255,255,0.015)" : "rgba(255,255,255,0.04)";
+        ctx.fillRect(x0 + dpr, 0, x1 - x0 - 2 * dpr, KEYS_TOP - 4 * dpr);
+        ctx.fillStyle = held.has(n) ? `hsla(${held.get(n)}, 100%, 60%, 0.75)` : black ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.2)";
+        ctx.fillRect(x0 + dpr, KEYS_TOP, x1 - x0 - 2 * dpr, H - KEYS_TOP);
+        if (!black && keyW > 16 * dpr) {
+          ctx.fillStyle = n % 12 === 0 ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.5)";
+          ctx.font = `${n % 12 === 0 ? 700 : 400} ${Math.min(13, keyW / dpr / 2.6) * dpr}px ui-monospace, monospace`;
+          ctx.fillText(n % 12 === 0 ? name(n) : name(n).replace(/-?\d+$/, ""), (x0 + x1) / 2, H - (H - KEYS_TOP) * 0.3);
         }
       }
+      ctx.textAlign = "start";
       ctx.fillStyle = "rgba(255,255,255,0.3)";
       ctx.font = `${11 * dpr}px ui-monospace, monospace`;
       ctx.fillText("slide ↑", 8 * dpr, 16 * dpr);
@@ -288,9 +315,6 @@ export default function MpePlayer() {
           const s = shape(v);
           v.trail.push({ pitch: s.pitch, slide: s.slide, press: s.press, t: now });
           v.now = s;
-          // A big bend can leave the picture: widen it (the keyboard redraws to fit on the next frame).
-          if (s.pitch < range.current.lo + 0.5) range.current.lo = Math.max(0, s.pitch - 3);
-          if (s.pitch > range.current.hi - 0.5) range.current.hi = Math.min(127, s.pitch + 3);
         }
         while (v.trail.length && now - v.trail[0].t > life) v.trail.shift();
         const hue = look.hue(v.ch);
@@ -314,7 +338,7 @@ export default function MpePlayer() {
           ctx.beginPath(); ctx.arc(x, y, (3 + v.now.press * 6) * dpr, 0, Math.PI * 2); ctx.fill();
           ctx.font = `${13 * dpr}px ui-monospace, monospace`;
           const bend = v.now.bendSemis;
-          ctx.fillText(`${noteName(v.note)}${Math.abs(bend) >= 0.05 ? ` ${bend > 0 ? "+" : ""}${bend.toFixed(1)}` : ""}`, x + r * 0.35 + 6 * dpr, y - r * 0.35);
+          ctx.fillText(`${name(v.note)}${Math.abs(bend) >= 0.05 ? ` ${bend > 0 ? "+" : ""}${bend.toFixed(1)}` : ""}`, x + r * 0.35 + 6 * dpr, y - r * 0.35);
         }
       }
       trails.current = trails.current.filter((v) => v.trail.length);
@@ -338,7 +362,7 @@ export default function MpePlayer() {
       chans.current.forEach((c, ch) => {
         if (!ch || !c.msgs) return;
         const r = ch === 1 ? settings.current.keyRange : settings.current.mpeRange;
-        rows.push({ ch, notes: [...c.notes].map(noteName).join(" "), bend: c.bend, semis: c.bend * r, slide: c.slide, press: c.pressSeen ? c.press : null, held: c.notes.size > 0 });
+        rows.push({ ch, notes: [...c.notes].map((n) => `${name(n)} (${n})`).join(" "), bend: c.bend, semis: c.bend * r, slide: c.slide, press: c.pressSeen ? c.press : null, held: c.notes.size > 0 });
       });
       setMeters(rows);
       setReadout({ total: total.current, last: lastMsg.current });
@@ -389,7 +413,7 @@ export default function MpePlayer() {
         <h2>Channels {channelsUsed > 1 ? `· MPE: ${channelsUsed} channels in use` : ""}</h2>
         {meters.length ? (
           <table className="mpe-meters">
-            <thead><tr><th>Ch</th><th>Notes</th><th>Bend (glide, wiggle)</th><th>Slide (CC74)</th><th>Pressure</th></tr></thead>
+            <thead><tr><th>Ch</th><th>Notes (MIDI number)</th><th>Bend (glide, wiggle)</th><th>Slide (CC74)</th><th>Pressure</th></tr></thead>
             <tbody>
               {meters.map((m) => (
                 <tr key={m.ch} className={m.held ? "" : "idle"}>

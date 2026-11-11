@@ -9,6 +9,14 @@
 //   press   = channel pressure (aftertouch)    slide = CC74 (moving your finger up and down the key)
 //   lift    = release velocity (not used here)
 
+// The keys across the picture: the Seaboard BLOCK's 24 keys in their default octave, MIDI notes 48 to 71. The octave
+// buttons on the Block shift what it sends; the picture follows (and widens if you play more than this at once).
+export const KEYS = { low: 48, high: 71 };
+
+// How notes are named. "roli": 60 is C3, as on the Seaboard and in ROLI Dashboard (so 48–71 is C2–B3).
+// "standard": 60 is C4 (middle C), as in most music software. The meters show the MIDI number too.
+export const NOTE_NAMES = "roli";
+
 // How many semitones a full pitch bend is. ROLI's MPE default is 48 (the page has a box to change it).
 export const BEND_RANGE = 48;
 // Ordinary keyboards (everything on channel 1) usually bend 2 semitones.
