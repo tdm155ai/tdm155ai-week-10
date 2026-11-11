@@ -43,12 +43,13 @@ No controller? The **on-screen pads** (notes 36–51, like a 4×4 drum pad) and 
 [/launch/mpe](/launch/mpe) plays a ROLI Seaboard BLOCK, an **MPE** keyboard: each held note gets its own MIDI channel, so every finger sends its own pitch bend, slide (up and down the key, CC 74), and pressure. A pad controller sends one number per hit; this sends three that keep changing while you hold.
 
 1. Press **Connect MIDI** (it also starts the sound). Pick a **Sound**: Pad, Pluck, or Bass.
-2. Play. Each held note is a glowing dot: left to right is pitch (with bend), up and down is slide, size and glow are pressure. Trails show glides and wiggles. A strip along the bottom names the keys, and the meters below give each channel's note (as "C2 (48)": name and MIDI number), bend in semitones, slide, and pressure. Notes are named the way the Seaboard names them (60 = C3), so the Block's 24 keys read C2 to B3; the picture follows its octave buttons.
-3. **Bend range** is 48 semitones for MPE; set it to 2 for an ordinary keyboard on channel 1 (its mod wheel counts as slide). **Panic** (`Esc`) silences everything; `F` is full screen.
+2. Play. Each held note is a glowing dot: left to right is pitch (with bend), up and down is slide, size and glow are pressure. Trails show glides and wiggles. A strip along the bottom names the keys, and the meters below give each channel's note (as "C2 (48)": name and MIDI number), bend in semitones, slide, and pressure. Notes are named the way the Seaboard names them (60 = C3), so the Block's 24 keys read C2 to B3.
+3. **Keys shown** says which keys the picture covers, and it stays put. Move it with **− octave** and **+ octave**, or press **Set from lowest key** and play the Block's lowest key. Tick **Follow the Block's octave buttons** to have it move when you press them. A note bent past the edge shows as an arrow at the edge.
+4. **Bend range** is 48 semitones for MPE; set it to 2 for an ordinary keyboard on channel 1 (its mod wheel counts as slide). **Panic** (`Esc`) silences everything; `F` is full screen.
 
 No Seaboard? Drag on the picture: one note per finger or mouse, sideways bends, up and down slides, holding presses harder.
 
-**The one file to change:** `nextjs/lib/launch/mpe.js` (`KEYS`, the range the picture shows; `NOTE_NAMES`, `"roli"` or `"standard"` for 60 = C4; `BEND_RANGE`, `KEYBOARD_BEND_RANGE`, `SLIDE_CCS`, the `patches` sounds, the `look`). It grew from the purple fellow's MIDI studies ([the fellows' experiments](/fellows)).
+**The one file to change:** `nextjs/lib/launch/mpe.js` (`KEYS`, the keys the picture starts on; `NOTE_NAMES`, `"roli"` or `"standard"` for 60 = C4; `BEND_RANGE`, `KEYBOARD_BEND_RANGE`, `SLIDE_CCS`, the `patches` sounds, the `look`). It grew from the purple fellow's MIDI studies ([the fellows' experiments](/fellows)).
 
 ## 3. The cue list (Go)
 
