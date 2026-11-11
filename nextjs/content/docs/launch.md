@@ -24,7 +24,7 @@ A drum pad or a little keyboard controller (an Akai MPK mini: 25 keys, 8 pads, 8
 
 1. Plug the controller in, press **Connect MIDI**, and allow MIDI when Chrome asks. Your device's name appears.
 2. Watch the **monitor**. Every pad, key, and dial sends a message: a pad or key is a **note** (a number, plus how hard you hit it, 0–127); a dial or slider is a **CC** (control change: a number, plus where the dial is, 0–127). This is the whole language.
-3. **Pads → cues.** An MPK mini's pads (notes 36–43) already fire the nine buttons. To change one, press **Learn** next to a cue, then hit a pad. Harder hits play sounds louder.
+3. **Pads → cues.** An MPK mini's eight pads (bank A, notes 36–43) already fire buttons 1–8. Button 9, the blackout, is on note 44: the on-screen pad marked 44 (each pad shows its note and cue), or press `9` (or use **Learn** to put it on a pad). To change one, press **Learn** next to a cue, then hit a pad. Harder hits play sounds louder.
 4. **Dials → the stage.** Knobs 1–4 of an MPK mini (CC 70–73) are volume, picture opacity, brightness, and hue. Press **Learn** next to one and turn a dial to reassign it.
 5. **Keep it.** What you learn is remembered in this browser. **Copy as code** and paste it into `nextjs/lib/launch/midi-map.js` to keep it in the project.
 
