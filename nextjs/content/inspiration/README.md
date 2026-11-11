@@ -7,6 +7,7 @@ description: "Concerts, shows, theater, and a few galleries, to define what we'r
 
 Concerts first: they are what most of you will design for. Each entry is one line on why it's here; the **examples** pages go deeper, and the **case studies** take a show apart into its mechanics and suggest how you'd build a small version of each with Claude Code.
 
+- **[Contemporary](/inspiration/contemporary) (new, 9:30 am):** shows from the last few years (pop tours, Broadway, club sets, halftime shows, creators), with a top 10 to watch and pages by mechanic.
 - **[Examples](/inspiration/examples):** one page per show, studio, or artist.
 - **[Case studies](/inspiration/case-studies):** a show's tools and mechanics, and how you'd code each piece.
 
