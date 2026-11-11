@@ -5,6 +5,7 @@ const tabs = [
   ["/launch", "1 · Buttons and keys"],
   ["/launch/midi", "2 · MIDI controller"],
   ["/launch/cue-list", "3 · Cue list (Go)"],
+  ["/launch/hello", "In one file"],
   ["/docs/launch", "How-to"],
 ];
 

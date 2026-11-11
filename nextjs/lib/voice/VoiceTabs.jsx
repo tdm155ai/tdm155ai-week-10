@@ -6,6 +6,7 @@ const tabs = [
   ["/voice/script", "2 · Follow a script"],
   ["/voice/compare", "3 · Compare engines"],
   ["/voice/semantic", "4 · By topic (AI)"],
+  ["/voice/hello", "In one file"],
   ["/docs/voice", "How-to"],
 ];
 

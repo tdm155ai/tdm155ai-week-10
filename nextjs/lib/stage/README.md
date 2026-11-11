@@ -42,4 +42,4 @@ Pictures (video, image, text, color) replace one another with a cross-fade (`fad
 
 ## On the projector
 
-Open `/stage`, drag the window to the projector, click once (that allows sound and goes full screen). `F` toggles full screen, `Esc` blacks out. Use Chrome. The stage and the tab firing cues must be in the same browser profile on the same machine.
+Open `/stage`, drag the window to the projector, pick **Sound out** (the PA or the projector's HDMI; Test plays a ping there), then click once (that allows sound and goes full screen). `O` shows the Sound out menu again. `F` toggles full screen, `Esc` blacks out. Use Chrome. The stage and the tab firing cues must be in the same browser profile on the same machine.
