@@ -9,6 +9,7 @@ import { createFx, FX_PARAMS } from "./fx.js";
 
 const clamp = (v) => Math.max(0, Math.min(1, v));
 const OUTPUT_STORE = "tdm155ai-stage-output";
+const HERE_STORE = "tdm155ai-sound-here"; // "off" = the preview on control pages never plays sound
 const VIDEO_PARAMS = ["scrub", "speed", "play"];
 
 // Send an <audio> or <video> element's sound to a chosen output (the PA, the projector's HDMI) instead of the Mac's
@@ -40,6 +41,15 @@ export default function Stage({ preview = false }) {
   const [params, setParams] = useState({ master: 1, opacity: 1, brightness: 1, hue: 0 });
   const [started, setStarted] = useState(preview);
   const [last, setLast] = useState(null);
+  // The preview on a control page plays the sound itself while no started stage window is answering, so you hear
+  // something without opening /stage; once a stage window is running, the preview goes quiet (no doubled sound).
+  const [here, setHere] = useState("auto"); // "auto" | "off"
+  const [stageRunning, setStageRunning] = useState(false);
+  const [blocked, setBlocked] = useState(false);
+  const hereRef = useRef(false);
+  const lastStatus = useRef({ at: 0, started: false });
+  useEffect(() => { try { setHere(localStorage.getItem(HERE_STORE) === "off" ? "off" : "auto"); } catch {} }, []);
+  useEffect(() => { hereRef.current = preview && here === "auto" && !stageRunning; }, [preview, here, stageRunning]);
   const sounds = useRef(new Map()); // id -> { el, volume }
   const masterRef = useRef(1);
   const busRef = useRef(null);
@@ -98,7 +108,7 @@ export default function Stage({ preview = false }) {
     const o = cue.options || {};
     const old = sounds.current.get(cue.id);
     if (old) { old.el.pause(); old.el.src = ""; }
-    if (preview) return; // the preview stays silent
+    if (preview && !hereRef.current) return; // a running stage window plays it (or sound here is off)
     const el = new Audio(cue.src);
     routeTo(el, sinkRef.current);
     throughFx(el);
@@ -109,7 +119,7 @@ export default function Stage({ preview = false }) {
     sounds.current.set(cue.id, entry);
     el.play().then(() => {
       if (o.fadeIn) fadeVolume(el, volume * masterRef.current, o.fadeIn);
-    }).catch((err) => console.warn("[stage] sound blocked:", err.message));
+    }).catch((err) => { if (err.name === "NotAllowedError") setBlocked(true); else console.warn("[stage] sound:", err.message); });
     if (o.fadeOut && !o.loop) {
       el.addEventListener("loadedmetadata", () => {
         const at = Math.max(0, (el.duration - o.fadeOut) * 1000);
@@ -173,11 +183,24 @@ export default function Stage({ preview = false }) {
           for (const s of sounds.current.values()) if (!s.el._fade) s.el.volume = clamp(s.volume * data.value);
         }
       }
+      if (data.type === "status" && preview) lastStatus.current = { at: Date.now(), started: !!data.started };
       if (data.type === "ping" && !preview) bus.postMessage({ type: "status", open: true, started, fx: fxRef.current ? { ...fxRef.current.state } : null, sink: !!sinkRef.current, at: Date.now() });
     };
     if (!preview) bus.postMessage({ type: "status", open: true, started, fx: fxRef.current ? { ...fxRef.current.state } : null, sink: !!sinkRef.current, at: Date.now() });
     return () => bus.close();
   }, [play, preview, started, ensureFx]);
+
+  useEffect(() => {
+    if (!preview) return undefined;
+    const bus = new BroadcastChannel(CHANNEL);
+    const check = () => {
+      bus.postMessage({ type: "ping", at: Date.now() });
+      setStageRunning(Date.now() - lastStatus.current.at < 5000 && lastStatus.current.started);
+    };
+    check();
+    const timer = setInterval(check, 2000);
+    return () => { clearInterval(timer); bus.close(); };
+  }, [preview]);
 
   useEffect(() => {
     if (preview) return;
@@ -219,6 +242,12 @@ export default function Stage({ preview = false }) {
       )}
       {!preview && (!started || showOutputs) && <OutputMenu sink={sink} onChange={chooseOutput} onClose={started ? () => setShowOutputs(false) : null} />}
       {preview && <span className="stage-preview-label">{last ? `${last.kind}: ${last.label}` : "stage preview"}</span>}
+      {preview && (
+        <button className={`stage-here${blocked ? " blocked" : ""}`} title="Where the sound plays"
+          onClick={() => { if (blocked) { setBlocked(false); return; } const next = here === "off" ? "auto" : "off"; setHere(next); try { localStorage.setItem(HERE_STORE, next); } catch {} }}>
+          {blocked ? "🔇 click to hear sound" : stageRunning ? "🔈 sound: stage window" : here === "off" ? "🔇 sound off here" : "🔊 sound: this page"}
+        </button>
+      )}
     </div>
   );
 }
