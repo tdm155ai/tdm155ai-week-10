@@ -4,25 +4,30 @@ order: 4
 description: Your hands, face, and body as a controller. Raise a hand and a cue fires on the stage.
 ---
 
-**Open:** [/track](/track) (Hello World), then [/track/instruments](/track/instruments). Use Chrome, and allow the camera.
+**Open:** [/track/hello](/track/hello) (Hello World), then [/track](/track), [/track/instruments](/track/instruments), [/track/zones](/track/zones), [/track/xy](/track/xy), and [/track/three](/track/three). Use Chrome, and allow the camera.
 
 ## What it does
 
 [MediaPipe](https://ai.google.dev/edge/mediapipe/solutions/guide) is Google's free library of small vision models that run in the browser, on your laptop, with no server and no key. The page sends each camera frame to a model and gets back numbers: 21 points on each hand, 478 points and 52 expression scores on a face, 33 points on a body. Those numbers become cues on the [stage](/docs/stage), the same stage the buttons, MIDI, and voice cues fire.
 
-- **Hello World** (`/track`): three dashed zones on the picture. Put an index fingertip in a zone and its cue fires, once; take your hand out to re-arm. The top zone is "raise a hand."
+- **Hello World** (`/track/hello`): one file, `app/track/hello/Hello.jsx`. A line across the picture; lift your index fingertip above it and one cue fires; lower your hand to re-arm. Change `LINE` (0 top, 1 bottom), `CUE`, and `COLOR` at the top.
+- **Zones** (`/track`): three dashed zones on the picture. Put an index fingertip in a zone and its cue fires, once; take your hand out to re-arm. The top zone is "raise a hand."
 - **Instruments** (`/track/instruments`):
   - **Hand fader**: fingertip height (0 at the bottom, 1 at the top) sets the stage's brightness, continuously.
   - **Pinch**: thumb to index finger fires a cue.
   - **Gestures**: thumbs up, thumbs down, open palm, fist, victory, pointing up, "I love you", each its own cue.
   - **Mouth open**: the face model's `jawOpen` score past a threshold fires a cue.
   - **Arms up**: both wrists above your nose fires a cue.
+  - **Scrub a video**: fingertip left–right is the position in the stage's video; a pinch plays it on. The clip goes up when you pick the tab.
+- **Body zones** (`/track/zones`): the picture is split into columns (up to four people, from the pose model). Step into a column and its sound fires once; it stays lit while someone is in it. The columns and sounds are `bodyZones` in `app/track/cues.js`.
+- **XY pad** (`/track/xy`): your palm is the finger on the [XY pad](/docs/launch): it sweeps a filter and echo over a loop.
+- **Three.js** (`/track/three`): a 3D field of 1,600 glowing blocks with a wave running out from the middle, an **output** to play rather than an input. No camera needed: sliders for speed, wave height, ripples, color, and spin; drag to orbit, scroll to zoom, `F` full screen, `Space` pause. Tick **Use my hand** and your fingertip spins the field (left–right) and lifts the wave (up–down); a pinch sends a ring-shaped pulse out. **The one file to change:** `app/track/three/scene.js`: `controls` is the list of sliders, `fromHand()` what the hand does, `makeScene()` what's in the world (its `update(seconds, values, hand)` runs every frame). The chain is input → parameter → picture: a slider or your hand sets `values`, which set each block's height and color.
 
 Every page shows **what the model sees** as numbers on the right. Watch them while you move: that's how you pick a threshold.
 
 ## Try it
 
-1. Open [/track](/track). Pick your camera in the bar (the overhead camera, a webcam, your laptop's).
+1. Start with [/track/hello](/track/hello), then open [/track](/track). Pick your camera in the bar (the overhead camera, a webcam, your laptop's).
 2. Click **Open the stage**: a second window. Drag it to the projector if there is one.
 3. Raise a hand into the top zone. "Hello, world" appears on the stage. Touch the left zone (red) and the right zone (a ping).
 4. Go to [/track/instruments](/track/instruments) and try each tab. For the fader, fire a picture first (open palm, in Gestures) so there's something to dim.
@@ -61,6 +66,9 @@ The model's points are normalized: `x` and `y` run 0 to 1 across the frame, so t
 ## Prompts for Claude Code
 
 Open Claude Code in this repo and try one:
+
+- "In `app/track/three/scene.js`, make the blocks spheres, and make a pinch change their color."
+- "On /track/three, make the wave start where my hand is instead of in the middle, and fire a stage cue when the wave height goes over 3."
 
 - "In `app/track/cues.js`, add a zone in each corner of the picture, each firing a different sample sound from `public/samples/`."
 - "Add an instrument to `lib/cv/instruments.js` called `clap`: it fires when the two hands' wrists come within 0.1 of each other. Add its cue to `cues.js` and a tab for it."

@@ -7,6 +7,8 @@ Make a cue happen: a sound, a picture, a color, a few words. Then give it a trig
 
 ## Start here: your first hour
 
+**The map: [inputs and outputs](/repertoire).** Soundboard → MIDI → raw audio → words → meaning → tracking → boxes, each with a Hello World and the file to change.
+
 Run this repo locally and open **http://localhost:3000 in Chrome**. The [repo setup](https://github.com/tdm155ai/tdm155ai-week-10#run-it) has the commands. Work at your own computer. For each experiment, make it work once, change the small file named below, and try your change.
 
 1. **[Click a button, press a key](/launch).** Click a cue, then press `1`–`9`; `Space` runs the next cue. Change one label or picture in `nextjs/lib/launch/buttons.js`. [How it works](/docs/launch).

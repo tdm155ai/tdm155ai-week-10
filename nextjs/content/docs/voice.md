@@ -4,7 +4,7 @@ description: Say a word and a cue fires; or read a sonnet aloud and the cues com
 order: 3
 ---
 
-**Open:** [/voice](/voice) (Hello World), then [/voice/script](/voice/script). Use Chrome, allow the microphone, and open the [stage](/docs/stage) first.
+**Open:** [/voice/hello](/voice/hello) (Hello World), then [/voice](/voice) and [/voice/script](/voice/script). Use Chrome, allow the microphone, and open the [stage](/docs/stage) first.
 
 ## What it does
 
@@ -12,7 +12,18 @@ Chrome has speech recognition built in (the **Web Speech API**): no key, no inst
 
 Chrome sends the audio to Google's recognizer, so it needs the internet, and it works best with a decent mic close to the speaker. It restarts itself after a silence.
 
-## 1. Say a word (Hello World)
+## Pick your mic first
+
+Every voice page has a **Mic** menu at the top of the Listen panel: every input Chrome sees, remembered in this browser. Press **Check** and watch the **level meter**: "Hearing you" means the sound is getting in; "Open, but quiet" means move closer or pick another mic. The meter is the **raw audio signal**, before any words are recognized (see [inputs and outputs](/repertoire)).
+
+- **If Web Speech seems to hear the wrong mic**, set the Mac's input in System Settings › Sound › Input. The page hands Web Speech the chosen mic, but some versions of Chrome ignore it and use the Mac's default; the page says so when that happens.
+- **A quiet voice getting swallowed?** Tick **raw (no cleanup)**: it turns off echo cancellation, noise suppression, and automatic gain.
+
+## 0. Hello World: one word, one cue
+
+[/voice/hello](/voice/hello) is the whole idea in one short file: press listen, say "hello", and "Hello, world" comes up on the stage. Read `nextjs/app/voice/hello/Hello.jsx` top to bottom, then change `WORD` and `CUE` at the top.
+
+## 1. Say a word
 
 Press **Start listening** and say "hello world", then "moon". Each **trigger word** fires its cue the moment it shows up, usually before you finish the sentence. The **Fired** list says which word fired what, and whether it fired from a guess ("interim", fastest) or the settled text ("final").
 

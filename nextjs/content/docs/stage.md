@@ -12,8 +12,9 @@ Every mechanic this week does the same thing: it **fires a cue**. A cue is one m
 
 1. On any control page, press **Open stage window** (or open [/stage](/stage) yourself).
 2. Drag that window onto the projector's screen.
-3. **Click it once.** That lets it play sound and makes it full screen. `F` toggles full screen; `Esc` blacks out.
-4. Go back to the control page and fire cues. The small preview there is silent; the sound comes from the stage window.
+3. **Pick where the sound goes.** Before the first click, the stage shows a **Sound out** menu: the Mac's default, or any output Chrome sees (the room's PA interface, the projector's HDMI, headphones). **Test (ping)** plays a ping there; **Show names** asks for mic permission once so the devices get their names. The choice is remembered, and the Mac's own default stays as it is. `O` shows the menu again later.
+4. **Click it once.** That lets it play sound and makes it full screen. `F` toggles full screen; `Esc` blacks out.
+5. Go back to the control page and fire cues. The small preview there is silent; the sound comes from the stage window.
 
 The **Panic** button on every control page (**Blackout** on the tracking pages) blacks out the picture and fades every sound.
 
@@ -36,6 +37,8 @@ The **Panic** button on every control page (**Blackout** on the tracking pages) 
 Pictures replace each other with a cross-fade; sounds play on top of whatever is showing, and several can play at once.
 
 Four **continuous controls** go from 0 to 1 and are what a dial, a slider, or a hand's height should move: `master` (the volume of every sound), `opacity` and `brightness` (of the picture), and `hue` (shifts its colors).
+
+Three more act on the **video on top**: `scrub` (its position: 0 the start, 1 the end; holds that frame), `speed` (0 quarter speed, 0.5 normal, 1 four times), and `play` (1 plays, 0 pauses). Fire a `video` cue first. And four **effects** act on every stage sound: `filter` (0.5 is off; lower sweeps a low-pass, muffling; higher a high-pass, thinning), `resonance`, `echo` (how much), and `echoTime` (40 ms to 1 s). Try them on the [XY pad](/launch/xy).
 
 ## Your own media
 
