@@ -3,7 +3,8 @@
 //
 // notes: MIDI note number → the id of a button in lib/launch/buttons.js (or a whole cue object).
 //   Akai MPK mini pads send 36–43 (bank A); a 4×4 drum pad usually sends 36–51; piano middle C is 60.
-// dials: MIDI controller (CC) number → a stage control: master (volume), opacity, brightness, hue.
+// dials: MIDI controller (CC) number → a stage control: master (volume), opacity, brightness, hue, and for the video
+//   on the stage: scrub (its position), speed (middle = normal), play (up = play, down = pause).
 //   Akai MPK mini knobs send CC 70–77.
 // velocity: true makes a harder hit play a sound louder.
 
@@ -24,6 +25,8 @@ export const dials = {
   71: "opacity",
   72: "brightness",
   73: "hue",
+  74: "scrub",
+  75: "speed",
 };
 
 export const velocity = true;

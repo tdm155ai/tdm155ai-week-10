@@ -19,10 +19,12 @@
 //
 // Continuous controls (a MIDI dial, a hand's height) use setParam(name, value) with value 0–1:
 //   "master" (volume of every sound), "opacity" (the picture), "brightness" (the picture), "hue" (rotates its colors).
+// and for the video on top: "scrub" (its position, 0 = start, 1 = end; holds that frame), "speed" (0 = quarter speed,
+// 0.5 = normal, 1 = four times; plays), "play" (1 plays, 0 pauses).
 
 export const CHANNEL = "tdm155ai-stage";
 export const KINDS = ["sound", "video", "image", "text", "color", "blackout", "stop"];
-export const PARAMS = ["master", "opacity", "brightness", "hue"];
+export const PARAMS = ["master", "opacity", "brightness", "hue", "scrub", "speed", "play"];
 
 let channel = null;
 function bus() {

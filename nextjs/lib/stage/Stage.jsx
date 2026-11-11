@@ -8,6 +8,7 @@ import { CHANNEL } from "./stage.js";
 
 const clamp = (v) => Math.max(0, Math.min(1, v));
 const OUTPUT_STORE = "tdm155ai-stage-output";
+const VIDEO_PARAMS = ["scrub", "speed", "play"];
 
 // Send an <audio> or <video> element's sound to a chosen output (the PA, the projector's HDMI) instead of the Mac's
 // default. "" = the default. Chrome only (setSinkId); elsewhere it plays on the default.
@@ -123,6 +124,16 @@ export default function Stage({ preview = false }) {
     bus.onmessage = ({ data }) => {
       if (!data) return;
       if (data.type === "cue") play(data.cue);
+      if (data.type === "param" && VIDEO_PARAMS.includes(data.name)) {
+        // The video on top: scrub (position 0–1, holds the frame), speed (0.5 = normal), play (on/off at 0.5).
+        const videos = rootRef.current?.querySelectorAll("video");
+        const v = videos?.[videos.length - 1];
+        if (!v) return;
+        if (data.name === "scrub" && v.duration) { v.pause(); v.currentTime = data.value * v.duration * 0.999; }
+        if (data.name === "speed") { v.playbackRate = 0.25 * 16 ** data.value; v.play().catch(() => {}); }
+        if (data.name === "play") { if (data.value >= 0.5) v.play().catch(() => {}); else v.pause(); }
+        return;
+      }
       if (data.type === "param") {
         setParams((p) => ({ ...p, [data.name]: data.value }));
         if (data.name === "master") {

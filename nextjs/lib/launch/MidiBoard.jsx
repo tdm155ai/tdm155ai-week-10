@@ -15,7 +15,7 @@ import * as fileMap from "./midi-map.js";
 const STORE = "tdm155ai-midi-map";
 const PAD_NOTES = Array.from({ length: 16 }, (_, i) => 36 + i);
 const KNOB_CCS = Array.from({ length: 8 }, (_, i) => 70 + i);
-const PARAM_LABEL = { master: "Volume (all sounds)", opacity: "Picture opacity", brightness: "Brightness", hue: "Hue (color shift)" };
+const PARAM_LABEL = { master: "Volume (all sounds)", opacity: "Picture opacity", brightness: "Brightness", hue: "Hue (color shift)", scrub: "Video position (scrub)", speed: "Video speed (middle = normal)", play: "Video play / pause" };
 
 function loadMap() {
   try {
