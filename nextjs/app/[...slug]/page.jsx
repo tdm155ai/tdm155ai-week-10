@@ -83,6 +83,7 @@ export default async function EntryPage({ params }) {
         <header className="article-heading">
           <h1>{entry.title}</h1>
           {entry.description && <p className="lede">{entry.description}</p>}
+          {entry.slug === "inspiration" && <p className="prose" style={{ marginTop: 24 }}>If you only check out one link, check out this one: <a href="https://momentfactory.com/" target="_blank" rel="noreferrer"><strong>Moment Factory ↗</strong></a></p>}
           <p className="updated"><Link className="print-link" href={`/print${entry.href}`}>Print this page</Link></p>
         </header>
         {entry.kind === "folder" ? (
